@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found — John Litzsinger"
+  description="The page you're looking for doesn't exist."
+>
+  <div class="not-found">
+    <h1>404</h1>
+    <p>The page you're looking for doesn't exist.</p>
+    <div class="links">
+      <a href="/">Go home</a>
+      <a href="/blog">Read the blog</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--color-border);
+    margin-bottom: var(--space-md);
+  }
+
+  p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+  }
+
+  .links {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+  }
+
+  .links a {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+</style>

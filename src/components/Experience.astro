@@ -1,0 +1,142 @@
+---
+const experiences = [
+  {
+    title: 'Rotational Intern, Employee Benefits',
+    company: 'Shepherd Insurance',
+    period: 'June 2025 – August 2025',
+    bullets: [
+      'Analyzed pharmacy benefit manager structures and drug trend data to identify cost-saving opportunities in employer health plans.',
+      'Evaluated policy and market shifts impacting plan performance, documenting findings for senior leadership.',
+      'Prepared assessments and presentations clarifying plan design trade-offs and financial implications.',
+    ],
+  },
+  {
+    title: 'Co-founder, Executive (Finance)',
+    company: 'Purdue Launch Consulting Club',
+    period: 'April 2023 – Present',
+    bullets: [
+      'Co-founded a student consulting organization, managing club funds and overseeing financial operations.',
+      'Served as head of project leaders and direct company contact, coordinating engagements between student teams and external partners.',
+      'Led development of the organization\'s website and served on the Senior Advisory Board.',
+    ],
+  },
+  {
+    title: 'Founder, Head Analyst',
+    company: 'Father Flips',
+    period: 'January 2021 – March 2023',
+    bullets: [
+      'Founded a niche market analysis group focused on limited-availability software pricing and trading opportunities.',
+      'Developed investment calls with entry/exit points, contributing to 260% individual client ROI (643.80% annualized).',
+      'Managed relationships with ~30 customers and 2 staff, communicating market insights and risk/reward trade-offs.',
+    ],
+  },
+];
+---
+
+<section id="experience" class="experience" aria-label="Work experience">
+  <h2>Experience</h2>
+  <div class="timeline">
+    {experiences.map((exp) => (
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <h3>{exp.title}</h3>
+            <p class="company">{exp.company}</p>
+          </div>
+          <span class="period">{exp.period}</span>
+        </div>
+        <ul>
+          {exp.bullets.map((bullet) => (
+            <li>{bullet}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .experience {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+  }
+
+  h2 {
+    margin-bottom: var(--space-lg);
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .timeline-item {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-xs);
+  }
+
+  .company {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .period {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    position: relative;
+    padding-left: var(--space-md);
+    margin-bottom: var(--space-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-header {
+      flex-direction: column;
+    }
+  }
+</style>

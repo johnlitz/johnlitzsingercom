@@ -1,0 +1,52 @@
+---
+const skills = [
+  'Market Analysis',
+  'Financial Analysis',
+  'Excel',
+  'Client Service',
+  'Leadership',
+  'Project Management',
+  'Presentation Skills',
+  'Web Development',
+  'Fund Management',
+  'CRM',
+  'Sales',
+];
+---
+
+<section id="skills" class="skills" aria-label="Skills">
+  <h2>Skills</h2>
+  <div class="skill-list">
+    {skills.map((skill) => (
+      <span class="skill">{skill}</span>
+    ))}
+  </div>
+</section>
+
+<style>
+  .skills {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+  }
+
+  h2 {
+    margin-bottom: var(--space-lg);
+  }
+
+  .skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .skill {
+    font-size: var(--text-sm);
+    padding: 0.4em 1em;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    font-weight: 500;
+  }
+</style>

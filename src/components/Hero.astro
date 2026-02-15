@@ -1,0 +1,80 @@
+<section id="hero" class="hero" aria-label="Introduction">
+  <h1>John Litzsinger</h1>
+  <p class="tagline">Finance student & entrepreneur building at the intersection of markets, data, and technology.</p>
+  <div class="ctas">
+    <a href="/blog" class="btn btn-primary">Read the Blog</a>
+    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+    text-align: center;
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+  }
+
+  .tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 50ch;
+    margin: 0 auto var(--space-lg);
+    line-height: 1.5;
+  }
+
+  .ctas {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.7em 1.8em;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: none; }
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: var(--text-3xl); }
+    .hero { padding: var(--space-xl) var(--space-lg); }
+  }
+</style>
