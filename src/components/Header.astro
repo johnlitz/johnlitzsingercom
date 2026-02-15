@@ -26,7 +26,8 @@ const currentPath = Astro.url.pathname;
     justify-content: space-between;
     max-width: var(--max-width-wide);
     margin: 0 auto;
-    padding: var(--space-md) var(--space-lg);
+    padding: 0 var(--gutter);
+    height: 64px;
   }
 
   .logo {
@@ -57,7 +58,10 @@ const currentPath = Astro.url.pathname;
   }
 
   .nav-link.active {
-    color: var(--color-accent);
+    color: var(--foreground);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -59,7 +59,7 @@ const experiences = [
   .experience {
     max-width: var(--max-width-wide);
     margin: 0 auto;
-    padding: var(--space-2xl) var(--space-lg);
+    padding: var(--space-xl) var(--gutter);
   }
 
   h2 {
@@ -73,10 +73,16 @@ const experiences = [
   }
 
   .timeline-item {
-    padding: var(--space-lg);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    background: var(--color-surface);
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+  }
+
+  .timeline-item:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-sm);
   }
 
   .timeline-header {
@@ -115,7 +121,7 @@ const experiences = [
     padding-left: var(--space-md);
     margin-bottom: var(--space-sm);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--secondary);
     line-height: 1.6;
   }
 
@@ -127,11 +133,15 @@ const experiences = [
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--color-border);
+    background: var(--border-strong);
   }
 
   li:last-child {
     margin-bottom: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timeline-item { transition: none; }
   }
 
   @media (max-width: 640px) {

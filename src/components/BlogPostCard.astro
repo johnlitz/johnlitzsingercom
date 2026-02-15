@@ -33,19 +33,20 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
 <style>
   .post-card {
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    background: var(--color-surface);
-    transition: border-color 0.15s;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
   }
 
   .post-card:hover {
-    border-color: var(--color-accent);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-sm);
   }
 
   .post-link {
     display: block;
-    padding: var(--space-lg);
+    padding: var(--space-6);
     text-decoration: none;
     color: inherit;
   }

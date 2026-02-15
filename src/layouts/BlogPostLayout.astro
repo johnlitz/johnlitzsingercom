@@ -64,7 +64,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   .blog-post {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-xl) var(--gutter);
   }
 
   .post-header {
@@ -138,7 +138,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .prose :global(img) {
-    border-radius: 8px;
+    border-radius: var(--radius);
     margin: var(--space-md) 0;
   }
 

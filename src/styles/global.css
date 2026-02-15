@@ -7,48 +7,104 @@
   padding: 0;
 }
 
-/* Custom properties */
+/* Design system tokens */
 :root {
-  --color-bg: #fafafa;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b7280;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-border: #e5e7eb;
-  --color-surface: #ffffff;
+  /* Colors — stone palette + blue accent */
+  --background: #ffffff;
+  --surface: #fafaf9;
+  --surface-2: #f5f5f4;
 
-  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  --foreground: #0c0a09;
+  --secondary: #44403c;
+  --muted: #78716c;
+
+  --border: rgba(12, 10, 9, 0.10);
+  --border-strong: rgba(12, 10, 9, 0.16);
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, 0.12);
+
+  --focus-ring: rgba(37, 99, 235, 0.45);
+
+  /* Legacy aliases (components reference these) */
+  --color-bg: var(--background);
+  --color-text: var(--foreground);
+  --color-text-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
+
+  /* Typography */
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, monospace;
 
+  /* Type scale */
+  --text-sm: 0.875rem;    /* 14px — meta, small labels */
+  --text-base: 1rem;      /* 16px — body */
+  --text-lg: 1.25rem;     /* 20px — H4, large body */
+  --text-xl: 1.5rem;      /* 24px — H3 */
+  --text-2xl: 1.875rem;   /* 30px — H2 */
+  --text-3xl: 2.5rem;     /* 40px — display */
+  --text-4xl: 3rem;       /* 48px — H1 / hero */
+
+  /* Layout */
   --max-width: 65ch;
-  --max-width-wide: 1200px;
+  --max-width-wide: 72rem;
+  --gutter: 1rem;
 
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 2rem;
-  --space-xl: 4rem;
-  --space-2xl: 6rem;
+  /* Spacing — 4px base grid */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;     /* 12px */
+  --space-md: 1rem;       /* 16px */
+  --space-6: 1.5rem;      /* 24px */
+  --space-lg: 2rem;       /* 32px */
+  --space-12: 3rem;       /* 48px */
+  --space-xl: 4rem;       /* 64px */
+  --space-2xl: 6rem;      /* 96px */
 
-  --text-sm: 0.875rem;
-  --text-base: 1.125rem;
-  --text-lg: 1.25rem;
-  --text-xl: 1.563rem;
-  --text-2xl: 1.953rem;
-  --text-3xl: 2.441rem;
-  --text-4xl: 3.052rem;
+  /* Radius */
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0a0a0a;
-    --color-text: #e5e5e5;
-    --color-text-muted: #9ca3af;
-    --color-accent: #60a5fa;
-    --color-accent-hover: #93bbfd;
-    --color-border: #374151;
-    --color-surface: #111111;
+    --background: #0c0a09;
+    --surface: #1c1917;
+    --surface-2: #292524;
+
+    --foreground: #fafaf9;
+    --secondary: #a8a29e;
+    --muted: #78716c;
+
+    --border: rgba(250, 250, 249, 0.10);
+    --border-strong: rgba(250, 250, 249, 0.16);
+
+    --accent: #60a5fa;
+    --accent-hover: #93bbfd;
+    --accent-soft: rgba(96, 165, 250, 0.12);
+
+    --focus-ring: rgba(96, 165, 250, 0.45);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20);
   }
+}
+
+/* Responsive gutters */
+@media (min-width: 640px) {
+  :root { --gutter: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+  :root { --gutter: 2rem; }
 }
 
 /* Base */
@@ -56,8 +112,8 @@ html {
   font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.6;
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  color: var(--foreground);
+  background-color: var(--background);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -86,44 +142,44 @@ img {
 }
 
 a {
-  color: var(--color-accent);
-  text-decoration: none;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 
 a:hover {
-  color: var(--color-accent-hover);
-  text-decoration: underline;
+  color: var(--accent-hover);
 }
 
 a:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: 2px;
 }
 
 /* Headings */
 h1, h2, h3, h4 {
-  line-height: 1.2;
-  color: var(--color-text);
+  color: var(--foreground);
 }
 
-h1 { font-size: var(--text-4xl); font-weight: 700; }
-h2 { font-size: var(--text-2xl); font-weight: 600; }
-h3 { font-size: var(--text-xl); font-weight: 600; }
-h4 { font-size: var(--text-lg); font-weight: 600; }
+h1 { font-size: var(--text-4xl); font-weight: 700; line-height: 1.1; }
+h2 { font-size: var(--text-2xl); font-weight: 600; line-height: 1.2; }
+h3 { font-size: var(--text-xl); font-weight: 600; line-height: 1.25; }
+h4 { font-size: var(--text-lg); font-weight: 600; line-height: 1.3; }
 
 /* Code */
 code {
   font-family: var(--font-mono);
   font-size: 0.9em;
-  background: var(--color-border);
+  background: var(--surface-2);
   padding: 0.15em 0.35em;
   border-radius: 4px;
 }
 
 pre {
   padding: var(--space-md);
-  border-radius: 8px;
+  border-radius: var(--radius);
   overflow-x: auto;
   font-size: var(--text-sm);
   line-height: 1.5;
@@ -140,8 +196,9 @@ pre code {
   top: -100%;
   left: var(--space-md);
   padding: var(--space-sm) var(--space-md);
-  background: var(--color-accent);
+  background: var(--accent);
   color: #fff;
+  text-decoration: none;
   border-radius: 0 0 4px 4px;
   z-index: 100;
   font-size: var(--text-sm);
