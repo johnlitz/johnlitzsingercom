@@ -2,53 +2,66 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer">
-  <div class="footer-content">
-    <p class="copyright">&copy; {currentYear} John Litzsinger</p>
-    <div class="footer-links">
-      <a href="mailto:jlitzsin@purdue.edu">Email</a>
-      <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="/rss.xml">RSS</a>
+<footer id="contact" class="footer" aria-label="Contact and footer">
+  <div class="footer-inner">
+    <div class="contact-block">
+      <h2 class="section-label">Let's connect</h2>
+      <div class="contact-links">
+        <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
+        <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="/John_Litzsinger_Resume.pdf" download>Resume</a>
+      </div>
     </div>
+    <p class="copyright">&copy; {currentYear} John Litzsinger</p>
   </div>
 </footer>
 
 <style>
   .footer {
+    margin-top: var(--space-xl);
     border-top: 1px solid var(--border);
-    padding: var(--space-lg) var(--gutter);
-    margin-top: var(--space-2xl);
+    padding: var(--space-xl) var(--gutter) var(--space-lg);
   }
 
-  .footer-content {
+  .footer-inner {
     max-width: var(--max-width-wide);
     margin: 0 auto;
+  }
+
+  .contact-block {
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-label {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .contact-links {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
+    gap: var(--space-6);
     flex-wrap: wrap;
   }
 
+  .contact-links a {
+    font-size: var(--text-base);
+    color: var(--foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    font-weight: 500;
+  }
+
+  .contact-links a:hover {
+    color: var(--accent);
+  }
+
   .copyright {
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .footer-links {
-    display: flex;
-    gap: var(--space-md);
-  }
-
-  .footer-links a {
     color: var(--muted);
     font-size: var(--text-sm);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    text-decoration-thickness: 1px;
-  }
-
-  .footer-links a:hover {
-    color: var(--accent);
   }
 </style>

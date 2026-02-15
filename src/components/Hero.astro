@@ -1,85 +1,61 @@
 <section id="hero" class="hero" aria-label="Introduction">
   <h1>John Litzsinger</h1>
-  <p class="tagline">Finance student & entrepreneur building at the intersection of markets, data, and technology.</p>
-  <div class="ctas">
-    <a href="/blog" class="btn btn-primary">Read the Blog</a>
-    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
-  </div>
+  <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
+  <a href="#contact" class="cta">Get in Touch</a>
 </section>
 
 <style>
   .hero {
     max-width: var(--max-width-wide);
     margin: 0 auto;
-    padding: var(--space-2xl) var(--gutter);
-    text-align: center;
+    padding: var(--space-3xl) var(--gutter);
+    text-align: left;
   }
 
   h1 {
-    font-size: var(--text-4xl);
+    font-size: var(--text-5xl);
     font-weight: 700;
-    letter-spacing: -0.025em;
-    margin-bottom: var(--space-md);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: var(--space-6);
   }
 
   .tagline {
     font-size: var(--text-lg);
     color: var(--secondary);
-    max-width: 50ch;
-    margin: 0 auto var(--space-lg);
+    max-width: 52ch;
     line-height: 1.5;
+    margin-bottom: var(--space-lg);
   }
 
-  .ctas {
-    display: flex;
-    gap: var(--space-md);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn {
+  .cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 44px;
-    padding: 0 var(--space-md);
+    padding: 0 var(--space-6);
     border-radius: var(--radius);
     font-weight: 600;
     font-size: 1rem;
-    text-decoration: none;
-    transition: background-color 150ms ease-out, color 150ms ease-out;
+    /* Override global link styles */
+    text-decoration: none !important;
+    background: var(--accent);
+    color: #fff !important;
+    transition: background-color 150ms ease-out;
   }
 
-  .btn-primary {
-    background: var(--color-accent);
-    color: #fff;
-  }
-
-  .btn-primary:hover {
-    background: var(--color-accent-hover);
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: var(--foreground);
-    border: 1px solid var(--border-strong);
-  }
-
-  .btn-secondary:hover {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--accent);
-    text-decoration: none;
+  .cta:hover {
+    background: var(--accent-hover);
+    color: #fff !important;
+    text-decoration: none !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .btn { transition: none; }
+    .cta { transition: none; }
   }
 
   @media (max-width: 640px) {
-    h1 { font-size: var(--text-3xl); }
-    .hero { padding: var(--space-xl) var(--gutter); }
+    h1 { font-size: var(--text-4xl); }
+    .hero { padding: var(--space-2xl) var(--gutter); }
   }
 </style>
