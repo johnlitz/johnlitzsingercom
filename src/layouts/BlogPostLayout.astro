@@ -73,12 +73,12 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   .post-meta {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--accent-warm);
     margin-bottom: var(--space-sm);
   }
 
   .updated {
-    color: var(--color-text-muted);
+    color: var(--muted);
   }
 
   h1 {
@@ -93,8 +93,8 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   .tag {
     font-size: var(--text-sm);
-    color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    color: var(--accent-warm);
+    background: var(--accent-warm-soft);
     padding: var(--space-xs) var(--space-sm);
     border-radius: 9999px;
     font-weight: 500;
@@ -126,10 +126,10 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .prose :global(blockquote) {
-    border-left: 3px solid var(--color-accent);
+    border-left: 3px solid var(--accent);
     padding-left: var(--space-md);
     margin: var(--space-md) 0;
-    color: var(--color-text-muted);
+    color: var(--muted);
     font-style: italic;
   }
 
@@ -143,33 +143,33 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .prose :global(a) {
-    color: var(--color-accent);
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
   .prose :global(a:hover) {
-    color: var(--color-accent-hover);
+    color: var(--accent-hover);
   }
 
   .prose :global(hr) {
     border: none;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--border);
     margin: var(--space-xl) 0;
   }
 
   .post-footer {
     margin-top: var(--space-2xl);
     padding-top: var(--space-lg);
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--border);
   }
 
   .post-footer a {
-    color: var(--color-text-muted);
+    color: var(--muted);
     font-size: var(--text-sm);
   }
 
   .post-footer a:hover {
-    color: var(--color-accent);
+    color: var(--accent);
   }
 </style>

@@ -8,26 +8,32 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 {posts.length > 0 && (
   <section id="writing" class="writing" aria-label="Recent writing">
-    <div class="section-header">
-      <h2 class="section-label">Writing</h2>
-      <a href="/blog" class="see-all">All posts</a>
-    </div>
-    <div class="list">
-      {posts.map((post) => (
-        <a href={`/blog/${post.id}`} class="entry">
-          <time datetime={post.data.pubDate.toISOString()}>
-            {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-          </time>
-          <h3>{post.data.title}</h3>
-          <p class="desc">{post.data.description}</p>
-        </a>
-      ))}
+    <div class="writing-inner">
+      <div class="section-header">
+        <h2 class="section-label">Writing</h2>
+        <a href="/blog" class="see-all">All posts</a>
+      </div>
+      <div class="list">
+        {posts.map((post) => (
+          <a href={`/blog/${post.id}`} class="entry">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </time>
+            <h3>{post.data.title}</h3>
+            <p class="desc">{post.data.description}</p>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 )}
 
 <style>
   .writing {
+    background: var(--surface);
+  }
+
+  .writing-inner {
     max-width: var(--max-width-wide);
     margin: 0 auto;
     padding: var(--space-xl) var(--gutter);
@@ -63,31 +69,44 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    gap: var(--space-sm);
   }
 
   .entry {
     display: block;
     text-decoration: none;
     color: inherit;
-    padding-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--border);
-    transition: opacity 150ms ease-out;
-  }
-
-  .entry:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+    padding: var(--space-sm) var(--space-md);
+    margin: 0 calc(-1 * var(--space-md));
+    border-radius: var(--radius-lg);
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
   }
 
   .entry:hover {
     text-decoration: none;
-    opacity: 0.75;
+    background: var(--surface-2);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .entry:active {
+    transform: translateY(0);
+  }
+
+  .entry:focus-visible {
+    background: var(--surface-2);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 
   time {
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--accent-warm);
     display: block;
     margin-bottom: var(--space-xs);
   }
@@ -108,6 +127,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .entry { transition: none; }
+    .entry {
+      transition: none;
+      transform: none !important;
+    }
   }
 </style>

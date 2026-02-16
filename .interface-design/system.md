@@ -5,14 +5,23 @@
 Personal site for a finance student. Visitors are recruiters and peers scanning fast.
 
 ## Depth
-Borders-first. Shadows only as hover interaction cues (`--shadow-sm`).
+Three-level shadow system for physical depth. Borders for structure, shadows for elevation.
+- `--shadow-sm`: Resting ground shadow (barely visible)
+- `--shadow-md`: Interactive elements — card hover, button hover
+- `--shadow-lg`: Reserved for elevated modals/overlays
+
+Card-lift hover pattern: `translateY(-2px) + --shadow-md` on hover, `translateY(0)` on `:active`.
 
 ## Surfaces
 White background (`#ffffff`), stone-50 cards (`#fafaf9`), stone-100 secondary (`#f5f5f4`).
 Dark mode inverts to stone-950 bg, stone-800 surfaces.
 
+Section alternation creates visual rhythm: Hero (`--surface`) → Experience (`--background`) → Writing (`--surface`) → Footer (`--background`).
+
 ## Colors
-Stone neutral palette + single blue-600 accent. Accent is for meaning (links, CTAs), not decoration.
+Stone neutral palette + two accent colors with clear roles:
+- **Blue accent** — actions and navigation (links, CTAs, buttons)
+- **Warm accent (amber)** — temporal metadata (dates, tags)
 
 | Token | Light | Dark |
 |-------|-------|------|
@@ -27,6 +36,9 @@ Stone neutral palette + single blue-600 accent. Accent is for meaning (links, CT
 | `--accent` | `#2563eb` | `#60a5fa` |
 | `--accent-hover` | `#1d4ed8` | `#93bbfd` |
 | `--accent-soft` | `rgba(37,99,235,0.12)` | `rgba(96,165,250,0.12)` |
+| `--accent-warm` | `#d97706` | `#f59e0b` |
+| `--accent-warm-hover` | `#b45309` | `#fbbf24` |
+| `--accent-warm-soft` | `rgba(217,119,6,0.10)` | `rgba(245,158,11,0.10)` |
 | `--focus-ring` | `rgba(37,99,235,0.45)` | `rgba(96,165,250,0.45)` |
 
 ## Typography
@@ -54,6 +66,15 @@ Inter Variable (self-hosted) with system fallbacks. 16px base, line-height 1.6.
 - Large surfaces/cards: 14px (`--radius-lg`)
 - Pills: 999px (`--radius-pill`)
 
+## Transitions
+- `--ease-out`: `cubic-bezier(0.33, 1, 0.68, 1)` — standard easing
+- `--ease-out-back`: `cubic-bezier(0.34, 1.56, 0.64, 1)` — card-lift overshoot
+- `--duration-fast`: 150ms — color/border changes
+- `--duration-base`: 200ms — shadow lifts, transforms
+- `--duration-slow`: 350ms — reserved
+
+All transitions must include `@media (prefers-reduced-motion: reduce)` guard.
+
 ## Patterns
 
 ### Card
@@ -61,7 +82,8 @@ Inter Variable (self-hosted) with system fallbacks. 16px base, line-height 1.6.
 - Background: `var(--surface)`
 - Padding: `var(--space-6)` (24px)
 - Radius: `var(--radius-lg)` (14px)
-- Hover: `border-color: var(--border-strong); box-shadow: var(--shadow-sm);`
+- Hover: `border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px);`
+- Active: `transform: translateY(0);`
 
 ### Button (Primary)
 - Height: 44px, inline-flex centered
@@ -69,7 +91,7 @@ Inter Variable (self-hosted) with system fallbacks. 16px base, line-height 1.6.
 - Radius: `var(--radius)` (10px)
 - Font: 1rem, weight 600
 - Bg: `var(--accent)`, text: white
-- Hover: `var(--accent-hover)`
+- Hover: `var(--accent-hover)` bg + `var(--shadow-md)` + `translateY(-1px)`
 
 ### Button (Secondary)
 - Same dimensions as primary
@@ -91,6 +113,12 @@ Inter Variable (self-hosted) with system fallbacks. 16px base, line-height 1.6.
 - Default padding: `var(--space-xl)` (64px) vertical
 - Hero/major: `var(--space-2xl)` (96px) vertical
 - Horizontal: `var(--gutter)` (responsive)
+- Full-bleed: outer element for background, inner element for `max-width + margin: 0 auto`
+
+### Writing Entry Hover
+- Resting: text stack, no background, no border
+- Hover: `background: var(--surface-2)`, `translateY(-2px)`, `box-shadow: var(--shadow-md)`
+- Negative margin + padding trick for larger hover target while maintaining text alignment
 
 ## Decisions
 
@@ -104,3 +132,7 @@ Inter Variable (self-hosted) with system fallbacks. 16px base, line-height 1.6.
 | 44px button/input height | Comfortable touch targets | 2026-02-14 |
 | 64px default section padding | Confident whitespace without excess | 2026-02-14 |
 | Legacy CSS aliases | Backward compat during migration from --color-* to semantic tokens | 2026-02-14 |
+| Layered shadow system (sm/md/lg) | Physical depth without decoration | 2026-02-15 |
+| Warm accent (amber) for metadata | Rams' "strategic color accent against neutral field" | 2026-02-15 |
+| Section surface alternation | Visual rhythm without borders or decoration | 2026-02-15 |
+| Card-lift hover pattern | Physical feedback acknowledging interaction | 2026-02-15 |

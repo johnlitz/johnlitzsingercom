@@ -54,14 +54,29 @@ const currentYear = new Date().getFullYear();
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
     font-weight: 500;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
   }
 
   .contact-links a:hover {
     color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .contact-links a:active {
+    transform: translateY(0);
   }
 
   .copyright {
     color: var(--muted);
     font-size: var(--text-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-links a {
+      transition: none;
+      transform: none !important;
+    }
   }
 </style>

@@ -36,12 +36,26 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     background: var(--surface);
-    transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
   }
 
   .post-card:hover {
     border-color: var(--border-strong);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .post-card:active {
+    transform: translateY(0);
+  }
+
+  .post-card:focus-within {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 
   .post-link {
@@ -57,17 +71,17 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
   time {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--accent-warm);
   }
 
   h3 {
     font-size: var(--text-xl);
     margin: var(--space-xs) 0 var(--space-sm);
-    color: var(--color-text);
+    color: var(--foreground);
   }
 
   p {
-    color: var(--color-text-muted);
+    color: var(--secondary);
     font-size: var(--text-sm);
     line-height: 1.6;
   }
@@ -81,14 +95,17 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
   .tag {
     font-size: var(--text-sm);
-    color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    color: var(--accent-warm);
+    background: var(--accent-warm-soft);
     padding: var(--space-xs) var(--space-sm);
     border-radius: 9999px;
     font-weight: 500;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .post-card { transition: none; }
+    .post-card {
+      transition: none;
+      transform: none !important;
+    }
   }
 </style>

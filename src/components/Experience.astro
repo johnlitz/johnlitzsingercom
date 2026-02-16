@@ -22,23 +22,29 @@ const experiences = [
 ---
 
 <section id="experience" class="experience" aria-label="Work experience">
-  <h2 class="section-label">Work</h2>
-  <div class="list">
-    {experiences.map((exp) => (
-      <div class="entry">
-        <div class="entry-main">
-          <h3>{exp.title}</h3>
-          <p class="company">{exp.company}</p>
+  <div class="experience-inner">
+    <h2 class="section-label">Work</h2>
+    <div class="list">
+      {experiences.map((exp) => (
+        <div class="entry">
+          <div class="entry-main">
+            <h3>{exp.title}</h3>
+            <p class="company">{exp.company}</p>
+          </div>
+          <span class="period">{exp.period}</span>
+          <p class="summary">{exp.summary}</p>
         </div>
-        <span class="period">{exp.period}</span>
-        <p class="summary">{exp.summary}</p>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .experience {
+    background: var(--background);
+  }
+
+  .experience-inner {
     max-width: var(--max-width-wide);
     margin: 0 auto;
     padding: var(--space-xl) var(--gutter);
@@ -96,7 +102,7 @@ const experiences = [
     grid-column: 2;
     grid-row: 1;
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--accent-warm);
     white-space: nowrap;
     align-self: start;
     padding-top: 3px;

@@ -1,11 +1,17 @@
 <section id="hero" class="hero" aria-label="Introduction">
-  <h1>John Litzsinger</h1>
-  <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
-  <a href="#contact" class="cta">Get in Touch</a>
+  <div class="hero-inner">
+    <h1>John Litzsinger</h1>
+    <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
+    <a href="#contact" class="cta">Get in Touch</a>
+  </div>
 </section>
 
 <style>
   .hero {
+    background: var(--surface);
+  }
+
+  .hero-inner {
     max-width: var(--max-width-wide);
     margin: 0 auto;
     padding: var(--space-3xl) var(--gutter);
@@ -41,21 +47,34 @@
     text-decoration: none !important;
     background: var(--accent);
     color: #fff !important;
-    transition: background-color 150ms ease-out;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
   }
 
   .cta:hover {
     background: var(--accent-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
     color: #fff !important;
     text-decoration: none !important;
   }
 
+  .cta:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .cta { transition: none; }
+    .cta {
+      transition: none;
+      transform: none !important;
+    }
   }
 
   @media (max-width: 640px) {
     h1 { font-size: var(--text-4xl); }
-    .hero { padding: var(--space-2xl) var(--gutter); }
+    .hero-inner { padding: var(--space-2xl) var(--gutter); }
   }
 </style>
