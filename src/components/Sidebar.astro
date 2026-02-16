@@ -63,7 +63,8 @@ const currentYear = new Date().getFullYear();
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: var(--space-xl);
     padding: var(--space-xl) var(--space-lg);
     border-right: 1px solid var(--border);
     z-index: 50;
@@ -104,12 +105,16 @@ const currentYear = new Date().getFullYear();
 
   .nav-link.active {
     color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
   }
 
   .sidebar-bottom {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
+    margin-top: auto;
   }
 
   .contact {

@@ -9,9 +9,7 @@ import Writing from '../components/Writing.astro';
   description="Personal website of John Litzsinger. Finance student at Purdue University, entrepreneur, and market analyst. Explore my experience and blog."
 >
   <div class="intro">
-    <h1>John Litzsinger</h1>
     <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
-    <hr class="rule" />
   </div>
   <Experience />
   <Writing />
@@ -20,14 +18,7 @@ import Writing from '../components/Writing.astro';
 <style>
   .intro {
     max-width: var(--content-max);
-    margin-bottom: var(--space-2xl);
-  }
-
-  h1 {
-    font-size: var(--text-hero);
-    letter-spacing: -0.03em;
-    line-height: 1.0;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-xl);
   }
 
   .tagline {
@@ -37,29 +28,13 @@ import Writing from '../components/Writing.astro';
     line-height: 1.5;
   }
 
-  .rule {
-    border: none;
-    width: 48px;
-    height: 2px;
-    background: var(--accent);
-    margin-top: var(--space-xl);
-  }
-
   @media (max-width: 768px) {
     .intro {
-      margin-bottom: var(--space-xl);
-    }
-
-    h1 {
-      font-size: clamp(2.25rem, 10vw, 3rem);
+      margin-bottom: var(--space-lg);
     }
 
     .tagline {
       font-size: var(--text-base);
-    }
-
-    .rule {
-      margin-top: var(--space-lg);
     }
   }
 </style>

@@ -62,7 +62,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .post-header {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
   }
 
   .post-meta {
@@ -152,8 +152,11 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .post-footer a {
-    color: var(--muted);
+    color: var(--secondary);
     font-size: var(--text-sm);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
   }
 
   .post-footer a:hover {

@@ -35,7 +35,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
   }
 
   .section-label {
@@ -46,7 +46,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   .see-all {
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--secondary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  .see-all:hover {
+    color: var(--accent);
   }
 
   .list {
