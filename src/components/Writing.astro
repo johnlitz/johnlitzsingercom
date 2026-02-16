@@ -31,9 +31,26 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 <style>
   .writing {
     background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Noise grain — same treatment as hero */
+  .writing::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 182px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .writing-inner {
+    position: relative;
+    z-index: 1;
     max-width: var(--max-width-wide);
     margin: 0 auto;
     padding: var(--space-xl) var(--gutter);
@@ -124,6 +141,12 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     color: var(--secondary);
     line-height: 1.5;
     max-width: 60ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .writing::after {
+      opacity: 0.03;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

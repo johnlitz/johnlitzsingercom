@@ -9,9 +9,51 @@
 <style>
   .hero {
     background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Dot grid — structural texture (Braun speaker grille) */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      rgba(12, 10, 9, 0.05) 0.75px,
+      transparent 0.75px
+    );
+    background-size: 24px 24px;
+    mask-image: radial-gradient(
+      ellipse 70% 70% at 50% 50%,
+      black 30%,
+      transparent 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 70% at 50% 50%,
+      black 30%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Noise grain — materiality */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 182px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .hero-inner {
+    position: relative;
+    z-index: 2;
     max-width: var(--max-width-wide);
     margin: 0 auto;
     padding: var(--space-3xl) var(--gutter);
@@ -19,9 +61,10 @@
   }
 
   h1 {
-    font-size: var(--text-5xl);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
     line-height: 1.05;
     margin-bottom: var(--space-6);
   }
@@ -32,6 +75,17 @@
     max-width: 52ch;
     line-height: 1.5;
     margin-bottom: var(--space-lg);
+  }
+
+  /* Amber accent bar — geometric punctuation */
+  .hero-inner::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 2px;
+    background: var(--accent-warm);
+    margin-top: var(--space-xl);
+    border-radius: 1px;
   }
 
   .cta {
@@ -70,6 +124,20 @@
     .cta {
       transition: none;
       transform: none !important;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .hero::before {
+      background-image: radial-gradient(
+        circle,
+        rgba(250, 250, 249, 0.04) 0.75px,
+        transparent 0.75px
+      );
+    }
+
+    .hero::after {
+      opacity: 0.03;
     }
   }
 

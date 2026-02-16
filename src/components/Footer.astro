@@ -18,9 +18,10 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer {
-    margin-top: var(--space-xl);
+    margin-top: 0;
+    background: var(--surface);
     border-top: 1px solid var(--border);
-    padding: var(--space-xl) var(--gutter) var(--space-lg);
+    padding: var(--space-2xl) var(--gutter) var(--space-lg);
   }
 
   .footer-inner {
@@ -33,12 +34,11 @@ const currentYear = new Date().getFullYear();
   }
 
   .section-label {
-    font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: var(--space-md);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--foreground);
+    margin-bottom: var(--space-6);
   }
 
   .contact-links {

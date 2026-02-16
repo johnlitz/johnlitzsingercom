@@ -11,8 +11,8 @@
 :root {
   /* Colors — stone palette + blue accent */
   --background: #ffffff;
-  --surface: #fafaf9;
-  --surface-2: #f5f5f4;
+  --surface: #f5f3f0;
+  --surface-2: #eceae6;
 
   --foreground: #0c0a09;
   --secondary: #44403c;
@@ -51,6 +51,7 @@
 
   /* Typography */
   --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, monospace;
 
   /* Type scale */

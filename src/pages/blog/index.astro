@@ -39,6 +39,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   }
 
   h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
     margin-bottom: var(--space-lg);
   }
 
