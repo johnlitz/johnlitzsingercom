@@ -35,36 +35,30 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   <article class="blog-post">
     <header class="post-header">
       <div class="post-meta">
-        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        <time datetime={pubDate.toISOString()}><em>{formattedDate}</em></time>
         {updatedDate && (
           <span class="updated">
-            (Updated <time datetime={updatedDate.toISOString()}>{formattedUpdatedDate}</time>)
+            (Updated <time datetime={updatedDate.toISOString()}><em>{formattedUpdatedDate}</em></time>)
           </span>
         )}
       </div>
       <h1>{title}</h1>
       {tags.length > 0 && (
-        <div class="tags">
-          {tags.map((tag) => (
-            <span class="tag">{tag}</span>
-          ))}
-        </div>
+        <p class="tags">{tags.join(' / ')}</p>
       )}
     </header>
     <div class="prose">
       <slot />
     </div>
     <footer class="post-footer">
-      <a href="/blog">&larr; Back to blog</a>
+      <a href="/blog">&larr; Back to writing</a>
     </footer>
   </article>
 </BaseLayout>
 
 <style>
   .blog-post {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: var(--space-xl) var(--gutter);
+    max-width: var(--content-max);
   }
 
   .post-header {
@@ -73,7 +67,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   .post-meta {
     font-size: var(--text-sm);
-    color: var(--accent-warm);
+    color: var(--muted);
     margin-bottom: var(--space-sm);
   }
 
@@ -82,24 +76,14 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   h1 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    margin-bottom: var(--space-md);
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-sm);
   }
 
   .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-  }
-
-  .tag {
     font-size: var(--text-sm);
-    color: var(--accent-warm);
-    background: var(--accent-warm-soft);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 9999px;
-    font-weight: 500;
+    color: var(--muted);
   }
 
   /* Prose styles for MDX content */
@@ -115,6 +99,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   .prose :global(p) {
     margin-bottom: var(--space-md);
+    line-height: 1.7;
   }
 
   .prose :global(ul),
@@ -125,13 +110,14 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   .prose :global(li) {
     margin-bottom: var(--space-xs);
+    line-height: 1.7;
   }
 
   .prose :global(blockquote) {
-    border-left: 3px solid var(--accent);
+    border-left: 2px solid var(--accent);
     padding-left: var(--space-md);
     margin: var(--space-md) 0;
-    color: var(--muted);
+    color: var(--secondary);
     font-style: italic;
   }
 
@@ -140,14 +126,14 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .prose :global(img) {
-    border-radius: var(--radius);
     margin: var(--space-md) 0;
   }
 
   .prose :global(a) {
     color: var(--accent);
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
   }
 
   .prose :global(a:hover) {

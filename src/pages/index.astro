@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
 import Experience from '../components/Experience.astro';
 import Writing from '../components/Writing.astro';
 ---
@@ -9,7 +8,40 @@ import Writing from '../components/Writing.astro';
   title="John Litzsinger — Finance, Markets & Technology"
   description="Personal website of John Litzsinger. Finance student at Purdue University, entrepreneur, and market analyst. Explore my experience and blog."
 >
-  <Hero />
+  <div class="intro">
+    <h1>John Litzsinger</h1>
+    <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
+    <hr class="rule" />
+  </div>
   <Experience />
   <Writing />
 </BaseLayout>
+
+<style>
+  .intro {
+    max-width: var(--content-max);
+    margin-bottom: var(--space-2xl);
+  }
+
+  h1 {
+    font-size: var(--text-hero);
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    margin-bottom: var(--space-6);
+  }
+
+  .tagline {
+    font-size: var(--text-lg);
+    color: var(--secondary);
+    max-width: 50ch;
+    line-height: 1.5;
+  }
+
+  .rule {
+    border: none;
+    width: 48px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: var(--space-xl);
+  }
+</style>

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BlogPostCard from '../../components/BlogPostCard.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -12,19 +11,22 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   description="Thoughts on finance, markets, technology, and more."
 >
   <div class="blog-page">
-    <h1>Blog</h1>
+    <h1>Writing</h1>
     {posts.length === 0 ? (
-      <p class="empty">No posts yet. Check back soon!</p>
+      <p class="empty">No posts yet.</p>
     ) : (
       <div class="posts">
         {posts.map((post) => (
-          <BlogPostCard
-            title={post.data.title}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-            tags={post.data.tags}
-            slug={post.id}
-          />
+          <a href={`/blog/${post.id}`} class="entry">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            </time>
+            <h3>{post.data.title}</h3>
+            <p class="desc">{post.data.description}</p>
+            {post.data.tags && post.data.tags.length > 0 && (
+              <p class="tags">{post.data.tags.join(' / ')}</p>
+            )}
+          </a>
         ))}
       </div>
     )}
@@ -33,24 +35,76 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 <style>
   .blog-page {
-    max-width: var(--max-width-wide);
-    margin: 0 auto;
-    padding: var(--space-xl) var(--gutter);
+    max-width: var(--content-max);
   }
 
   h1 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    margin-bottom: var(--space-lg);
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-xl);
   }
 
   .posts {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+  }
+
+  .entry {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .entry:hover {
+    text-decoration: none;
+  }
+
+  .entry:hover h3 {
+    color: var(--accent);
+  }
+
+  .entry:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+  }
+
+  time {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    font-style: italic;
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    color: var(--foreground);
+    margin-bottom: 4px;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .desc {
+    font-size: var(--text-sm);
+    color: var(--secondary);
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+
+  .tags {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    margin-top: var(--space-xs);
   }
 
   .empty {
     color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    h3 {
+      transition: none;
+    }
   }
 </style>

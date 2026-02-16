@@ -7,53 +7,28 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 ---
 
 {posts.length > 0 && (
-  <section id="writing" class="writing" aria-label="Recent writing">
-    <div class="writing-inner">
-      <div class="section-header">
-        <h2 class="section-label">Writing</h2>
-        <a href="/blog" class="see-all">All posts</a>
-      </div>
-      <div class="list">
-        {posts.map((post) => (
-          <a href={`/blog/${post.id}`} class="entry">
-            <time datetime={post.data.pubDate.toISOString()}>
-              {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-            </time>
-            <h3>{post.data.title}</h3>
-            <p class="desc">{post.data.description}</p>
-          </a>
-        ))}
-      </div>
+  <section id="writing" aria-label="Recent writing">
+    <div class="section-header">
+      <h2 class="section-label">WRITING</h2>
+      <a href="/blog" class="see-all">All posts</a>
+    </div>
+    <div class="list">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}`} class="entry">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          </time>
+          <h3>{post.data.title}</h3>
+          <p class="desc">{post.data.description}</p>
+        </a>
+      ))}
     </div>
   </section>
 )}
 
 <style>
-  .writing {
-    background: var(--surface);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Noise grain — same treatment as hero */
-  .writing::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 182px;
-    opacity: 0.04;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .writing-inner {
-    position: relative;
-    z-index: 1;
-    max-width: var(--max-width-wide);
-    margin: 0 auto;
-    padding: var(--space-xl) var(--gutter);
+  section {
+    max-width: var(--content-max);
   }
 
   .section-header {
@@ -65,75 +40,54 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   .section-label {
     font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
+    letter-spacing: 0.08em;
+    color: var(--accent);
   }
 
   .see-all {
     font-size: var(--text-sm);
     color: var(--muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-  }
-
-  .see-all:hover {
-    color: var(--accent);
   }
 
   .list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
   }
 
   .entry {
     display: block;
     text-decoration: none;
     color: inherit;
-    padding: var(--space-sm) var(--space-md);
-    margin: 0 calc(-1 * var(--space-md));
-    border-radius: var(--radius-lg);
-    transition:
-      background-color var(--duration-base) var(--ease-out),
-      box-shadow var(--duration-base) var(--ease-out),
-      transform var(--duration-base) var(--ease-out);
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--border);
   }
 
   .entry:hover {
     text-decoration: none;
-    background: var(--surface-2);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
   }
 
-  .entry:active {
-    transform: translateY(0);
+  .entry:hover h3 {
+    color: var(--accent);
   }
 
   .entry:focus-visible {
-    background: var(--surface-2);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
     outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
+    outline-offset: 4px;
   }
 
   time {
     font-size: var(--text-sm);
-    color: var(--accent-warm);
+    color: var(--muted);
+    font-style: italic;
     display: block;
     margin-bottom: var(--space-xs);
   }
 
   h3 {
     font-size: var(--text-lg);
-    font-weight: 600;
-    line-height: 1.3;
-    margin-bottom: 4px;
     color: var(--foreground);
+    margin-bottom: 4px;
+    transition: color var(--duration-fast) ease;
   }
 
   .desc {
@@ -143,16 +97,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     max-width: 60ch;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .writing::after {
-      opacity: 0.03;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .entry {
+    h3 {
       transition: none;
-      transform: none !important;
     }
   }
 </style>
