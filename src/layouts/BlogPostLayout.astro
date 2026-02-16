@@ -35,10 +35,10 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   <article class="blog-post">
     <header class="post-header">
       <div class="post-meta">
-        <time datetime={pubDate.toISOString()}><em>{formattedDate}</em></time>
+        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
         {updatedDate && (
           <span class="updated">
-            (Updated <time datetime={updatedDate.toISOString()}><em>{formattedUpdatedDate}</em></time>)
+            (Updated <time datetime={updatedDate.toISOString()}>{formattedUpdatedDate}</time>)
           </span>
         )}
       </div>
@@ -118,7 +118,6 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
     padding-left: var(--space-md);
     margin: var(--space-md) 0;
     color: var(--secondary);
-    font-style: italic;
   }
 
   .prose :global(pre) {

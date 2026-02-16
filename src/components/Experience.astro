@@ -29,9 +29,9 @@ const experiences = [
         <div class="entry-header">
           <div>
             <h3>{exp.title}</h3>
-            <p class="company"><em>{exp.company}</em></p>
+            <p class="company">{exp.company}</p>
           </div>
-          <span class="period"><em>{exp.period}</em></span>
+          <span class="period">{exp.period}</span>
         </div>
         <p class="summary">{exp.summary}</p>
       </div>
@@ -94,7 +94,19 @@ const experiences = [
     max-width: 60ch;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
+    section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .section-label {
+      margin-bottom: var(--space-md);
+    }
+
+    .entry {
+      padding: var(--space-md) 0;
+    }
+
     .entry-header {
       flex-direction: column;
       gap: 0;

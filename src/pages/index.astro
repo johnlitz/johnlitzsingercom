@@ -44,4 +44,22 @@ import Writing from '../components/Writing.astro';
     background: var(--accent);
     margin-top: var(--space-xl);
   }
+
+  @media (max-width: 768px) {
+    .intro {
+      margin-bottom: var(--space-xl);
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 10vw, 3rem);
+    }
+
+    .tagline {
+      font-size: var(--text-base);
+    }
+
+    .rule {
+      margin-top: var(--space-lg);
+    }
+  }
 </style>

@@ -78,7 +78,6 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   time {
     font-size: var(--text-sm);
     color: var(--muted);
-    font-style: italic;
     display: block;
     margin-bottom: var(--space-xs);
   }
@@ -95,6 +94,16 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     color: var(--secondary);
     line-height: 1.5;
     max-width: 60ch;
+  }
+
+  @media (max-width: 768px) {
+    .section-header {
+      margin-bottom: var(--space-md);
+    }
+
+    .entry {
+      padding: var(--space-md) 0;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
