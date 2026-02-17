@@ -7,11 +7,14 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://johnlitzsinger.com',
+  trailingSlash: 'never',
   output: 'static',
   integrations: [
     mdx(),
     react(),
-    sitemap({ filter: (page) => !page.includes('/draft/') }),
+    sitemap({
+      filter: (page) => !page.includes('/draft/') && !page.includes('/contact/thanks'),
+    }),
   ],
   adapter: vercel({
     webAnalytics: { enabled: true },

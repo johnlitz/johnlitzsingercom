@@ -7,10 +7,10 @@ const currentYear = new Date().getFullYear();
   <div class="sidebar-top">
     <a href="/" class="name">John<br />Litzsinger</a>
     <nav aria-label="Main navigation">
-      <a href="/" class:list={['nav-link', { active: currentPath === '/' }]} aria-current={currentPath === '/' ? 'page' : undefined}>Work</a>
-      <a href="/#projects" class="nav-link">Projects</a>
+      <a href="/work" class:list={['nav-link', { active: currentPath === '/work' }]} aria-current={currentPath === '/work' ? 'page' : undefined}>Work</a>
+      <a href="/projects" class:list={['nav-link', { active: currentPath === '/projects' }]} aria-current={currentPath === '/projects' ? 'page' : undefined}>Projects</a>
       <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Writing</a>
-      <a href="/#contact" class="nav-link">Contact</a>
+      <a href="/contact" class:list={['nav-link', { active: currentPath.startsWith('/contact') }]} aria-current={currentPath.startsWith('/contact') ? 'page' : undefined}>Contact</a>
       <a href="/John_Litzsinger_Resume.pdf" class="nav-link">Resume</a>
     </nav>
   </div>
@@ -32,10 +32,10 @@ const currentYear = new Date().getFullYear();
   </button>
 </header>
 <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
-  <a href="/" class:list={['mobile-link', { active: currentPath === '/' }]}>Work</a>
-  <a href="/#projects" class="mobile-link">Projects</a>
+  <a href="/work" class:list={['mobile-link', { active: currentPath === '/work' }]}>Work</a>
+  <a href="/projects" class:list={['mobile-link', { active: currentPath === '/projects' }]}>Projects</a>
   <a href="/blog" class:list={['mobile-link', { active: currentPath.startsWith('/blog') }]}>Writing</a>
-  <a href="/#contact" class="mobile-link">Contact</a>
+  <a href="/contact" class:list={['mobile-link', { active: currentPath.startsWith('/contact') }]}>Contact</a>
   <a href="/John_Litzsinger_Resume.pdf" class="mobile-link">Resume</a>
   <div class="mobile-contact">
     <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
@@ -60,9 +60,13 @@ const currentYear = new Date().getFullYear();
       (nav as HTMLElement).hidden = expanded;
     });
 
-    // Close mobile nav when anchor links are tapped.
-    nav.querySelectorAll('a[href*="#"]').forEach(link => {
-      link.addEventListener('click', () => {
+    // Close mobile nav on any link tap
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        // If tapping the current page link, just close nav — no navigation
+        if (link.getAttribute('href') === window.location.pathname) {
+          e.preventDefault();
+        }
         toggle.setAttribute('aria-expanded', 'false');
         (nav as HTMLElement).hidden = true;
       });
