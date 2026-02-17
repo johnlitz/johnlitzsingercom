@@ -66,7 +66,7 @@
   --space-3xl: 8rem;
 
   /* Layout */
-  --sidebar-width: 280px;
+  --sidebar-width: 340px;
   --content-max: 720px;
   --gutter: 2rem;
 
@@ -195,4 +195,12 @@ pre code {
 
 .skip-nav:focus {
   top: 0;
+}
+
+/* Section label — shared across homepage sections */
+.section-label {
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
 }

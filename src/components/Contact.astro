@@ -1,0 +1,42 @@
+<section id="contact" aria-label="Contact">
+  <h2 class="section-label">CONTACT</h2>
+  <div class="links">
+    <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
+    <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/johnlitz" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</section>
+
+<style>
+  section {
+    max-width: var(--content-max);
+    /* No margin-bottom — terminal section. <main> padding handles bottom space. */
+  }
+
+  /* .section-label inherited from global.css */
+
+  /* .links instead of .list — flat link list, no entry structure needed */
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .links :global(a) {
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .links :global(a:hover) {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .links :global(a) {
+      transition: none;
+    }
+  }
+</style>

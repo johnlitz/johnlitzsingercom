@@ -38,11 +38,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     margin-bottom: var(--space-md);
   }
 
-  .section-label {
-    font-size: var(--text-sm);
-    letter-spacing: 0.08em;
-    color: var(--accent);
-  }
+  /* .section-label inherited from global.css (margin-bottom handled by .section-header) */
 
   .see-all {
     font-size: var(--text-sm);

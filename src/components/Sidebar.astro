@@ -7,8 +7,10 @@ const currentYear = new Date().getFullYear();
   <div class="sidebar-top">
     <a href="/" class="name">John<br />Litzsinger</a>
     <nav aria-label="Main navigation">
-      <a href="/" class:list={['nav-link', { active: currentPath === '/' }]}>Work</a>
-      <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]}>Writing</a>
+      <a href="/" class:list={['nav-link', { active: currentPath === '/' }]} aria-current={currentPath === '/' ? 'page' : undefined}>Work</a>
+      <a href="/#projects" class="nav-link">Projects</a>
+      <a href="/blog" class:list={['nav-link', { active: currentPath.startsWith('/blog') }]} aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Writing</a>
+      <a href="/#contact" class="nav-link">Contact</a>
       <a href="/John_Litzsinger_Resume.pdf" class="nav-link">Resume</a>
     </nav>
   </div>
@@ -31,7 +33,9 @@ const currentYear = new Date().getFullYear();
 </header>
 <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
   <a href="/" class:list={['mobile-link', { active: currentPath === '/' }]}>Work</a>
+  <a href="/#projects" class="mobile-link">Projects</a>
   <a href="/blog" class:list={['mobile-link', { active: currentPath.startsWith('/blog') }]}>Writing</a>
+  <a href="/#contact" class="mobile-link">Contact</a>
   <a href="/John_Litzsinger_Resume.pdf" class="mobile-link">Resume</a>
   <div class="mobile-contact">
     <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
@@ -45,11 +49,33 @@ const currentYear = new Date().getFullYear();
     const nav = document.querySelector('.mobile-nav');
     if (!toggle || !nav) return;
 
+    // Sentinel: sidebar DOM persists across view transitions.
+    // Without this guard, handlers accumulate on every soft navigation.
+    if ((toggle as HTMLElement).dataset.bound) return;
+    (toggle as HTMLElement).dataset.bound = 'true';
+
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!expanded));
-      nav.hidden = expanded;
+      (nav as HTMLElement).hidden = expanded;
     });
+
+    // Close mobile nav when anchor links are tapped.
+    nav.querySelectorAll('a[href*="#"]').forEach(link => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        (nav as HTMLElement).hidden = true;
+      });
+    });
+  });
+
+  // Cross-route anchor scroll: ensure hash target is scrolled to
+  // after view transition swap completes.
+  document.addEventListener('astro:after-swap', () => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const target = document.querySelector(hash);
+    if (target) target.scrollIntoView({ behavior: 'instant' });
   });
 </script>
 
