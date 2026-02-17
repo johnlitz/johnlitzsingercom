@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Thank You — John Litzsinger"
+  description="Message received."
+  noindex={true}
+>
+  <div class="thanks-page">
+    <h1>Thank you</h1>
+    <p>Your message has been sent. I'll get back to you soon.</p>
+    <a href="/">Back to home</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .thanks-page {
+    max-width: var(--content-max);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+  }
+
+  p {
+    color: var(--secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  a {
+    color: var(--secondary);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a {
+      transition: none;
+    }
+  }
+</style>

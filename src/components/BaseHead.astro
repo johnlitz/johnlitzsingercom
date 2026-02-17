@@ -6,6 +6,7 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   publishedDate?: Date;
+  noindex?: boolean;
 }
 
 const {
@@ -14,6 +15,7 @@ const {
   image = '/og-image.png',
   type = 'website',
   publishedDate,
+  noindex,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -26,6 +28,7 @@ const socialImageURL = new URL(image, Astro.site);
 
 <title>{title}</title>
 <meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
 <meta name="generator" content={Astro.generator} />
 
 <!-- Open Graph -->

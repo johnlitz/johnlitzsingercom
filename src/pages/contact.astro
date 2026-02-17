@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const formAction = 'https://formspree.io/f/XXXXXXXX'; // TODO: Replace with real Formspree endpoint before deploy
+const redirectUrl = new URL('/contact/thanks', Astro.site).href;
+---
+
+<BaseLayout
+  title="Contact — John Litzsinger"
+  description="Get in touch."
+>
+  <div class="contact-page">
+    <h1>Contact</h1>
+
+    <form action={formAction} method="POST">
+      <input type="hidden" name="_next" value={redirectUrl} />
+      <!-- Honeypot: hidden from real users, catches bots -->
+      <div aria-hidden="true" style="position:absolute;left:-9999px;">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+      </div>
+
+      <button type="submit">Send</button>
+    </form>
+
+    <div class="links">
+      <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
+      <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/johnlitz" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    max-width: var(--content-max);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+  }
+
+  form {
+    margin-bottom: var(--space-xl);
+  }
+
+  .field {
+    margin-bottom: var(--space-6);
+  }
+
+  label {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--secondary);
+    margin-bottom: var(--space-xs);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font);
+    font-size: var(--text-base);
+    color: var(--foreground);
+    background: transparent;
+    border: 1px solid var(--border);
+    transition: border-color var(--duration-fast) ease;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-color: var(--accent);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  button[type="submit"] {
+    font-family: var(--font);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--foreground);
+    color: var(--background);
+    border: none;
+    cursor: pointer;
+    transition: opacity var(--duration-fast) ease;
+  }
+
+  button[type="submit"]:hover {
+    opacity: 0.8;
+  }
+
+  button[type="submit"]:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .links {
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  /* :global() to override global a styles */
+  .links :global(a) {
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .links :global(a:hover) {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    input,
+    textarea,
+    button[type="submit"],
+    .links :global(a) {
+      transition: none;
+    }
+  }
+</style>

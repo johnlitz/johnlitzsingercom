@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    title: 'Personal Website',
+    description: 'Portfolio and blog built with Astro, MDX, and React. Brutalist-minimal design with VTF Lack typography.',
+    tech: 'Astro / React',
+    links: [
+      { label: 'Live', url: 'https://johnlitzsinger.com' },
+      { label: 'GitHub', url: 'https://github.com/johnlitz/johnlitzsingercom' },
+    ],
+  },
+  {
+    title: 'Pharmacy Benefit Analyzer',
+    description: 'Internal tool for modeling drug trend data and surfacing cost-saving opportunities in employer health plans.',
+    tech: 'Python / Pandas',
+    links: [],
+  },
+  {
+    title: 'Launch Consulting Site',
+    description: 'Marketing site for Purdue Launch Consulting Club. Designed and built as co-founder.',
+    tech: 'HTML / CSS / JS',
+    links: [
+      { label: 'GitHub', url: 'https://github.com/johnlitz' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Projects — John Litzsinger"
+  description="Selected projects in finance, data, and technology."
+>
+  <div class="projects-page">
+    <h1>Projects</h1>
+    <div class="list">
+      {projects.map((project) => (
+        <div class="entry">
+          <div class="entry-header">
+            <h3>{project.title}</h3>
+            <span class="tech">{project.tech}</span>
+          </div>
+          <p class="summary">{project.description}</p>
+          {project.links.length > 0 && (
+            <div class="links">
+              {project.links.map((link, i) => (
+                <>
+                  {i > 0 && <span class="sep">/</span>}
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                </>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .projects-page {
+    max-width: var(--content-max);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .entry {
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--border);
+    transition: border-color var(--duration-fast) ease;
+  }
+
+  .entry:hover {
+    border-color: var(--secondary);
+  }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  h3 {
+    font-size: var(--text-base);
+    color: var(--foreground);
+  }
+
+  .tech {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .summary {
+    font-size: var(--text-sm);
+    color: var(--secondary);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .links {
+    margin-top: var(--space-xs);
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+  }
+
+  .sep {
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  /* :global() to override global a styles */
+  .links :global(a) {
+    font-size: var(--text-sm);
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .links :global(a:hover) {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry,
+    .links :global(a) {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .entry {
+      padding: var(--space-md) 0;
+    }
+
+    .entry-header {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+</style>

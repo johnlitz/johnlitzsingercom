@@ -1,42 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Experience from '../components/Experience.astro';
-import Projects from '../components/Projects.astro';
-import Writing from '../components/Writing.astro';
-import Contact from '../components/Contact.astro';
 ---
 
 <BaseLayout
-  title="John Litzsinger — Finance, Markets & Technology"
-  description="Personal website of John Litzsinger. Finance student at Purdue University, entrepreneur, and market analyst. Explore my experience and blog."
+  title="John Litzsinger"
+  description="Finance, markets, and technology."
 >
   <div class="intro">
     <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
   </div>
-  <Experience />
-  <Projects />
-  <Writing />
-  <Contact />
 </BaseLayout>
 
 <style>
   .intro {
     max-width: var(--content-max);
-    margin-bottom: var(--space-xl);
   }
 
   .tagline {
     font-size: var(--text-lg);
     color: var(--secondary);
-    max-width: 50ch;
     line-height: 1.5;
+    max-width: 50ch;
   }
 
   @media (max-width: 768px) {
-    .intro {
-      margin-bottom: var(--space-lg);
-    }
-
     .tagline {
       font-size: var(--text-base);
     }

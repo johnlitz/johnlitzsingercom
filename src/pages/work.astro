@@ -1,4 +1,6 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
 const experiences = [
   {
     title: 'Rotational Intern, Employee Benefits',
@@ -21,31 +23,40 @@ const experiences = [
 ];
 ---
 
-<section id="experience" aria-label="Work experience">
-  <h2 class="section-label">WORK</h2>
-  <div class="list">
-    {experiences.map((exp) => (
-      <div class="entry">
-        <div class="entry-header">
-          <div>
-            <h3>{exp.title}</h3>
-            <p class="company">{exp.company}</p>
+<BaseLayout
+  title="Work — John Litzsinger"
+  description="Work experience and professional background."
+>
+  <div class="work-page">
+    <h1>Work</h1>
+    <div class="list">
+      {experiences.map((exp) => (
+        <div class="entry">
+          <div class="entry-header">
+            <div>
+              <h3>{exp.title}</h3>
+              <p class="company">{exp.company}</p>
+            </div>
+            <span class="period">{exp.period}</span>
           </div>
-          <span class="period">{exp.period}</span>
+          <p class="summary">{exp.summary}</p>
         </div>
-        <p class="summary">{exp.summary}</p>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
-</section>
+</BaseLayout>
 
 <style>
-  section {
+  .work-page {
     max-width: var(--content-max);
-    margin-bottom: var(--space-xl);
   }
 
-  /* .section-label inherited from global.css */
+  h1 {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+  }
 
   .list {
     display: flex;
@@ -101,10 +112,6 @@ const experiences = [
   }
 
   @media (max-width: 768px) {
-    section {
-      margin-bottom: var(--space-xl);
-    }
-
     .entry {
       padding: var(--space-md) 0;
     }
