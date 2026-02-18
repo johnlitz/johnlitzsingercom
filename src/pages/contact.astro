@@ -36,12 +36,6 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
 
       <button type="submit">Send</button>
     </form>
-
-    <div class="links">
-      <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
-      <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com/johnlitz" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </div>
   </div>
 </BaseLayout>
 
@@ -116,32 +110,10 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
     outline-offset: 2px;
   }
 
-  .links {
-    border-top: 1px solid var(--border);
-    padding-top: var(--space-6);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-
-  /* :global() to override global a styles */
-  .links :global(a) {
-    color: var(--secondary);
-    text-decoration: none;
-    font-size: var(--text-sm);
-    transition: color var(--duration-fast) ease;
-  }
-
-  .links :global(a:hover) {
-    color: var(--foreground);
-    text-decoration: none;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     input,
     textarea,
-    button[type="submit"],
-    .links :global(a) {
+    button[type="submit"] {
       transition: none;
     }
   }
