@@ -1,31 +1,87 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const navItems = [
+  { href: '/work', label: 'Work', desc: 'Where I\'ve built and what I\'ve learned' },
+  { href: '/projects', label: 'Projects', desc: 'Things I\'ve made from scratch' },
+  { href: '/blog', label: 'Writing', desc: 'Ideas on markets, tech, and building' },
+  { href: '/contact', label: 'Contact', desc: 'Start a conversation' },
+];
 ---
 
 <BaseLayout
   title="John Litzsinger"
   description="Finance, markets, and technology."
+  isHome
 >
-  <div class="intro">
-    <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
-  </div>
+  <nav class="hero-nav" aria-label="Section navigation">
+    {navItems.map((item) => (
+      <a href={item.href} class="hero-link">
+        <span class="hero-link-title">{item.label}</span>
+        <span class="hero-link-desc">{item.desc}</span>
+      </a>
+    ))}
+  </nav>
 </BaseLayout>
 
 <style>
-  .intro {
-    max-width: var(--content-max);
+  .hero-nav {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-lg);
   }
 
-  .tagline {
-    font-size: var(--text-lg);
+  .hero-link {
+    display: block;
+    padding: var(--space-6) 0;
+    text-decoration: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-link:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-link:hover {
+    text-decoration: none;
+  }
+
+  .hero-link:hover .hero-link-title {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 8px;
+    text-decoration-thickness: 3px;
+  }
+
+  .hero-link:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+  }
+
+  .hero-link-title {
+    font-size: var(--nav-text);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    display: block;
+    margin-bottom: var(--space-xs);
+    transition: text-decoration-color var(--duration-base) ease;
+  }
+
+  .hero-link-desc {
+    font-size: var(--text-base);
     color: var(--secondary);
-    line-height: 1.5;
-    max-width: 50ch;
   }
 
   @media (max-width: 768px) {
-    .tagline {
-      font-size: var(--text-base);
+    .hero-nav {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-link-title {
+      transition: none;
     }
   }
 </style>

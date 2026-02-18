@@ -67,8 +67,10 @@
 
   /* Layout */
   --sidebar-width: 340px;
+  --strip-width: 72px;
   --content-max: 720px;
   --gutter: 2rem;
+  --nav-text: clamp(2.5rem, 5vw, 4rem);
 
   /* Transitions */
   --duration-fast: 150ms;

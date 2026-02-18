@@ -1,0 +1,93 @@
+---
+---
+
+<!-- Full mode: homepage identity -->
+<div class="left-full">
+  <a href="/" class="name-full">John<br />Litzsinger</a>
+  <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
+</div>
+
+<!-- Strip mode: inner page vertical name -->
+<div class="left-strip">
+  <a href="/" class="name-strip" aria-label="John Litzsinger — go to homepage">John Litzsinger</a>
+</div>
+
+<style>
+  /* Full mode — visible on homepage */
+  .left-full {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .name-full {
+    font-size: var(--text-2xl);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  .name-full:hover {
+    text-decoration: none;
+    color: var(--foreground);
+  }
+
+  .tagline {
+    font-size: var(--text-lg);
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+
+  /* Strip mode — visible on inner pages */
+  .left-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: var(--space-lg) 0;
+  }
+
+  .name-strip {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: var(--text-xl);
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 3px;
+    white-space: nowrap;
+    transition: color var(--duration-fast) ease,
+                text-decoration-color var(--duration-base) ease;
+  }
+
+  .name-strip:hover {
+    color: var(--foreground);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 8px;
+    text-decoration-thickness: 3px;
+  }
+
+  /* Visibility controlled by parent [data-page] */
+  :global([data-page="home"]) .left-full { display: flex; }
+  :global([data-page="home"]) .left-strip { display: none; }
+  :global([data-page="inner"]) .left-full { display: none; }
+  :global([data-page="inner"]) .left-strip { display: flex; }
+
+  @media (max-width: 768px) {
+    .left-full,
+    .left-strip {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .name-strip {
+      transition: none;
+    }
+  }
+</style>

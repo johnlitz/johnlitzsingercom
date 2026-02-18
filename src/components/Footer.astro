@@ -1,0 +1,60 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="mailto:jlitzsin@purdue.edu">jlitzsin@purdue.edu</a>
+    <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/johnlitz" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+  <p class="copyright">&copy; {currentYear} John Litzsinger</p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .footer-links a {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  .copyright {
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  @media (max-width: 768px) {
+    .site-footer {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-links a {
+      transition: none;
+    }
+  }
+</style>
