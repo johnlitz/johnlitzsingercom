@@ -75,17 +75,6 @@
   /* Transitions */
   --duration-fast: 150ms;
   --duration-base: 200ms;
-
-  /* Legacy aliases */
-  --color-bg: var(--background);
-  --color-text: var(--foreground);
-  --color-text-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-border: var(--border);
-  --color-surface: var(--surface);
-  --max-width: 65ch;
-  --max-width-wide: 72rem;
 }
 
 /* Light mode */

@@ -80,7 +80,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   h3 {
     font-size: var(--text-lg);
     color: var(--foreground);
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
     transition: color var(--duration-fast) ease;
   }
 

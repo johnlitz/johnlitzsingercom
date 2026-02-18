@@ -212,7 +212,7 @@ const currentPath = Astro.url.pathname;
     padding: var(--space-sm);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--space-sm);
     width: 36px;
     height: 36px;
     justify-content: center;
@@ -312,7 +312,12 @@ const currentPath = Astro.url.pathname;
     font-size: var(--text-xl);
     color: var(--foreground);
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: var(--space-xs);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 3px;
+    transition: text-decoration-color var(--duration-base) ease;
   }
 
   .mobile-home-link-desc {
@@ -361,7 +366,8 @@ const currentPath = Astro.url.pathname;
 
   @media (prefers-reduced-motion: reduce) {
     .left-column,
-    .site-main {
+    .site-main,
+    .mobile-home-link-title {
       transition: none;
     }
   }
