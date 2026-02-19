@@ -2,8 +2,8 @@
 import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import LeftColumn from '../components/LeftColumn.astro';
-import TopNav from '../components/TopNav.astro';
 import Footer from '../components/Footer.astro';
+import { navItems } from '../data/nav';
 import '../styles/global.css';
 
 interface Props {
@@ -13,11 +13,14 @@ interface Props {
   type?: 'website' | 'article';
   publishedDate?: Date;
   noindex?: boolean;
-  isHome?: boolean;
 }
 
-const { title, description, image, type, publishedDate, noindex, isHome = false } = Astro.props;
+const { title, description, image, type, publishedDate, noindex } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+function isActive(href: string, match: 'exact' | 'prefix', path: string) {
+  return match === 'exact' ? path === href : path.startsWith(href);
+}
 ---
 
 <!doctype html>
@@ -36,60 +39,25 @@ const currentPath = Astro.url.pathname;
   <body>
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-    <!-- Mobile homepage: stacked identity + large nav -->
-    {isHome && (
-      <div class="mobile-home">
-        <div class="mobile-home-identity">
-          <h1 class="mobile-home-name">John<br />Litzsinger</h1>
-          <p class="mobile-home-tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
+    <!-- Mobile sticky tab bar -->
+    <nav class="tab-bar" aria-label="Main navigation">
+      <a href="/" data-match="exact"
+         class:list={['tab-link', { active: currentPath === '/' }]}
+         aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
+      {navItems.map((item) => (
+        <a href={item.href} data-match={item.match}
+           class:list={['tab-link', { active: isActive(item.href, item.match, currentPath) }]}
+           aria-current={isActive(item.href, item.match, currentPath) ? 'page' : undefined}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="site">
+      <div class="left-column" transition:persist="sidebar" transition:name="sidebar" transition:animate="none">
+        <div class="left-column-inner">
+          <LeftColumn currentPath={currentPath} />
         </div>
-        <nav class="mobile-home-nav" aria-label="Main navigation">
-          <a href="/work" class="mobile-home-link">
-            <span class="mobile-home-link-title">Work</span>
-            <span class="mobile-home-link-desc">Where I've built and what I've learned</span>
-          </a>
-          <a href="/projects" class="mobile-home-link">
-            <span class="mobile-home-link-title">Projects</span>
-            <span class="mobile-home-link-desc">Things I've made from scratch</span>
-          </a>
-          <a href="/blog" class="mobile-home-link">
-            <span class="mobile-home-link-title">Writing</span>
-            <span class="mobile-home-link-desc">Ideas on markets, tech, and building</span>
-          </a>
-          <a href="/contact" class="mobile-home-link">
-            <span class="mobile-home-link-title">Contact</span>
-            <span class="mobile-home-link-desc">Start a conversation</span>
-          </a>
-        </nav>
-      </div>
-    )}
-
-    <!-- Mobile header for inner pages -->
-    {!isHome && (
-      <header class="mobile-header">
-        <a href="/" class="mobile-name">John Litzsinger</a>
-        <button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="toggle-line"></span>
-          <span class="toggle-line"></span>
-        </button>
-      </header>
-    )}
-    {!isHome && (
-      <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
-        <a href="/work" class:list={['mobile-link', { active: currentPath === '/work' }]}>Work</a>
-        <a href="/projects" class:list={['mobile-link', { active: currentPath === '/projects' }]}>Projects</a>
-        <a href="/blog" class:list={['mobile-link', { active: currentPath.startsWith('/blog') }]}>Writing</a>
-        <a href="/contact" class:list={['mobile-link', { active: currentPath.startsWith('/contact') }]}>Contact</a>
-        <a href="/John_Litzsinger_Resume.pdf" class="mobile-link">Resume</a>
-      </nav>
-    )}
-
-    <div class="site" data-page={isHome ? 'home' : 'inner'}>
-      <div class="left-column">
-        <LeftColumn />
       </div>
       <div class="site-main">
-        {!isHome && <TopNav />}
         <main id="main-content">
           <slot />
         </main>
@@ -100,36 +68,42 @@ const currentPath = Astro.url.pathname;
 </html>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    const toggle = document.querySelector('.mobile-toggle');
-    const nav = document.querySelector('.mobile-nav');
-    if (!toggle || !nav) return;
+  // Astro module script — runs exactly once, not re-executed on navigations.
+  // Do NOT add is:inline without adding listener deduplication guards.
 
-    if ((toggle as HTMLElement).dataset.bound) return;
-    (toggle as HTMLElement).dataset.bound = 'true';
+  function updateActiveStates(path: string) {
+    document.querySelectorAll('.sidebar-link, .tab-link').forEach((link) => {
+      const href = link.getAttribute('href');
+      const match = link.getAttribute('data-match');
+      if (!href || !match) return;
 
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      (nav as HTMLElement).hidden = expanded;
+      const isActive = match === 'exact'
+        ? path === href
+        : path.startsWith(href);
+
+      link.classList.toggle('active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
     });
+  }
 
-    nav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', (e) => {
-        if (link.getAttribute('href') === window.location.pathname) {
-          e.preventDefault();
-        }
-        toggle.setAttribute('aria-expanded', 'false');
-        (nav as HTMLElement).hidden = true;
-      });
-    });
-  });
-
+  // After view-transition swap: update persisted sidebar + scroll to hash
   document.addEventListener('astro:after-swap', () => {
+    updateActiveStates(window.location.pathname);
+
     const hash = window.location.hash;
     if (!hash) return;
-    const target = document.querySelector(hash);
-    if (target) target.scrollIntoView({ behavior: 'instant' });
+    try {
+      const target = document.querySelector(hash);
+      if (target) target.scrollIntoView({ behavior: 'instant' });
+    } catch { /* hash is not a valid CSS selector, ignore */ }
+  });
+
+  // After bfcache restoration (e.g., returning from external link)
+  window.addEventListener('pageshow', (event) => {
+    if ((event as PageTransitionEvent).persisted) {
+      updateActiveStates(window.location.pathname);
+    }
   });
 </script>
 
@@ -137,237 +111,126 @@ const currentPath = Astro.url.pathname;
   /* Site grid */
   .site {
     display: flex;
-    min-height: 100vh;
+    min-height: 100dvh;
   }
 
-  /* Left column — identity zone */
+  /* Left column — persistent sidebar */
   .left-column {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    z-index: 50;
-    overflow: hidden;
-    transition: width var(--duration-base) ease;
-  }
-
-  [data-page="home"] .left-column {
     width: var(--sidebar-width);
+    height: 100dvh;
+    z-index: 50;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
   }
 
-  [data-page="inner"] .left-column {
-    width: var(--strip-width);
+  .left-column-inner {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: var(--space-xl) var(--space-lg);
   }
 
   /* Main content area */
   .site-main {
     flex: 1;
-    min-height: 100vh;
+    min-height: 100dvh;
+    margin-left: var(--sidebar-width);
     display: flex;
     flex-direction: column;
     padding: var(--space-xl) var(--gutter) var(--space-xl);
-    transition: margin-left var(--duration-base) ease;
-  }
-
-  [data-page="home"] .site-main {
-    margin-left: var(--sidebar-width);
-  }
-
-  [data-page="inner"] .site-main {
-    margin-left: var(--strip-width);
   }
 
   main {
     flex: 1;
   }
 
-  /* Mobile header — inner pages only */
-  .mobile-header {
+  /* Mobile sticky tab bar */
+  .tab-bar {
     display: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     position: sticky;
     top: 0;
     z-index: 50;
     background: var(--background);
     border-bottom: 1px solid var(--border);
-    padding: var(--space-md);
-    align-items: center;
-    justify-content: space-between;
+    padding-top: env(safe-area-inset-top, 0px);
   }
 
-  .mobile-name {
-    font-size: var(--text-lg);
-    color: var(--foreground);
-    text-decoration: none;
-  }
-
-  .mobile-name:hover {
-    text-decoration: none;
-    color: var(--foreground);
-  }
-
-  .mobile-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--space-sm);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    width: 36px;
-    height: 36px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .toggle-line {
-    display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--foreground);
-  }
-
-  .mobile-nav {
+  .tab-bar::-webkit-scrollbar {
     display: none;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-md);
-    border-bottom: 1px solid var(--border);
-    background: var(--background);
   }
 
-  .mobile-nav:not([hidden]) {
-    display: flex;
-  }
-
-  .mobile-link {
-    font-size: var(--text-base);
+  .tab-link {
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--space-md);
+    font-size: var(--text-sm);
     color: var(--muted);
     text-decoration: none;
+    position: relative;
+    transition: color var(--duration-fast) ease;
   }
 
-  .mobile-link:hover {
+  .tab-link:hover {
     color: var(--foreground);
     text-decoration: none;
   }
 
-  .mobile-link.active {
+  .tab-link.active {
     color: var(--accent);
   }
 
-  /* Mobile homepage — full-screen stacked layout */
-  .mobile-home {
-    display: none;
-    flex-direction: column;
-    min-height: 100vh;
-    padding: var(--space-xl) var(--space-md) var(--space-lg);
+  .tab-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--space-md);
+    right: var(--space-md);
+    height: 2px;
+    background: var(--accent);
   }
 
-  .mobile-home-identity {
-    margin-bottom: var(--space-xl);
-  }
-
-  .mobile-home-name {
-    font-size: var(--text-2xl);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: var(--foreground);
-    margin-bottom: var(--space-md);
-  }
-
-  .mobile-home-tagline {
-    font-size: var(--text-base);
-    color: var(--secondary);
-    line-height: 1.5;
-    max-width: 50ch;
-  }
-
-  .mobile-home-nav {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .mobile-home-link {
-    display: block;
-    padding: var(--space-6) 0;
-    text-decoration: none;
-    border-top: 1px solid var(--border);
-  }
-
-  .mobile-home-link:last-child {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .mobile-home-link:hover {
-    text-decoration: none;
-  }
-
-  .mobile-home-link:hover .mobile-home-link-title {
-    text-decoration: underline;
-    text-decoration-color: var(--accent);
-    text-underline-offset: 6px;
-    text-decoration-thickness: 3px;
-  }
-
-  .mobile-home-link-title {
-    font-size: var(--text-xl);
-    color: var(--foreground);
-    display: block;
-    margin-bottom: var(--space-xs);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 6px;
-    text-decoration-thickness: 3px;
-    transition: text-decoration-color var(--duration-base) ease;
-  }
-
-  .mobile-home-link-desc {
-    font-size: var(--text-sm);
-    color: var(--secondary);
+  /* View transition — prevent sidebar animation and z-index issues */
+  ::view-transition-group(sidebar) {
+    z-index: 100;
   }
 
   /* Mobile breakpoint */
   @media (max-width: 768px) {
-    /* Homepage mobile: hide desktop layout, show mobile-home */
-    [data-page="home"] {
+    .left-column {
       display: none;
     }
 
-    .mobile-home {
-      display: flex;
-    }
-
-    /* Inner pages mobile: keep .site but hide left column */
-    [data-page="inner"] .left-column {
-      display: none;
-    }
-
-    [data-page="inner"] .site-main {
+    .site-main {
       margin-left: 0;
       padding: 0 var(--space-md) var(--space-lg);
     }
 
-    /* Hide TopNav on mobile inner pages (hamburger replaces it) */
-    [data-page="inner"] :global(.top-nav) {
-      display: none;
-    }
-
-    .mobile-header {
-      display: flex;
-    }
-
-    .mobile-nav {
-      display: none;
-    }
-
-    .mobile-nav:not([hidden]) {
+    .tab-bar {
       display: flex;
     }
   }
 
+  @media (max-height: 600px) {
+    .left-column-inner {
+      padding: var(--space-md);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .left-column,
-    .site-main,
-    .mobile-home-link-title {
+    .tab-link {
       transition: none;
     }
   }

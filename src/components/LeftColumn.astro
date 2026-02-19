@@ -1,24 +1,37 @@
 ---
+import { navItems } from '../data/nav';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+function isActive(href: string, match: 'exact' | 'prefix', path: string) {
+  return match === 'exact' ? path === href : path.startsWith(href);
+}
 ---
 
-<!-- Full mode: homepage identity -->
-<div class="left-full">
+<div class="sidebar-identity">
   <a href="/" class="name-full">John<br />Litzsinger</a>
   <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
 </div>
 
-<!-- Strip mode: inner page vertical name -->
-<div class="left-strip">
-  <a href="/" class="name-strip" aria-label="John Litzsinger — go to homepage">John Litzsinger</a>
-</div>
+<nav class="sidebar-nav" aria-label="Main navigation">
+  {navItems.map((item) => (
+    <a href={item.href} data-match={item.match}
+       class:list={['sidebar-link', { active: isActive(item.href, item.match, currentPath) }]}
+       aria-current={isActive(item.href, item.match, currentPath) ? 'page' : undefined}>{item.label}</a>
+  ))}
+  <a href="/John_Litzsinger_Resume.pdf" class="sidebar-link"
+     target="_blank" rel="noopener noreferrer">Resume</a>
+</nav>
 
 <style>
-  /* Full mode — visible on homepage */
-  .left-full {
+  .sidebar-identity {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    padding: var(--space-xl) var(--space-lg);
   }
 
   .name-full {
@@ -40,54 +53,42 @@
     line-height: 1.5;
   }
 
-  /* Strip mode — visible on inner pages */
-  .left-strip {
+  .sidebar-nav {
+    margin-top: auto;
+    padding-top: var(--space-lg);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: var(--space-lg) 0;
+    flex-direction: column;
+    gap: var(--space-3);
   }
 
-  .name-strip {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-size: 2.5rem;
-    letter-spacing: -0.3em;
+  .sidebar-link {
+    font-size: var(--text-base);
     color: var(--muted);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 8px;
-    text-decoration-thickness: 3px;
-    text-underline-position: right;
-    white-space: nowrap;
-    transition: color var(--duration-fast) ease,
-                text-decoration-color var(--duration-base) ease;
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
   }
 
-  .name-strip:hover {
+  .sidebar-link:hover {
     color: var(--foreground);
-    text-decoration: underline;
-    text-decoration-color: var(--accent);
-    text-underline-offset: 8px;
-    text-decoration-thickness: 3px;
+    text-decoration: none;
   }
 
-  /* Visibility controlled by parent [data-page] */
-  :global([data-page="home"]) .left-full { display: flex; }
-  :global([data-page="home"]) .left-strip { display: none; }
-  :global([data-page="inner"]) .left-full { display: none; }
-  :global([data-page="inner"]) .left-strip { display: flex; }
+  .sidebar-link.active {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
 
   @media (max-width: 768px) {
-    .left-full,
-    .left-strip {
-      display: none !important;
+    .sidebar-identity,
+    .sidebar-nav {
+      display: none;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .name-strip {
+    .sidebar-link {
       transition: none;
     }
   }

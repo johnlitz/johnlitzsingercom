@@ -78,11 +78,6 @@ const projects = [
   .entry {
     padding: var(--space-6) 0;
     border-top: 1px solid var(--border);
-    transition: border-color var(--duration-fast) ease;
-  }
-
-  .entry:hover {
-    border-color: var(--secondary);
   }
 
   .entry-header {
@@ -94,7 +89,7 @@ const projects = [
   }
 
   h3 {
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
     color: var(--foreground);
   }
 
@@ -138,7 +133,6 @@ const projects = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .entry,
     .links :global(a) {
       transition: none;
     }

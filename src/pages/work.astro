@@ -66,11 +66,6 @@ const experiences = [
   .entry {
     padding: var(--space-6) 0;
     border-top: 1px solid var(--border);
-    transition: border-color var(--duration-fast) ease;
-  }
-
-  .entry:hover {
-    border-color: var(--secondary);
   }
 
   .entry-header {
@@ -82,7 +77,7 @@ const experiences = [
   }
 
   h3 {
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
     color: var(--foreground);
   }
 
@@ -103,12 +98,6 @@ const experiences = [
     color: var(--secondary);
     line-height: 1.6;
     max-width: 60ch;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .entry {
-      transition: none;
-    }
   }
 
   @media (max-width: 768px) {
