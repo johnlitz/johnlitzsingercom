@@ -36,7 +36,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     />
     <ClientRouter />
   </head>
-  <body>
+  <body data-page={currentPath === '/' ? 'home' : 'inner'}>
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
     <!-- Mobile sticky tab bar -->
@@ -89,7 +89,9 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 
   // After view-transition swap: update persisted sidebar + scroll to hash
   document.addEventListener('astro:after-swap', () => {
-    updateActiveStates(window.location.pathname);
+    const path = window.location.pathname;
+    updateActiveStates(path);
+    document.body.dataset.page = path === '/' ? 'home' : 'inner';
 
     const hash = window.location.hash;
     if (!hash) return;
@@ -102,7 +104,9 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   // After bfcache restoration (e.g., returning from external link)
   window.addEventListener('pageshow', (event) => {
     if ((event as PageTransitionEvent).persisted) {
-      updateActiveStates(window.location.pathname);
+      const path = window.location.pathname;
+      updateActiveStates(path);
+      document.body.dataset.page = path === '/' ? 'home' : 'inner';
     }
   });
 </script>

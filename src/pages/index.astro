@@ -46,7 +46,7 @@ const highlights = [
 
   .highlight {
     display: block;
-    padding: var(--space-6) 0;
+    padding: var(--space-lg) 0;
     text-decoration: none;
     color: inherit;
     border-top: 1px solid var(--border);
@@ -73,12 +73,14 @@ const highlights = [
   }
 
   .highlight h2 {
-    font-size: var(--text-xl);
+    font-size: var(--text-2xl);
     color: var(--foreground);
-    margin-bottom: var(--space-xs);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-sm);
     text-decoration: underline;
     text-decoration-color: transparent;
-    text-underline-offset: 6px;
+    text-underline-offset: 8px;
     text-decoration-thickness: 2px;
     transition: text-decoration-color var(--duration-base) ease;
   }
