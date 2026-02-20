@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import LeftColumn from '../components/LeftColumn.astro';
+import MobileHeader from '../components/MobileHeader.astro';
 import Footer from '../components/Footer.astro';
 import { navItems } from '../data/nav';
 import '../styles/global.css';
@@ -39,17 +40,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   <body data-page={currentPath === '/' ? 'home' : 'inner'}>
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-    <!-- Mobile sticky tab bar -->
-    <nav class="tab-bar" aria-label="Main navigation">
-      <a href="/" data-match="exact"
-         class:list={['tab-link', { active: currentPath === '/' }]}
-         aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
-      {navItems.map((item) => (
-        <a href={item.href} data-match={item.match}
-           class:list={['tab-link', { active: isActive(item.href, item.match, currentPath) }]}
-           aria-current={isActive(item.href, item.match, currentPath) ? 'page' : undefined}>{item.label}</a>
-      ))}
-    </nav>
+    <MobileHeader />
 
     <div class="site">
       <div class="left-column" transition:persist="sidebar" transition:name="sidebar" transition:animate="none">
@@ -72,7 +63,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   // Do NOT add is:inline without adding listener deduplication guards.
 
   function updateActiveStates(path: string) {
-    document.querySelectorAll('.sidebar-link, .tab-link').forEach((link) => {
+    document.querySelectorAll('.sidebar-link, .pyramid-link, .mobile-name').forEach((link) => {
       const href = link.getAttribute('href');
       const match = link.getAttribute('data-match');
       if (!href || !match) return;
@@ -114,96 +105,48 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 <style>
   /* Site grid */
   .site {
-    display: flex;
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
     min-height: 100dvh;
   }
 
   /* Left column — persistent sidebar */
   .left-column {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    width: var(--sidebar-width);
     height: 100dvh;
+    align-self: start;
     z-index: 50;
     overflow-y: auto;
     overscroll-behavior: contain;
     background: var(--background);
     border-right: 1px solid var(--border);
-    scrollbar-width: thin;
-    scrollbar-color: var(--muted) transparent;
   }
 
   .left-column-inner {
     display: flex;
     flex-direction: column;
-    min-height: 100%;
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
   }
 
   /* Main content area */
   .site-main {
-    flex: 1;
     min-height: 100dvh;
-    margin-left: var(--sidebar-width);
     display: flex;
     flex-direction: column;
-    padding: var(--space-xl) var(--gutter) var(--space-xl);
+    padding: var(--space-lg) var(--gutter) var(--space-md);
   }
 
   main {
     flex: 1;
   }
 
-  /* Mobile sticky tab bar */
-  .tab-bar {
-    display: none;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--background);
-    border-bottom: 1px solid var(--border);
-    padding-top: env(safe-area-inset-top, 0px);
-  }
-
-  .tab-bar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .tab-link {
-    flex-shrink: 0;
-    white-space: nowrap;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    padding: 0 var(--space-md);
-    font-size: var(--text-sm);
-    color: var(--muted);
-    text-decoration: none;
-    position: relative;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .tab-link:hover {
-    color: var(--foreground);
-    text-decoration: none;
-  }
-
-  .tab-link.active {
-    color: var(--accent);
-  }
-
-  .tab-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: var(--space-md);
-    right: var(--space-md);
-    height: 2px;
-    background: var(--accent);
+  /* Ultra-wide — constrain and center */
+  @media (min-width: 120em) {
+    .site {
+      max-width: 1920px;
+      margin-inline: auto;
+    }
   }
 
   /* View transition — prevent sidebar animation and z-index issues */
@@ -211,31 +154,31 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     z-index: 100;
   }
 
+  /* Tablet — narrower sidebar */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .site {
+      grid-template-columns: clamp(200px, 20vw, 260px) 1fr;
+    }
+  }
+
   /* Mobile breakpoint */
   @media (max-width: 768px) {
+    .site {
+      grid-template-columns: 1fr;
+    }
+
     .left-column {
       display: none;
     }
 
     .site-main {
-      margin-left: 0;
-      padding: 0 var(--space-md) var(--space-lg);
-    }
-
-    .tab-bar {
-      display: flex;
+      padding: var(--space-md) var(--space-md) var(--space-lg);
     }
   }
 
   @media (max-height: 600px) {
     .left-column-inner {
       padding: var(--space-md);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .tab-link {
-      transition: none;
     }
   }
 </style>

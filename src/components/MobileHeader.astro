@@ -1,0 +1,175 @@
+---
+import { navItems } from '../data/nav';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string, match: string, path: string): boolean {
+  return match === 'exact' ? path === href : path.startsWith(href);
+}
+---
+
+<div class="mobile-header">
+  <a href="/" class:list={['mobile-name', { active: currentPath === '/' }]}
+     data-match="exact"
+     aria-current={currentPath === '/' ? 'page' : undefined}>
+    John Litzsinger
+  </a>
+
+  <button class="mobile-chevron" aria-expanded="false"
+          aria-controls="mobile-pyramid-nav" aria-label="Toggle navigation">
+    <svg width="20" height="12" viewBox="0 0 20 12" fill="none"
+         stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M1 1 L10 10 L19 1" />
+    </svg>
+  </button>
+
+  <nav id="mobile-pyramid-nav" class="pyramid-nav" aria-label="Site navigation" hidden>
+    {navItems.map((item) => (
+      <a href={item.href} data-match={item.match}
+         class:list={['pyramid-link', { active: isActive(item.href, item.match, currentPath) }]}
+         aria-current={isActive(item.href, item.match, currentPath) ? 'page' : undefined}>
+        {item.label}
+      </a>
+    ))}
+    <!-- Resume is intentionally hardcoded (not in navItems) to keep PDF
+         links out of the data layer. Matches LeftColumn.astro behavior. -->
+    <a href="/John_Litzsinger_Resume.pdf" class="pyramid-link"
+       target="_blank" rel="noopener noreferrer">Resume</a>
+  </nav>
+</div>
+
+<script>
+  // Re-attach click handler after every navigation (header is not persisted,
+  // so the old DOM element + listener is garbage collected — no accumulation).
+  document.addEventListener('astro:page-load', () => {
+    const chevron = document.querySelector('.mobile-chevron');
+    const nav = document.getElementById('mobile-pyramid-nav');
+
+    if (chevron && nav) {
+      chevron.addEventListener('click', () => {
+        const expanded = chevron.getAttribute('aria-expanded') === 'true';
+        chevron.setAttribute('aria-expanded', String(!expanded));
+        nav.hidden = expanded;
+      });
+    }
+  });
+
+  // Keydown listener — added once in module scope, queries DOM fresh each time.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const nav = document.getElementById('mobile-pyramid-nav');
+    const chevron = document.querySelector('.mobile-chevron');
+    if (nav && chevron && !nav.hidden) {
+      nav.hidden = true;
+      chevron.setAttribute('aria-expanded', 'false');
+      (chevron as HTMLElement).focus();
+    }
+  });
+</script>
+
+<style>
+  .mobile-header {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--background);
+    text-align: center;
+    padding-top: env(safe-area-inset-top, 0px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-name {
+    display: block;
+    font-size: var(--text-xl);
+    letter-spacing: -0.015em;
+    padding: var(--space-md) var(--space-md) var(--space-xs);
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .mobile-name:hover {
+    color: var(--accent);
+  }
+
+  .mobile-chevron {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: var(--space-xs) var(--space-md) var(--space-sm);
+    min-height: 44px;
+    min-width: 44px;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .mobile-chevron:hover {
+    color: var(--foreground);
+  }
+
+  .mobile-chevron svg {
+    transition: transform var(--duration-base) ease;
+  }
+
+  .mobile-chevron[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+
+  /* Pyramid nav — flat flex container, 5 links wrap to 3+2 naturally */
+  .pyramid-nav[hidden] {
+    display: none;
+  }
+
+  .pyramid-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm) var(--space-lg);
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+  }
+
+  .pyramid-link {
+    position: relative;
+    font-size: var(--text-sm);
+    color: var(--muted);
+    text-decoration: none;
+    padding: var(--space-xs) 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .pyramid-link:hover {
+    color: var(--foreground);
+  }
+
+  .pyramid-link.active {
+    color: var(--accent);
+  }
+
+  .pyramid-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-chevron svg {
+      transition: none;
+    }
+  }
+
+  /* Show on mobile */
+  @media (max-width: 768px) {
+    .mobile-header { display: block; }
+  }
+
+  /* Home page — name gets accent color */
+  :global(body[data-page="home"]) .mobile-name {
+    color: var(--accent);
+  }
+</style>

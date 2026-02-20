@@ -148,7 +148,6 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   .post-footer {
     margin-top: var(--space-2xl);
     padding-top: var(--space-lg);
-    border-top: 1px solid var(--border);
   }
 
   .post-footer a {
@@ -161,5 +160,10 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   .post-footer a:hover {
     color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .prose :global(h2) { margin-top: var(--space-lg); }
+    .prose :global(h3) { margin-top: var(--space-md); }
   }
 </style>
