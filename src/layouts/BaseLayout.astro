@@ -84,6 +84,12 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     updateActiveStates(path);
     document.body.dataset.page = path === '/' ? 'home' : 'inner';
 
+    // Reset sidebar scroll when navigating to homepage
+    if (path === '/') {
+      const sidebar = document.querySelector('.left-column');
+      if (sidebar) sidebar.scrollTop = 0;
+    }
+
     const hash = window.location.hash;
     if (!hash) return;
     try {
@@ -126,7 +132,13 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   .left-column-inner {
     display: flex;
     flex-direction: column;
-    padding: var(--space-md) var(--space-lg);
+    height: 100%;
+    padding: clamp(1rem, 3dvh, 2rem) var(--space-lg);
+  }
+
+  /* Center sidebar content vertically on all pages */
+  .left-column-inner {
+    justify-content: center;
   }
 
   /* Main content area */
@@ -139,6 +151,28 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 
   main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Homepage viewport lock — desktop only (mobile has MobileHeader above grid) */
+  @media (min-width: 769px) {
+    :global(body[data-page="home"]) .site-main {
+      height: 100dvh;
+      min-height: 0;
+      overflow: hidden;
+      padding-top: clamp(0.5rem, 2dvh, 2rem);
+      padding-bottom: clamp(0.5rem, 1.5dvh, 1rem);
+    }
+  }
+
+  /* Graceful degradation — allow scroll on very short desktop viewports */
+  @media (min-width: 769px) and (max-height: 659px) {
+    :global(body[data-page="home"]) .site-main {
+      height: auto;
+      min-height: 100dvh;
+      overflow: auto;
+    }
   }
 
   /* Ultra-wide — constrain and center */
@@ -178,7 +212,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 
   @media (max-height: 600px) {
     .left-column-inner {
-      padding: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
     }
   }
 </style>

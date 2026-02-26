@@ -28,23 +28,34 @@ const highlights = [
 <style>
   .home-content {
     max-width: var(--content-max);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .highlights {
     display: flex;
     flex-direction: column;
+    flex: 1;
   }
 
   .highlight {
-    display: block;
-    padding: var(--space-xl) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    padding: var(--space-sm) 0;
     text-decoration: none;
     color: inherit;
     border-top: 1px solid var(--border);
   }
 
+  .highlight:first-child {
+    border-top: none;
+  }
+
   .highlight:last-child {
-    border-bottom: 1px solid var(--border);
+    border-bottom: none;
   }
 
   .highlight:hover {
@@ -59,6 +70,7 @@ const highlights = [
   .highlight h2 {
     position: relative;
     display: inline-block;
+    width: fit-content;
     font-size: var(--text-2xl);
     color: var(--foreground);
     letter-spacing: -0.02em;
@@ -90,7 +102,7 @@ const highlights = [
     max-width: 55ch;
   }
 
-  @media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
     .highlight h2::after {
       transition: none;
     }

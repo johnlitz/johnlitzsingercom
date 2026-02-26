@@ -13,7 +13,10 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 ---
 
 <div class="sidebar-identity">
-  <a href="/" class="name-full">John<br />Litzsinger</a>
+  <a href="/" class="name-full">
+    <span class="name-line">John</span>
+    <span class="name-line">Litzsinger</span>
+  </a>
   <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
 </div>
 
@@ -35,12 +38,15 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   .sidebar-identity {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    align-items: flex-start;
+    gap: var(--space-sm);
   }
 
   .name-full {
-    position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
     font-size: var(--text-2xl);
     line-height: 1.05;
     letter-spacing: -0.02em;
@@ -48,10 +54,20 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     text-decoration: none;
   }
 
-  .name-full::after {
+  .name-full:hover {
+    text-decoration: none;
+    color: var(--foreground);
+  }
+
+  .name-line {
+    position: relative;
+    display: inline-block;
+  }
+
+  .name-line::after {
     content: '';
     position: absolute;
-    bottom: -6px;
+    bottom: -4px;
     left: 0;
     width: 100%;
     height: 3px;
@@ -61,40 +77,36 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     transition: transform var(--duration-base) ease;
   }
 
-  .name-full:hover {
-    text-decoration: none;
-    color: var(--foreground);
-  }
-
-  .name-full:hover::after {
+  .name-full:hover .name-line::after {
     transform: scaleX(1);
   }
 
   /* On homepage, name has persistent underline */
-  :global(body[data-page="home"]) .name-full::after {
+  :global(body[data-page="home"]) .name-line::after {
     transform: scaleX(1);
   }
 
   .tagline {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     color: var(--secondary);
     line-height: 1.5;
   }
 
   .sidebar-nav {
-    margin-top: var(--space-xl);
+    margin-top: clamp(0.5rem, 2dvh, 1rem);
     display: flex;
     flex-direction: column;
   }
 
   .nav-item {
     text-align: center;
-    padding: var(--space-6) 0;
+    padding: clamp(0.375rem, 1dvh, 0.75rem) 0;
     border-top: 1px solid var(--border);
   }
 
   .nav-item:last-child {
     border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-sm);
   }
 
   .sidebar-link {
@@ -140,7 +152,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 
   @media (prefers-reduced-motion: reduce) {
     .sidebar-link::after,
-    .name-full::after {
+    .name-line::after {
       transition: none;
     }
   }

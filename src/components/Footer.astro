@@ -14,7 +14,7 @@ const currentYear = new Date().getFullYear();
 <style>
   .site-footer {
     margin-top: auto;
-    padding-top: var(--space-lg);
+    padding-top: var(--space-md);
     border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
@@ -50,6 +50,11 @@ const currentYear = new Date().getFullYear();
       flex-direction: column;
       gap: var(--space-sm);
     }
+  }
+
+  /* Hide footer on homepage — matches sidebar nav hiding pattern */
+  :global(body[data-page="home"]) .site-footer {
+    display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
