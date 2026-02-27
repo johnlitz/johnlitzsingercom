@@ -4,16 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import LeftColumn from '../components/LeftColumn.astro';
 import MobileHeader from '../components/MobileHeader.astro';
 
-import { navItems } from '../data/nav';
 import '../styles/global.css';
-
-interface SidebarContext {
-  narrative?: string;
-  readingTime?: string;
-  wordCount?: string;
-  publishDate?: string;
-  tags?: string[];
-}
 
 interface Props {
   title: string;
@@ -22,15 +13,10 @@ interface Props {
   type?: 'website' | 'article';
   publishedDate?: Date;
   noindex?: boolean;
-  sidebarContext?: SidebarContext;
 }
 
-const { title, description, image, type, publishedDate, noindex, sidebarContext } = Astro.props;
+const { title, description, image, type, publishedDate, noindex } = Astro.props;
 const currentPath = Astro.url.pathname;
-
-function isActive(href: string, match: 'exact' | 'prefix', path: string) {
-  return match === 'exact' ? path === href : path.startsWith(href);
-}
 ---
 
 <!doctype html>
@@ -54,7 +40,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     <div class="site">
       <div class="left-column" transition:persist="sidebar" transition:name="sidebar" transition:animate="none">
         <div class="left-column-inner">
-          <LeftColumn currentPath={currentPath} sidebarContext={sidebarContext} />
+          <LeftColumn currentPath={currentPath} />
         </div>
       </div>
       <div class="site-main">
@@ -64,10 +50,6 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
       </div>
     </div>
 
-    {/* Sidebar context data for client-side updates during view transitions */}
-    <script is:inline define:vars={{ sidebarContextJSON: JSON.stringify(sidebarContext || null) }}>
-      window.__sidebarContext = JSON.parse(sidebarContextJSON);
-    </script>
   </body>
 </html>
 
@@ -91,64 +73,11 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     });
   }
 
-  function updateSidebarContext(path: string) {
-    const isHome = path === '/';
-    const isBlogPost = path.startsWith('/blog/') && path !== '/blog/';
-    const ctx = (window as any).__sidebarContext;
-
-    // Toggle homepage vs inner page content
-    const sidebarNav = document.querySelector('.sidebar-nav') as HTMLElement | null;
-    const homeContext = document.querySelector('.sidebar-context') as HTMLElement | null;
-
-    if (isHome) {
-      // On homepage: hide nav, show homepage context
-      if (sidebarNav) sidebarNav.style.display = 'none';
-      if (homeContext) {
-        homeContext.style.display = '';
-        homeContext.innerHTML = `
-          <p class="context-tagline">Building at the intersection of finance and technology.</p>
-          <div class="context-tags">
-            <span class="inline-tag">finance</span>
-            <span class="inline-tag">technology</span>
-            <span class="inline-tag">writing</span>
-          </div>
-          <p class="context-availability">Open to opportunities</p>
-        `;
-      }
-    } else {
-      // On inner pages: show nav, update context
-      if (sidebarNav) sidebarNav.style.display = '';
-
-      if (ctx && homeContext) {
-        let html = '';
-        if (isBlogPost && ctx.readingTime) {
-          html += `<p class="context-meta">${ctx.readingTime} &middot; ${ctx.wordCount}</p>`;
-        }
-        if (isBlogPost && ctx.publishDate) {
-          html += `<p class="context-meta">${ctx.publishDate}</p>`;
-        }
-        if (isBlogPost && ctx.tags && ctx.tags.length > 0) {
-          html += `<div class="context-tags">${ctx.tags.map((t: string) => `<span class="inline-tag">${t}</span>`).join('')}</div>`;
-        }
-        if (!isBlogPost && ctx.narrative) {
-          html += `<p class="context-narrative">${ctx.narrative}</p>`;
-        }
-        html += `<p class="context-availability">Open to opportunities</p>`;
-        homeContext.innerHTML = html;
-        homeContext.style.display = '';
-      } else if (homeContext && !ctx) {
-        // No context provided — show just availability
-        homeContext.innerHTML = `<p class="context-availability">Open to opportunities</p>`;
-      }
-    }
-  }
-
   // After view-transition swap: update persisted sidebar + scroll to hash
   document.addEventListener('astro:after-swap', () => {
     const path = window.location.pathname;
     updateActiveStates(path);
     document.body.dataset.page = path === '/' ? 'home' : 'inner';
-    updateSidebarContext(path);
 
     // Reset sidebar scroll when navigating to homepage
     if (path === '/') {

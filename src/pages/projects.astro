@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const projects = [
   {
     title: 'Personal Website',
-    description: 'Portfolio and blog built with Astro, MDX, and React. Brutalist-minimal design with VTF Lack typography.',
+    description: 'Portfolio and blog built with Astro, MDX, and React. Brutalist-minimal design with Rethink Sans typography.',
     tech: 'Astro / React',
     links: [
       { label: 'Live', url: 'https://johnlitzsinger.com' },
@@ -31,7 +31,6 @@ const projects = [
 <BaseLayout
   title="Projects — John Litzsinger"
   description="Selected projects in finance, data, and technology."
-  sidebarContext={{ narrative: 'Tools and experiments across finance and data.' }}
 >
   <div class="projects-page">
     <h1>Projects</h1>
@@ -77,8 +76,16 @@ const projects = [
   }
 
   .entry {
-    padding: var(--space-lg) 0;
+    padding: var(--space-lg) 0.75rem;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
     border-top: 1px solid var(--border);
+    border-radius: 4px;
+    transition: background-color var(--duration-fast) ease;
+  }
+
+  .entry:hover {
+    background-color: var(--surface);
   }
 
   .entry-header {
@@ -91,20 +98,25 @@ const projects = [
 
   h3 {
     font-size: var(--text-lg);
+    font-weight: 600;
     color: var(--foreground);
   }
 
   .tech {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     color: var(--muted);
     white-space: nowrap;
     flex-shrink: 0;
+    background: var(--surface);
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-variant-numeric: tabular-nums;
   }
 
   .summary {
     font-size: var(--text-sm);
     color: var(--secondary);
-    line-height: 1.6;
+    line-height: 1.55;
     max-width: 60ch;
   }
 
@@ -141,12 +153,18 @@ const projects = [
 
   @media (max-width: 768px) {
     .entry {
-      padding: var(--space-md) 0;
+      padding: var(--space-md) 0.75rem;
     }
 
     .entry-header {
       flex-direction: column;
       gap: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry {
+      transition: none;
     }
   }
 </style>

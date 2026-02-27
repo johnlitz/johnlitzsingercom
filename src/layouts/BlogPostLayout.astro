@@ -35,12 +35,6 @@ const wordCountFormatted = words >= 1000
   ? `${(words / 1000).toFixed(1)}k`
   : String(words);
 
-const sidebarContext = {
-  readingTime: `${readingMinutes} min read`,
-  wordCount: `${wordCountFormatted}w`,
-  publishDate: formattedDate,
-  tags,
-};
 ---
 
 <BaseLayout
@@ -49,7 +43,6 @@ const sidebarContext = {
   image={heroImage}
   type="article"
   publishedDate={pubDate}
-  sidebarContext={sidebarContext}
 >
   <ReadingProgress />
   <article class="blog-post">
@@ -115,7 +108,8 @@ const sidebarContext = {
 
   h1 {
     font-size: var(--text-2xl);
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
     margin-bottom: var(--space-sm);
   }
 
@@ -148,9 +142,17 @@ const sidebarContext = {
     margin-bottom: var(--space-sm);
   }
 
+  .prose :global(h2) {
+    font-weight: 600;
+  }
+
+  .prose :global(h3) {
+    font-weight: 600;
+  }
+
   .prose :global(p) {
     margin-bottom: var(--space-md);
-    line-height: 1.7;
+    line-height: 1.65;
   }
 
   .prose :global(ul),
@@ -161,11 +163,11 @@ const sidebarContext = {
 
   .prose :global(li) {
     margin-bottom: var(--space-xs);
-    line-height: 1.7;
+    line-height: 1.65;
   }
 
   .prose :global(blockquote) {
-    border-left: 2px solid var(--accent);
+    border-left: 3px solid var(--accent);
     padding-left: var(--space-md);
     margin: var(--space-md) 0;
     color: var(--secondary);
@@ -221,7 +223,7 @@ const sidebarContext = {
   }
 
   .post-nav-arrow {
-    color: var(--muted);
+    color: var(--accent);
   }
 
   .post-nav-next {

@@ -26,7 +26,6 @@ const experiences = [
 <BaseLayout
   title="Work — John Litzsinger"
   description="Work experience and professional background."
-  sidebarContext={{ narrative: 'Building financial systems that scale.' }}
 >
   <div class="work-page">
     <h1>Work</h1>
@@ -65,8 +64,16 @@ const experiences = [
   }
 
   .entry {
-    padding: var(--space-lg) 0;
+    padding: var(--space-lg) 0.75rem;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
     border-top: 1px solid var(--border);
+    border-radius: 4px;
+    transition: background-color var(--duration-fast) ease;
+  }
+
+  .entry:hover {
+    background-color: var(--surface);
   }
 
   .entry-header {
@@ -79,6 +86,7 @@ const experiences = [
 
   h3 {
     font-size: var(--text-lg);
+    font-weight: 600;
     color: var(--foreground);
   }
 
@@ -92,18 +100,19 @@ const experiences = [
     color: var(--secondary);
     white-space: nowrap;
     flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
   }
 
   .summary {
     font-size: var(--text-sm);
     color: var(--secondary);
-    line-height: 1.6;
+    line-height: 1.55;
     max-width: 60ch;
   }
 
   @media (max-width: 768px) {
     .entry {
-      padding: var(--space-md) 0;
+      padding: var(--space-md) 0.75rem;
     }
 
     .entry-header {
@@ -114,6 +123,12 @@ const experiences = [
     .period {
       margin-top: var(--space-xs);
       font-size: var(--text-sm);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry {
+      transition: none;
     }
   }
 </style>

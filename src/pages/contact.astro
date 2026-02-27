@@ -8,7 +8,6 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
 <BaseLayout
   title="Contact — John Litzsinger"
   description="Get in touch."
-  sidebarContext={{ narrative: 'Always open to new conversations.' }}
 >
   <div class="contact-page">
     <h1>Contact</h1>
@@ -70,12 +69,13 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
   input,
   textarea {
     width: 100%;
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-3) var(--space-md);
     font-family: var(--font);
     font-size: var(--text-base);
     color: var(--foreground);
     background: transparent;
     border: 1px solid var(--border);
+    border-radius: 4px;
     transition: border-color var(--duration-fast) ease;
   }
 
@@ -93,17 +93,19 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
   button[type="submit"] {
     font-family: var(--font);
     font-size: var(--text-sm);
+    font-weight: 600;
     letter-spacing: 0.04em;
-    padding: var(--space-sm) var(--space-lg);
-    background: var(--foreground);
-    color: var(--background);
+    padding: var(--space-3) var(--space-lg);
+    background: var(--accent);
+    color: #ffffff;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: opacity var(--duration-fast) ease;
+    transition: background-color var(--duration-fast) ease;
   }
 
   button[type="submit"]:hover {
-    opacity: 0.8;
+    background: var(--accent-hover);
   }
 
   button[type="submit"]:focus-visible {

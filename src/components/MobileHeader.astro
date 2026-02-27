@@ -12,7 +12,7 @@ function isActive(href: string, match: string, path: string): boolean {
   <a href="/" class:list={['mobile-name', { active: currentPath === '/' }]}
      data-match="exact"
      aria-current={currentPath === '/' ? 'page' : undefined}>
-    <img src="/icon.png" alt="" class="mobile-icon" width="26" height="26" />
+    <img src="/icon.png" alt="" class="mobile-icon" width="28" height="28" />
     John Litzsinger
   </a>
 
@@ -32,8 +32,6 @@ function isActive(href: string, match: string, path: string): boolean {
         {item.label}
       </a>
     ))}
-    <!-- Resume is intentionally hardcoded (not in navItems) to keep PDF
-         links out of the data layer. Matches LeftColumn.astro behavior. -->
     <a href="/John_Litzsinger_Resume.pdf" class="pyramid-link"
        target="_blank" rel="noopener noreferrer">Resume</a>
     <div class="mobile-footer-links">
@@ -53,8 +51,6 @@ function isActive(href: string, match: string, path: string): boolean {
 </div>
 
 <script>
-  // Re-attach click handler after every navigation (header is not persisted,
-  // so the old DOM element + listener is garbage collected — no accumulation).
   document.addEventListener('astro:page-load', () => {
     const chevron = document.querySelector('.mobile-chevron');
     const nav = document.getElementById('mobile-pyramid-nav');
@@ -68,7 +64,6 @@ function isActive(href: string, match: string, path: string): boolean {
     }
   });
 
-  // Keydown listener — added once in module scope, queries DOM fresh each time.
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     const nav = document.getElementById('mobile-pyramid-nav');
@@ -96,17 +91,19 @@ function isActive(href: string, match: string, path: string): boolean {
   .mobile-icon {
     display: inline-block;
     vertical-align: middle;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     margin-right: var(--space-sm);
     position: relative;
     top: -1px;
+    border-radius: 4px;
   }
 
   .mobile-name {
     position: relative;
     display: block;
     font-size: var(--text-xl);
+    font-weight: 600;
     letter-spacing: -0.015em;
     padding: var(--space-md) var(--space-md) var(--space-xs);
     color: var(--foreground);
@@ -116,6 +113,7 @@ function isActive(href: string, match: string, path: string): boolean {
 
   .mobile-name:hover {
     color: var(--accent);
+    text-decoration: none;
   }
 
   .mobile-chevron {
@@ -141,7 +139,7 @@ function isActive(href: string, match: string, path: string): boolean {
     transform: rotate(180deg);
   }
 
-  /* Pyramid nav — flat flex container, 5 links wrap to 3+2 naturally */
+  /* Pyramid nav */
   .pyramid-nav[hidden] {
     display: none;
   }
@@ -165,6 +163,7 @@ function isActive(href: string, match: string, path: string): boolean {
 
   .pyramid-link:hover {
     color: var(--foreground);
+    text-decoration: none;
   }
 
   .pyramid-link.active {
@@ -200,13 +199,16 @@ function isActive(href: string, match: string, path: string): boolean {
   }
 
   .mobile-footer-link:hover {
-    color: var(--foreground);
+    color: var(--accent);
     text-decoration: none;
   }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .mobile-chevron svg {
+    .mobile-chevron svg,
+    .mobile-name,
+    .pyramid-link,
+    .mobile-footer-link {
       transition: none;
     }
   }
@@ -216,7 +218,7 @@ function isActive(href: string, match: string, path: string): boolean {
     .mobile-header { display: block; }
   }
 
-  /* Home page — name gets accent color + persistent underline */
+  /* Home page — name gets accent color */
   :global(body[data-page="home"]) .mobile-name {
     color: var(--accent);
   }
@@ -228,7 +230,7 @@ function isActive(href: string, match: string, path: string): boolean {
     left: 50%;
     transform: translateX(-50%) scaleX(0);
     width: calc(100% - var(--space-md) * 2);
-    height: 3px;
+    height: 2px;
     background: var(--accent);
     transform-origin: center;
   }
@@ -237,7 +239,7 @@ function isActive(href: string, match: string, path: string): boolean {
     transform: translateX(-50%) scaleX(1);
   }
 
-  /* Home page — hide nav (content already serves as navigation) */
+  /* Home page — hide nav */
   :global(body[data-page="home"]) .mobile-chevron,
   :global(body[data-page="home"]) .pyramid-nav {
     display: none;
