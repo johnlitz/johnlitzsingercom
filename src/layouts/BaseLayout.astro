@@ -1,5 +1,5 @@
 ---
-import { ClientRouter } from 'astro:transitions';
+import { ClientRouter, fade } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import LeftColumn from '../components/LeftColumn.astro';
 import MobileHeader from '../components/MobileHeader.astro';
@@ -17,6 +17,7 @@ interface Props {
 
 const { title, description, image, type, publishedDate, noindex } = Astro.props;
 const currentPath = Astro.url.pathname;
+const contentFade = fade({ duration: '0.18s' });
 ---
 
 <!doctype html>
@@ -43,7 +44,7 @@ const currentPath = Astro.url.pathname;
           <LeftColumn currentPath={currentPath} />
         </div>
       </div>
-      <div class="site-main">
+      <div class="site-main" transition:animate={contentFade}>
         <main id="main-content">
           <slot />
         </main>
@@ -139,11 +140,17 @@ const currentPath = Astro.url.pathname;
     padding: var(--space-xl) var(--gutter) var(--space-lg);
   }
 
+  /* Homepage — align content top with sidebar identity */
+  :global(body[data-page="home"]) .site-main {
+    padding-top: clamp(1rem, 3dvh, 2rem);
+  }
+
   main {
     flex: 1;
     display: flex;
     flex-direction: column;
   }
+
 
   /* Ultra-wide — constrain and center */
   @media (min-width: 120em) {
@@ -158,10 +165,10 @@ const currentPath = Astro.url.pathname;
     z-index: 100;
   }
 
-  /* Tablet — narrower sidebar */
+  /* Tablet — wider sidebar for better fit */
   @media (max-width: 1024px) and (min-width: 769px) {
     .site {
-      grid-template-columns: clamp(200px, 20vw, 260px) 1fr;
+      grid-template-columns: clamp(220px, 24vw, 280px) 1fr;
     }
   }
 
@@ -176,7 +183,7 @@ const currentPath = Astro.url.pathname;
     }
 
     .site-main {
-      padding: var(--space-md) var(--space-md) var(--space-lg);
+      padding: var(--space-md) clamp(1rem, 4vw, 1.5rem) var(--space-lg);
     }
   }
 

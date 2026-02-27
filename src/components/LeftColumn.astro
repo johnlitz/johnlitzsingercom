@@ -22,6 +22,25 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
 </a>
 
 <div class="sidebar-content">
+  <div class="sidebar-art" aria-hidden="true">
+    <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" class="constellation">
+      <!-- Connecting lines -->
+      <line x1="22" y1="25" x2="72" y2="18" stroke="var(--border)" stroke-width="1"/>
+      <line x1="72" y1="18" x2="58" y2="72" stroke="var(--border)" stroke-width="1"/>
+      <line x1="58" y1="72" x2="28" y2="105" stroke="var(--border)" stroke-width="1"/>
+      <line x1="22" y1="25" x2="58" y2="72" stroke="var(--border)" stroke-width="1"/>
+      <line x1="22" y1="25" x2="28" y2="105" stroke="var(--border)" stroke-width="1"/>
+      <!-- Node 1: Work -->
+      <rect x="19" y="22" width="6" height="6" fill="var(--muted)" class="node"/>
+      <!-- Node 2: Projects (accented) -->
+      <rect x="69" y="15" width="6" height="6" fill="var(--accent)" opacity="0.6" class="node node-accent"/>
+      <!-- Node 3: Writing -->
+      <rect x="55" y="69" width="6" height="6" fill="var(--muted)" class="node"/>
+      <!-- Node 4: Contact -->
+      <rect x="25" y="102" width="6" height="6" fill="var(--muted)" class="node"/>
+    </svg>
+  </div>
+
   <nav class="sidebar-nav" aria-label="Main navigation">
     {navItems.map((item) => (
       <a href={item.href} data-match={item.match}
@@ -117,9 +136,52 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     gap: 2px;
   }
 
+  /* Sidebar art — visible only on homepage */
+  .sidebar-art {
+    display: none;
+    justify-content: center;
+    align-items: flex-start;
+    flex: 1;
+    padding-top: var(--space-md);
+  }
+
+  .constellation {
+    width: 100%;
+    max-width: 140px;
+    height: auto;
+  }
+
+  @keyframes nodePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .node {
+    animation: nodePulse 4s ease-in-out infinite;
+  }
+
+  .node-accent {
+    animation: nodePulse 4s ease-in-out infinite 1s;
+  }
+
+  :global(body[data-page="home"]) .sidebar-art {
+    display: flex;
+    animation: sidebarFadeIn var(--duration-base) ease;
+  }
+
   /* Hide nav on homepage (nav stays in DOM for transition:persist) */
   :global(body[data-page="home"]) .sidebar-nav {
     display: none;
+  }
+
+  /* Fade in nav when appearing on inner pages */
+  :global(body[data-page="inner"]) .sidebar-nav {
+    animation: sidebarFadeIn var(--duration-base) ease;
+  }
+
+  @keyframes sidebarFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .nav-number {
@@ -218,6 +280,18 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     color: var(--muted);
   }
 
+  /* Tablet — tighter sidebar typography */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .name-full {
+      font-size: var(--text-base);
+    }
+
+    .sidebar-link {
+      font-size: var(--text-sm);
+      padding: var(--space-xs) var(--space-xs);
+    }
+  }
+
   @media (max-width: 768px) {
     .sidebar-content,
     .sidebar-footer {
@@ -231,6 +305,16 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     .external-icon,
     .sidebar-footer-links a {
       transition: none;
+    }
+
+    .node,
+    .node-accent {
+      animation: none;
+    }
+
+    :global(body[data-page="home"]) .sidebar-art,
+    :global(body[data-page="inner"]) .sidebar-nav {
+      animation: none;
     }
   }
 </style>

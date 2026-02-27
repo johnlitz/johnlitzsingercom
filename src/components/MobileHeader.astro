@@ -144,12 +144,18 @@ function isActive(href: string, match: string, path: string): boolean {
     display: none;
   }
 
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .pyramid-nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--space-sm) var(--space-lg);
     padding: var(--space-sm) var(--space-md) var(--space-md);
+    animation: slideDown var(--duration-base) ease;
   }
 
   .pyramid-link {
@@ -211,6 +217,10 @@ function isActive(href: string, match: string, path: string): boolean {
     .mobile-footer-link {
       transition: none;
     }
+
+    .pyramid-nav {
+      animation: none;
+    }
   }
 
   /* Show on mobile */
@@ -218,9 +228,11 @@ function isActive(href: string, match: string, path: string): boolean {
     .mobile-header { display: block; }
   }
 
-  /* Home page — name gets accent color */
+  /* Home page — name gets accent color and more visual weight */
   :global(body[data-page="home"]) .mobile-name {
     color: var(--accent);
+    font-size: var(--text-2xl);
+    padding: var(--space-lg) var(--space-md) var(--space-xs);
   }
 
   .mobile-name::after {

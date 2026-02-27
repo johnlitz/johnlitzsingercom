@@ -79,8 +79,8 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
     transition: border-color var(--duration-fast) ease;
   }
 
-  input:focus,
-  textarea:focus {
+  input:focus-visible,
+  textarea:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
     border-color: var(--accent);
@@ -111,6 +111,17 @@ const redirectUrl = new URL('/contact/thanks', Astro.site).href;
   button[type="submit"]:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    input {
+      min-height: 44px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      min-height: 44px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

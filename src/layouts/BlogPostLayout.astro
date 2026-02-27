@@ -49,6 +49,8 @@ const wordCountFormatted = words >= 1000
     <header class="post-header">
       <div class="post-meta">
         <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        <span class="meta-sep">&middot;</span>
+        <span class="reading-time">{readingMinutes} min read</span>
         {updatedDate && (
           <span class="updated">
             (Updated <time datetime={updatedDate.toISOString()}>{formattedUpdatedDate}</time>)
@@ -102,6 +104,15 @@ const wordCountFormatted = words >= 1000
     margin-bottom: var(--space-sm);
   }
 
+  .meta-sep {
+    margin: 0 var(--space-xs);
+    color: var(--muted);
+  }
+
+  .reading-time {
+    color: var(--muted);
+  }
+
   .updated {
     color: var(--muted);
   }
@@ -135,18 +146,12 @@ const wordCountFormatted = words >= 1000
   .prose :global(h2) {
     margin-top: var(--space-xl);
     margin-bottom: var(--space-md);
+    font-weight: 600;
   }
 
   .prose :global(h3) {
     margin-top: var(--space-lg);
     margin-bottom: var(--space-sm);
-  }
-
-  .prose :global(h2) {
-    font-weight: 600;
-  }
-
-  .prose :global(h3) {
     font-weight: 600;
   }
 
@@ -251,5 +256,13 @@ const wordCountFormatted = words >= 1000
   @media (max-width: 768px) {
     .prose :global(h2) { margin-top: var(--space-lg); }
     .prose :global(h3) { margin-top: var(--space-md); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tag,
+    .post-nav-link,
+    .post-footer a {
+      transition: none;
+    }
   }
 </style>

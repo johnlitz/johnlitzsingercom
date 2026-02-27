@@ -88,6 +88,11 @@ const experiences = [
     font-size: var(--text-lg);
     font-weight: 600;
     color: var(--foreground);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .entry:hover h3 {
+    color: var(--accent);
   }
 
   .company {
@@ -127,7 +132,8 @@ const experiences = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .entry {
+    .entry,
+    h3 {
       transition: none;
     }
   }
