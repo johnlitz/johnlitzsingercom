@@ -64,16 +64,8 @@ const experiences = [
   }
 
   .entry {
-    padding: var(--space-lg) 0.75rem;
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
+    padding: var(--space-lg) 0;
     border-top: 1px solid var(--border);
-    border-radius: 4px;
-    transition: background-color var(--duration-fast) ease;
-  }
-
-  .entry:hover {
-    background-color: var(--surface);
   }
 
   .entry-header {
@@ -88,11 +80,6 @@ const experiences = [
     font-size: var(--text-lg);
     font-weight: 600;
     color: var(--foreground);
-    transition: color var(--duration-fast) ease;
-  }
-
-  .entry:hover h3 {
-    color: var(--accent);
   }
 
   .company {
@@ -117,7 +104,7 @@ const experiences = [
 
   @media (max-width: 768px) {
     .entry {
-      padding: var(--space-md) 0.75rem;
+      padding: var(--space-md) 0;
     }
 
     .entry-header {
@@ -128,13 +115,6 @@ const experiences = [
     .period {
       margin-top: var(--space-xs);
       font-size: var(--text-sm);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .entry,
-    h3 {
-      transition: none;
     }
   }
 </style>

@@ -45,10 +45,7 @@ const highlights = [
 
   .highlight:first-child {
     border-top: none;
-  }
-
-  .highlight:last-child {
-    border-bottom: none;
+    padding-top: 0;
   }
 
   .highlight:hover {
@@ -95,18 +92,20 @@ const highlights = [
     transform: scaleX(1);
   }
 
-  .highlight:first-child {
-    padding-top: 0;
-  }
-
   .highlight p {
     font-size: var(--text-base);
     color: var(--secondary);
     line-height: 1.55;
-    max-width: 55ch;
+    max-width: 60ch;
   }
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 768px) {
+    .highlight {
+      padding: var(--space-lg) 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
     .highlight h2::after {
       transition: none;
     }
