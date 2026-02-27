@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ReadingProgress from '../components/ReadingProgress.astro';
 
 interface Props {
   title: string;
@@ -8,9 +9,12 @@ interface Props {
   updatedDate?: Date;
   heroImage?: string;
   tags?: string[];
+  rawContent?: string;
+  prevPost?: { slug: string; title: string };
+  nextPost?: { slug: string; title: string };
 }
 
-const { title, description, pubDate, updatedDate, heroImage, tags = [] } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags = [], rawContent = '', prevPost, nextPost } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -23,6 +27,20 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+
+// Reading time calculation
+const words = rawContent.split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.ceil(words / 250));
+const wordCountFormatted = words >= 1000
+  ? `${(words / 1000).toFixed(1)}k`
+  : String(words);
+
+const sidebarContext = {
+  readingTime: `${readingMinutes} min read`,
+  wordCount: `${wordCountFormatted}w`,
+  publishDate: formattedDate,
+  tags,
+};
 ---
 
 <BaseLayout
@@ -31,7 +49,9 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   image={heroImage}
   type="article"
   publishedDate={pubDate}
+  sidebarContext={sidebarContext}
 >
+  <ReadingProgress />
   <article class="blog-post">
     <header class="post-header">
       <div class="post-meta">
@@ -44,12 +64,30 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
       </div>
       <h1>{title}</h1>
       {tags.length > 0 && (
-        <p class="tags">{tags.join(' / ')}</p>
+        <div class="tags">
+          {tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
       )}
     </header>
     <div class="prose">
       <slot />
     </div>
+    {(prevPost || nextPost) && (
+      <nav class="post-nav" aria-label="Post navigation">
+        {prevPost ? (
+          <a href={`/blog/${prevPost.slug}`} class="post-nav-link post-nav-prev">
+            <span class="post-nav-arrow">&larr;</span> {prevPost.title}
+          </a>
+        ) : <span />}
+        {nextPost ? (
+          <a href={`/blog/${nextPost.slug}`} class="post-nav-link post-nav-next">
+            {nextPost.title} <span class="post-nav-arrow">&rarr;</span>
+          </a>
+        ) : <span />}
+      </nav>
+    )}
     <footer class="post-footer">
       <a href="/blog">&larr; Back to writing</a>
     </footer>
@@ -82,8 +120,21 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   }
 
   .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .tag {
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--secondary);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 2px;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .tag:hover {
+    color: var(--foreground);
   }
 
   /* Prose styles for MDX content */
@@ -145,8 +196,41 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
     margin: var(--space-xl) 0;
   }
 
-  .post-footer {
+  /* Next/prev navigation */
+  .post-nav {
     margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .post-nav-link {
+    font-size: var(--text-sm);
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+    max-width: 45%;
+  }
+
+  .post-nav-link:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .post-nav-arrow {
+    color: var(--muted);
+  }
+
+  .post-nav-next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .post-footer {
+    margin-top: var(--space-lg);
     padding-top: var(--space-lg);
   }
 

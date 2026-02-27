@@ -98,4 +98,4 @@ document.addEventListener('astro:page-load', () => {
 
 ## Related Issues
 
-No related issues documented yet.
+- See also: [persisted-sidebar-contextual-content-sync-Layout-20260227.md](./persisted-sidebar-contextual-content-sync-Layout-20260227.md) — Stale contextual content in persisted sidebar after view transitions

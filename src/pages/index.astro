@@ -2,10 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const highlights = [
-  { label: 'Work', href: '/work', text: 'Rotational intern at Shepherd Insurance, co-founder of Purdue Launch Consulting Club, and former head analyst at Father Flips — where I drove 260% client ROI.' },
-  { label: 'Projects', href: '/projects', text: 'Building tools with Python, Astro, and React across finance and data analysis.' },
-  { label: 'Writing', href: '/blog', text: 'Ideas on markets, technology, and what I am learning along the way.' },
-  { label: 'Contact', href: '/contact', text: 'Say hello — always open to new conversations and opportunities.' },
+  { index: '01', label: 'Work', href: '/work', text: 'Rotational intern at Shepherd Insurance, co-founder of Purdue Launch Consulting Club, and former head analyst at Father Flips — where I drove 260% client ROI.' },
+  { index: '02', label: 'Projects', href: '/projects', text: 'Building tools with Python, Astro, and React across finance and data analysis.' },
+  { index: '03', label: 'Writing', href: '/blog', text: 'Ideas on markets, technology, and what I am learning along the way.' },
+  { index: '04', label: 'Contact', href: '/contact', text: 'Say hello — always open to new conversations and opportunities.' },
 ];
 ---
 
@@ -17,7 +17,7 @@ const highlights = [
     <div class="highlights">
       {highlights.map((item) => (
         <a href={item.href} class="highlight">
-          <h2>{item.label}</h2>
+          <h2><span class="highlight-number">{item.index}</span> {item.label}</h2>
           <p>{item.text}</p>
         </a>
       ))}
@@ -58,6 +58,11 @@ const highlights = [
   .highlight:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 4px;
+  }
+
+  .highlight-number {
+    color: var(--muted);
+    font-size: 0.85em;
   }
 
   .highlight h2 {

@@ -9,6 +9,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 <BaseLayout
   title="Blog — John Litzsinger"
   description="Thoughts on finance, markets, technology, and more."
+  sidebarContext={{ narrative: 'Ideas on markets, technology, and what I am learning.' }}
 >
   <div class="blog-page">
     <h1>Writing</h1>
@@ -24,7 +25,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
             <h3>{post.data.title}</h3>
             <p class="desc">{post.data.description}</p>
             {post.data.tags && post.data.tags.length > 0 && (
-              <p class="tags">{post.data.tags.join(' / ')}</p>
+              <div class="tags">
+                {post.data.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
             )}
           </a>
         ))}
@@ -92,9 +97,22 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   }
 
   .tags {
-    font-size: var(--text-sm);
-    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
     margin-top: var(--space-xs);
+  }
+
+  .tag {
+    font-size: var(--text-sm);
+    color: var(--secondary);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 2px;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .tag:hover {
+    color: var(--foreground);
   }
 
   .empty {
