@@ -41,7 +41,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
   }
 
   .posts {
@@ -53,7 +53,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     display: block;
     text-decoration: none;
     color: inherit;
-    padding: var(--space-6) 0;
+    padding: var(--space-lg) 0;
     border-top: 1px solid var(--border);
   }
 

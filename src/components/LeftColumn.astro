@@ -6,21 +6,23 @@ interface Props {
 }
 
 const { currentPath } = Astro.props;
+const currentYear = new Date().getFullYear();
 
 function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   return match === 'exact' ? path === href : path.startsWith(href);
 }
 ---
 
-<div class="sidebar-identity">
-  <a href="/" class="name-full">
-    <span class="name-line">John</span>
-    <span class="name-line">Litzsinger</span>
-  </a>
-  <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
-</div>
+<div class="sidebar-content">
+  <div class="sidebar-identity">
+    <a href="/" class="name-full">
+      <span class="name-line">John</span>
+      <span class="name-line">Litzsinger</span>
+    </a>
+    <p class="tagline">Finance student at Purdue, entrepreneur, and market analyst — building at the intersection of capital markets, data, and technology.</p>
+  </div>
 
-<nav class="sidebar-nav" aria-label="Main navigation">
+  <nav class="sidebar-nav" aria-label="Main navigation">
   {navItems.map((item) => (
     <div class="nav-item">
       <a href={item.href} data-match={item.match}
@@ -32,9 +34,26 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     <a href="/John_Litzsinger_Resume.pdf" class="sidebar-link"
        target="_blank" rel="noopener noreferrer">Resume</a>
   </div>
-</nav>
+  </nav>
+</div>
+
+<div class="sidebar-footer">
+  <div class="sidebar-footer-links">
+    <a href="mailto:jlitzsin@purdue.edu">Email</a>
+    <a href="https://www.linkedin.com/in/johnlitzsinger" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/johnlitz" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+  <p class="sidebar-copyright">&copy; {currentYear} John Litzsinger</p>
+</div>
 
 <style>
+  .sidebar-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .sidebar-identity {
     display: flex;
     flex-direction: column;
@@ -78,11 +97,6 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   }
 
   .name-full:hover .name-line::after {
-    transform: scaleX(1);
-  }
-
-  /* On homepage, name has persistent underline */
-  :global(body[data-page="home"]) .name-line::after {
     transform: scaleX(1);
   }
 
@@ -138,14 +152,39 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     transform: scaleX(1);
   }
 
-  /* Hide nav on homepage — sidebar persists, CSS drives visibility */
-  :global(body[data-page="home"]) .sidebar-nav {
-    display: none;
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .sidebar-footer-links {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .sidebar-footer-links a {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .sidebar-footer-links a:hover {
+    color: var(--foreground);
+  }
+
+  .sidebar-copyright {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--muted);
   }
 
   @media (max-width: 768px) {
-    .sidebar-identity,
-    .sidebar-nav {
+    .sidebar-content,
+    .sidebar-footer {
       display: none;
     }
   }
@@ -153,6 +192,10 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
   @media (prefers-reduced-motion: reduce) {
     .sidebar-link::after,
     .name-line::after {
+      transition: none;
+    }
+
+    .sidebar-footer-links a {
       transition: none;
     }
   }

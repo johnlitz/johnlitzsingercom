@@ -3,7 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import LeftColumn from '../components/LeftColumn.astro';
 import MobileHeader from '../components/MobileHeader.astro';
-import Footer from '../components/Footer.astro';
+
 import { navItems } from '../data/nav';
 import '../styles/global.css';
 
@@ -52,7 +52,7 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
         <main id="main-content">
           <slot />
         </main>
-        <Footer />
+
       </div>
     </div>
   </body>
@@ -136,43 +136,18 @@ function isActive(href: string, match: 'exact' | 'prefix', path: string) {
     padding: clamp(1rem, 3dvh, 2rem) var(--space-lg);
   }
 
-  /* Center sidebar content vertically on all pages */
-  .left-column-inner {
-    justify-content: center;
-  }
-
   /* Main content area */
   .site-main {
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    padding: var(--space-lg) var(--gutter) var(--space-md);
+    padding: var(--space-xl) var(--gutter) var(--space-lg);
   }
 
   main {
     flex: 1;
     display: flex;
     flex-direction: column;
-  }
-
-  /* Homepage viewport lock — desktop only (mobile has MobileHeader above grid) */
-  @media (min-width: 769px) {
-    :global(body[data-page="home"]) .site-main {
-      height: 100dvh;
-      min-height: 0;
-      overflow: hidden;
-      padding-top: clamp(0.5rem, 2dvh, 2rem);
-      padding-bottom: clamp(0.5rem, 1.5dvh, 1rem);
-    }
-  }
-
-  /* Graceful degradation — allow scroll on very short desktop viewports */
-  @media (min-width: 769px) and (max-height: 659px) {
-    :global(body[data-page="home"]) .site-main {
-      height: auto;
-      min-height: 100dvh;
-      overflow: auto;
-    }
   }
 
   /* Ultra-wide — constrain and center */
