@@ -26,3 +26,14 @@ pnpm-debug.log*
 
 # playwright mcp logs
 .playwright-mcp/
+
+# screenshots and verification artifacts
+*.png
+
+# reference sites
+kentgigger.com/
+keybaseDocsSource/
+
+# temporary files
+tmp/
+polyfill-url.mjs

@@ -35,6 +35,13 @@ function isActive(href: string, match: string, path: string): boolean {
          links out of the data layer. Matches LeftColumn.astro behavior. -->
     <a href="/John_Litzsinger_Resume.pdf" class="pyramid-link"
        target="_blank" rel="noopener noreferrer">Resume</a>
+    <div class="mobile-footer-links">
+      <a href="mailto:jlitzsin@purdue.edu" class="mobile-footer-link">Email</a>
+      <a href="https://www.linkedin.com/in/johnlitzsinger" class="mobile-footer-link"
+         target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/johnlitz" class="mobile-footer-link"
+         target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
   </nav>
 </div>
 
@@ -80,6 +87,7 @@ function isActive(href: string, match: string, path: string): boolean {
   }
 
   .mobile-name {
+    position: relative;
     display: block;
     font-size: var(--text-xl);
     letter-spacing: -0.015em;
@@ -156,6 +164,27 @@ function isActive(href: string, match: string, path: string): boolean {
     background: var(--accent);
   }
 
+  .mobile-footer-links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border);
+  }
+
+  .mobile-footer-link {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    text-decoration: none;
+    padding: var(--space-xs) 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .mobile-footer-link:hover {
+    color: var(--foreground);
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .mobile-chevron svg {
@@ -168,8 +197,30 @@ function isActive(href: string, match: string, path: string): boolean {
     .mobile-header { display: block; }
   }
 
-  /* Home page — name gets accent color */
+  /* Home page — name gets accent color + persistent underline */
   :global(body[data-page="home"]) .mobile-name {
     color: var(--accent);
+  }
+
+  .mobile-name::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: calc(100% - var(--space-md) * 2);
+    height: 3px;
+    background: var(--accent);
+    transform-origin: center;
+  }
+
+  :global(body[data-page="home"]) .mobile-name::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  /* Home page — hide nav (content already serves as navigation) */
+  :global(body[data-page="home"]) .mobile-chevron,
+  :global(body[data-page="home"]) .pyramid-nav {
+    display: none;
   }
 </style>
