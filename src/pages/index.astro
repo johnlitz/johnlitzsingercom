@@ -1,112 +1,163 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const highlights = [
-  { index: '01', label: 'Work', href: '/work', text: 'Rotational intern at Shepherd Insurance, co-founder of Purdue Launch Consulting Club, and former head analyst at Father Flips — where I drove 260% client ROI.' },
-  { index: '02', label: 'Projects', href: '/projects', text: 'Building tools with Python, Astro, and React across finance and data analysis.' },
-  { index: '03', label: 'Writing', href: '/blog', text: 'Ideas on markets, technology, and what I am learning along the way.' },
-  { index: '04', label: 'Contact', href: '/contact', text: 'Say hello — always open to new conversations and opportunities.' },
-];
+import { projects } from '../data/projects';
 ---
 
 <BaseLayout
   title="John Litzsinger"
   description="Finance, markets, and technology."
 >
-  <div class="home-content">
-    <div class="highlights">
-      {highlights.map((item) => (
-        <a href={item.href} class="highlight">
-          <h2><span class="highlight-number">{item.index}</span> {item.label}</h2>
-          <p>{item.text}</p>
-        </a>
-      ))}
-    </div>
+  <div class="home">
+    <p class="tagline">Finance @ Purdue interested in startups.</p>
+
+    <nav class="folder-nav" aria-label="Browse">
+      <a href="/work" class="folder">
+        <svg class="folder-icon" width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+          <path d="M1 4h18v11H1z"/>
+          <path d="M1 4l1.5-3h5L9 4"/>
+        </svg>
+        <span>Work</span>
+      </a>
+      <a href="/blitz-feed" class="folder">
+        <svg class="folder-icon" width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+          <path d="M1 4h18v11H1z"/>
+          <path d="M1 4l1.5-3h5L9 4"/>
+        </svg>
+        <span>bLitz Feed</span>
+      </a>
+    </nav>
+
+    <section class="projects-section">
+      <h2>Projects</h2>
+      <div class="project-grid">
+        {projects.map((p) => (
+          <a href={`/work/${p.slug}`} class="project-card">
+            <h3>{p.title}</h3>
+            <p class="project-desc">{p.description}</p>
+            <span class="project-tech">{p.tech.join(' / ')}</span>
+          </a>
+        ))}
+      </div>
+    </section>
   </div>
 </BaseLayout>
 
 <style>
-  .home-content {
-    max-width: var(--content-max);
-  }
-
-  .highlights {
+  .home {
     display: flex;
     flex-direction: column;
+    gap: var(--space-xl);
   }
 
-  .highlight {
-    display: block;
-    padding: var(--space-xl) 0;
-    text-decoration: none;
-    color: inherit;
-    border-top: 1px solid var(--border);
-  }
-
-  .highlight:first-child {
-    border-top: none;
-    padding-top: 0;
-  }
-
-  .highlight:hover {
-    text-decoration: none;
-  }
-
-  .highlight:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 4px;
-  }
-
-  .highlight-number {
-    color: var(--accent);
-    font-size: var(--text-xl);
-    font-weight: 700;
-  }
-
-  .highlight h2 {
-    position: relative;
-    display: inline-block;
-    width: fit-content;
+  .tagline {
     font-size: var(--text-2xl);
     font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
     color: var(--foreground);
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: var(--space-sm);
+    max-width: 20ch;
   }
 
-  .highlight h2::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--duration-base) ease;
+  /* Folder navigation — Linux aesthetic */
+  .folder-nav {
+    display: flex;
+    gap: var(--space-lg);
   }
 
-  .highlight:hover h2::after {
-    transform: scaleX(1);
-  }
-
-  .highlight p {
+  .folder {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
     font-size: var(--text-base);
-    color: var(--secondary);
-    line-height: 1.55;
-    max-width: 60ch;
+    color: var(--foreground);
+    text-decoration: none;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 4px;
+    transition: background-color var(--duration-fast) ease;
   }
 
-@media (max-width: 768px) {
-    .highlight {
-      padding: var(--space-lg) 0;
+  .folder:hover {
+    background-color: var(--surface);
+    text-decoration: none;
+  }
+
+  .folder-icon {
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+
+  .folder:hover .folder-icon {
+    color: var(--accent);
+  }
+
+  /* Project grid */
+  .projects-section h2 {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--muted);
+    background-color: var(--surface);
+    text-decoration: none;
+  }
+
+  .project-card h3 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .project-desc {
+    font-size: var(--text-sm);
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+
+  .project-tech {
+    font-size: var(--text-xs);
+    color: var(--muted);
+    margin-top: auto;
+  }
+
+  @media (max-width: 600px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .folder-nav {
+      flex-direction: column;
+      gap: var(--space-sm);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .highlight h2::after {
+    .folder,
+    .project-card {
       transition: none;
     }
   }

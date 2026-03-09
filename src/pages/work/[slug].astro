@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<BaseLayout
+  title={`${project.title} — John Litzsinger`}
+  description={project.description}
+>
+  <article class="project-detail">
+    <a href="/work" class="back-link">&larr; All projects</a>
+    <h1>{project.title}</h1>
+    <div class="tech-list">
+      {project.tech.map((t) => (
+        <span class="tech-pill">{t}</span>
+      ))}
+    </div>
+    <p class="description">{project.description}</p>
+    {project.links.length > 0 && (
+      <div class="project-links">
+        {project.links.map((link) => (
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="project-link">
+            {link.label} &rarr;
+          </a>
+        ))}
+      </div>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .project-detail {
+    max-width: var(--content-max);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: var(--space-lg);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .back-link:hover {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-md);
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .tech-pill {
+    font-size: var(--text-xs);
+    color: var(--muted);
+    background: var(--surface);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .description {
+    font-size: var(--text-base);
+    color: var(--secondary);
+    line-height: 1.65;
+    max-width: 60ch;
+    margin-bottom: var(--space-lg);
+  }
+
+  .project-links {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .project-link {
+    font-size: var(--text-sm);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .project-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .back-link,
+    .project-link {
+      transition: none;
+    }
+  }
+</style>

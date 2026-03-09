@@ -1,6 +1,5 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import ReadingProgress from '../components/ReadingProgress.astro';
 
 interface Props {
   title: string;
@@ -44,7 +43,6 @@ const wordCountFormatted = words >= 1000
   type="article"
   publishedDate={pubDate}
 >
-  <ReadingProgress />
   <article class="blog-post">
     <header class="post-header">
       <div class="post-meta">
@@ -84,7 +82,7 @@ const wordCountFormatted = words >= 1000
       </nav>
     )}
     <footer class="post-footer">
-      <a href="/blog">&larr; Back to writing</a>
+      <a href="/blitz-feed">&larr; Back to feed</a>
     </footer>
   </article>
 </BaseLayout>
