@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { projects } from '../data/projects';
 ---
 
 <BaseLayout
@@ -10,35 +9,67 @@ import { projects } from '../data/projects';
   <div class="home">
     <p class="tagline">Finance @ Purdue interested in startups.</p>
 
-    <nav class="folder-nav" aria-label="Browse">
-      <a href="/work" class="folder">
-        <svg class="folder-icon" width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
-          <path d="M1 4h18v11H1z"/>
-          <path d="M1 4l1.5-3h5L9 4"/>
-        </svg>
-        <span>Work</span>
+    <nav class="folder-grid" aria-label="Browse">
+      <a href="/work" class="folder" style="--folder-color: var(--folder-work);">
+        <div class="folder-icon">
+          <svg viewBox="0 0 80 64" width="80" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="folder-body">
+              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
+            </g>
+            <g class="folder-tab">
+              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
+            </g>
+            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
+          </svg>
+        </div>
+        <span class="folder-label">Work</span>
       </a>
-      <a href="/blitz-feed" class="folder">
-        <svg class="folder-icon" width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
-          <path d="M1 4h18v11H1z"/>
-          <path d="M1 4l1.5-3h5L9 4"/>
-        </svg>
-        <span>bLitz Feed</span>
+
+      <a href="/blitz-feed" class="folder" style="--folder-color: var(--folder-feed);">
+        <div class="folder-icon">
+          <svg viewBox="0 0 80 64" width="80" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="folder-body">
+              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
+            </g>
+            <g class="folder-tab">
+              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
+            </g>
+            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
+          </svg>
+        </div>
+        <span class="folder-label">Feed</span>
+      </a>
+
+      <a href="/guest-book" class="folder" style="--folder-color: var(--folder-guestbook);">
+        <div class="folder-icon">
+          <svg viewBox="0 0 80 64" width="80" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="folder-body">
+              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
+            </g>
+            <g class="folder-tab">
+              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
+            </g>
+            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
+          </svg>
+        </div>
+        <span class="folder-label">Guest Book</span>
+      </a>
+
+      <a href="/about" class="folder" style="--folder-color: var(--folder-about);">
+        <div class="folder-icon">
+          <svg viewBox="0 0 80 64" width="80" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="folder-body">
+              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
+            </g>
+            <g class="folder-tab">
+              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
+            </g>
+            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
+          </svg>
+        </div>
+        <span class="folder-label">About</span>
       </a>
     </nav>
-
-    <section class="projects-section">
-      <h2>Projects</h2>
-      <div class="project-grid">
-        {projects.map((p) => (
-          <a href={`/work/${p.slug}`} class="project-card">
-            <h3>{p.title}</h3>
-            <p class="project-desc">{p.description}</p>
-            <span class="project-tech">{p.tech.join(' / ')}</span>
-          </a>
-        ))}
-      </div>
-    </section>
   </div>
 </BaseLayout>
 
@@ -46,7 +77,9 @@ import { projects } from '../data/projects';
   .home {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    align-items: center;
+    gap: var(--space-2xl);
+    padding-top: var(--space-xl);
   }
 
   .tagline {
@@ -56,109 +89,75 @@ import { projects } from '../data/projects';
     line-height: 1.2;
     color: var(--foreground);
     max-width: 20ch;
+    text-align: center;
   }
 
-  /* Folder navigation — Linux aesthetic */
-  .folder-nav {
+  .folder-grid {
     display: flex;
-    gap: var(--space-lg);
+    justify-content: center;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
   }
 
   .folder {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: var(--space-sm);
-    font-family: var(--font-mono);
-    font-size: var(--text-base);
+    text-decoration: none;
     color: var(--foreground);
-    text-decoration: none;
-    padding: var(--space-sm) var(--space-md);
-    border-radius: 4px;
-    transition: background-color var(--duration-fast) ease;
-  }
-
-  .folder:hover {
-    background-color: var(--surface);
-    text-decoration: none;
+    cursor: pointer;
   }
 
   .folder-icon {
-    flex-shrink: 0;
-    color: var(--muted);
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                filter 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, filter;
   }
 
   .folder:hover .folder-icon {
-    color: var(--accent);
+    transform: translateY(-8px) scale(1.08);
+    filter: drop-shadow(0 8px 16px color-mix(in srgb, var(--folder-color) 40%, transparent));
   }
 
-  /* Project grid */
-  .projects-section h2 {
+  .folder:hover .folder-tab {
+    transform-origin: 0 10px;
+    transform: rotate(-12deg);
+  }
+
+  .folder-tab {
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .folder-label {
     font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-md);
+    font-weight: 500;
+    transition: color 200ms ease;
   }
 
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
-  }
-
-  .project-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    padding: var(--space-md);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color var(--duration-fast) ease,
-                background-color var(--duration-fast) ease;
-  }
-
-  .project-card:hover {
-    border-color: var(--muted);
-    background-color: var(--surface);
-    text-decoration: none;
-  }
-
-  .project-card h3 {
-    font-size: var(--text-base);
-    font-weight: 600;
-    color: var(--foreground);
-  }
-
-  .project-desc {
-    font-size: var(--text-sm);
-    color: var(--secondary);
-    line-height: 1.5;
-  }
-
-  .project-tech {
-    font-size: var(--text-xs);
-    color: var(--muted);
-    margin-top: auto;
+  .folder:hover .folder-label {
+    color: var(--folder-color);
   }
 
   @media (max-width: 600px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .folder-nav {
-      flex-direction: column;
-      gap: var(--space-sm);
+    .folder-grid {
+      gap: var(--space-lg);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .folder,
-    .project-card {
+    .folder-icon,
+    .folder-tab,
+    .folder-label {
       transition: none;
+    }
+    .folder:hover .folder-icon {
+      transform: none;
+      filter: none;
+    }
+    .folder:hover .folder-tab {
+      transform: none;
     }
   }
 </style>
