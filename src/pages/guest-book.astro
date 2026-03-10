@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GuestBook from '../components/react/GuestBook';
+---
+
+<BaseLayout
+  title="Guest Book — John Litzsinger"
+  description="Leave a note. Say hi."
+  breadcrumbs={[{ label: 'Guest Book' }]}
+>
+  <div class="guestbook-page">
+    <h1>Guest Book</h1>
+    <p class="guestbook-intro">Leave a note. Say hi. Draw something.</p>
+    <GuestBook client:load />
+  </div>
+</BaseLayout>
+
+<style>
+  .guestbook-page { max-width: var(--content-max); }
+
+  h1 {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .guestbook-intro {
+    color: var(--muted);
+    margin-bottom: var(--space-xl);
+  }
+
+  :global(.gb-form) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  :global(.gb-input),
+  :global(.gb-textarea) {
+    font-family: var(--font);
+    font-size: var(--text-base);
+    color: var(--foreground);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-sm) 0;
+    outline: none;
+    transition: border-color var(--duration-fast) ease;
+  }
+
+  :global(.gb-input)::placeholder,
+  :global(.gb-textarea)::placeholder {
+    font-family: var(--font-mono);
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  :global(.gb-input):focus,
+  :global(.gb-textarea):focus {
+    border-color: var(--accent);
+  }
+
+  :global(.gb-textarea) {
+    resize: vertical;
+    min-height: 4rem;
+  }
+
+  :global(.gb-submit) {
+    align-self: flex-start;
+    font-family: var(--font-brand);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--background);
+    background: var(--accent);
+    border: none;
+    padding: var(--space-sm) var(--space-lg);
+    cursor: pointer;
+    transition: opacity var(--duration-fast) ease;
+  }
+
+  :global(.gb-submit):hover {
+    opacity: 0.85;
+  }
+
+  :global(.gb-submit):disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  :global(.gb-error) {
+    color: var(--accent);
+    font-size: var(--text-sm);
+  }
+
+  :global(.gb-entries) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.gb-entry) {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  :global(.gb-entry:first-child) {
+    border-top: 1px solid var(--border);
+  }
+
+  :global(.gb-entry-header) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--space-xs);
+  }
+
+  :global(.gb-entry-name) {
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  :global(.gb-entry-date) {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  :global(.gb-entry-message) {
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+</style>
