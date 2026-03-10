@@ -15,9 +15,9 @@ const { project } = Astro.props;
 <BaseLayout
   title={`${project.title} — John Litzsinger`}
   description={project.description}
+  breadcrumbs={[{ label: 'Work', href: '/work' }, { label: project.title }]}
 >
   <article class="project-detail">
-    <a href="/work" class="back-link">&larr; All projects</a>
     <h1>{project.title}</h1>
     <div class="tech-list">
       {project.tech.map((t) => (
@@ -40,20 +40,6 @@ const { project } = Astro.props;
 <style>
   .project-detail {
     max-width: var(--content-max);
-  }
-
-  .back-link {
-    display: inline-block;
-    font-size: var(--text-sm);
-    color: var(--muted);
-    text-decoration: none;
-    margin-bottom: var(--space-lg);
-    transition: color var(--duration-fast) ease;
-  }
-
-  .back-link:hover {
-    color: var(--foreground);
-    text-decoration: none;
   }
 
   h1 {
@@ -104,7 +90,6 @@ const { project } = Astro.props;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .back-link,
     .project-link {
       transition: none;
     }
