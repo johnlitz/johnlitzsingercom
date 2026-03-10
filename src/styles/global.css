@@ -15,6 +15,15 @@
   font-display: swap;
 }
 
+/* Urbanist — brand name only (variable, 100-900) */
+@font-face {
+  font-family: 'Urbanist';
+  src: url('/fonts/Urbanist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Reset */
 *,
 *::before,
@@ -42,6 +51,15 @@
   /* Typography — one sans-serif + system monospace accent */
   --font: 'Rethink Sans', system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, monospace;
+
+  /* Brand font */
+  --font-brand: 'Urbanist', system-ui, sans-serif;
+
+  /* Folder colors */
+  --folder-work: #3B82F6;
+  --folder-feed: #22C55E;
+  --folder-guestbook: #F59E0B;
+  --folder-about: #8B5CF6;
 
   /* Type scale */
   --text-xs: 0.8125rem;
