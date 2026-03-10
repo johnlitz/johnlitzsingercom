@@ -30,7 +30,7 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <BaseHead
       title={title}
@@ -127,7 +127,7 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
 
   .social-links {
     display: flex;
-    gap: var(--space-3);
+    gap: var(--space-xs);
     align-items: center;
   }
 
@@ -136,6 +136,9 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     text-decoration: none;
     display: flex;
     align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
     transition: color var(--duration-fast) ease;
   }
 
@@ -190,7 +193,7 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     align-items: center;
     max-width: var(--content-max);
     margin-inline: auto;
-    padding: var(--space-2xl) var(--gutter) var(--space-lg);
+    padding: var(--space-xl) var(--gutter) var(--space-lg);
     font-size: var(--text-xs);
     color: var(--muted);
   }
@@ -207,7 +210,7 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     }
 
     .social-links {
-      gap: var(--space-sm);
+      gap: 0;
     }
   }
 

@@ -78,7 +78,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-2xl);
+    gap: var(--space-xl);
     padding-top: var(--space-xl);
   }
 
@@ -110,8 +110,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .folder-icon {
-    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
-                filter 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
+                filter var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform, filter;
   }
 
@@ -126,14 +126,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .folder-tab {
-    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
   }
 
   .folder-label {
     font-size: var(--text-sm);
     font-weight: 500;
-    transition: color 200ms ease;
+    transition: color var(--duration-base) ease;
   }
 
   .folder:hover .folder-label {
