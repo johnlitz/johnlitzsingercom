@@ -37,3 +37,6 @@ keybaseDocsSource/
 # temporary files
 tmp/
 polyfill-url.mjs
+
+# git worktrees
+.worktrees/
