@@ -1,120 +1,103 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const experiences = [
-  {
-    title: 'Rotational Intern, Employee Benefits',
-    company: 'Shepherd Insurance',
-    period: 'Summer 2025',
-    summary: 'Analyzed pharmacy benefit structures and drug trend data to surface cost-saving opportunities in employer health plans.',
-  },
-  {
-    title: 'Co-founder & Finance Executive',
-    company: 'Purdue Launch Consulting Club',
-    period: '2023 – Present',
-    summary: 'Co-founded a student consulting org — managed finances, led project teams, and built the website.',
-  },
-  {
-    title: 'Founder & Head Analyst',
-    company: 'Father Flips',
-    period: '2021 – 2023',
-    summary: 'Built a market analysis group around limited-availability software pricing. 260% client ROI.',
-  },
-];
+import { projects } from '../data/projects';
 ---
 
 <BaseLayout
   title="Work — John Litzsinger"
-  description="Work experience and professional background."
+  description="Selected projects in finance, data, and technology."
+  breadcrumbs={[{ label: 'Work' }]}
 >
   <div class="work-page">
     <h1>Work</h1>
-    <div class="list">
-      {experiences.map((exp) => (
-        <div class="entry">
-          <div class="entry-header">
-            <div>
-              <h3>{exp.title}</h3>
-              <p class="company">{exp.company}</p>
-            </div>
-            <span class="period">{exp.period}</span>
-          </div>
-          <p class="summary">{exp.summary}</p>
-        </div>
+    <div class="file-listing">
+      {projects.map((p) => (
+        <a href={`/work/${p.slug}`} class="file-row">
+          <span class="file-name">{p.title}</span>
+          <span class="file-tech">{p.tech.join(' / ')}</span>
+          <span class="file-links">
+            {p.links.map((link, i) => (
+              <>
+                {i > 0 && <span class="sep"> / </span>}
+                <span>{link.label}</span>
+              </>
+            ))}
+          </span>
+        </a>
       ))}
     </div>
   </div>
 </BaseLayout>
 
 <style>
-  .work-page {
-    max-width: var(--content-max);
-  }
+  .work-page { max-width: var(--content-max); }
 
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
   }
 
-  .list {
+  .file-listing {
     display: flex;
     flex-direction: column;
   }
 
-  .entry {
-    padding: var(--space-lg) 0;
+  .file-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-sm);
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) ease;
+  }
+
+  .file-row:first-child {
     border-top: 1px solid var(--border);
   }
 
-  .entry-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xs);
+  .file-row:hover {
+    background-color: var(--surface);
+    text-decoration: none;
   }
 
-  h3 {
-    font-size: var(--text-lg);
+  .file-row:hover .file-name {
+    color: var(--accent);
+  }
+
+  .file-name {
     font-weight: 600;
     color: var(--foreground);
+    flex: 1;
+    transition: color var(--duration-fast) ease;
   }
 
-  .company {
-    font-size: var(--text-sm);
+  .file-tech {
+    font-size: var(--text-xs);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .file-links {
+    font-size: var(--text-xs);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .file-links .sep {
     color: var(--muted);
   }
 
-  .period {
-    font-size: var(--text-sm);
-    color: var(--secondary);
-    white-space: nowrap;
-    flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .summary {
-    font-size: var(--text-sm);
-    color: var(--secondary);
-    line-height: 1.55;
-    max-width: 60ch;
-  }
-
-  @media (max-width: 768px) {
-    .entry {
-      padding: var(--space-md) 0;
-    }
-
-    .entry-header {
+  @media (max-width: 600px) {
+    .file-row {
       flex-direction: column;
-      gap: 0;
+      gap: var(--space-xs);
     }
+  }
 
-    .period {
-      margin-top: var(--space-xs);
-      font-size: var(--text-sm);
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .file-row, .file-name { transition: none; }
   }
 </style>

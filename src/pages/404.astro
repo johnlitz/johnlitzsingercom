@@ -5,16 +5,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout
   title="Page Not Found — John Litzsinger"
   description="The page you're looking for doesn't exist."
+  breadcrumbs={[{ label: '404' }]}
 >
   <div class="not-found">
     <h1>404</h1>
     <p>The page you're looking for doesn't exist.</p>
-    <div class="links">
-      <a href="/">Go home</a>
-      <a href="/work">See my work</a>
-      <a href="/projects">View projects</a>
-      <a href="/blog">Read the blog</a>
-    </div>
+    <a href="/">Go home</a>
   </div>
 </BaseLayout>
 
@@ -24,7 +20,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   h1 {
-    font-size: var(--text-hero);
+    font-size: var(--text-2xl);
     font-weight: 800;
     color: var(--muted);
     margin-bottom: var(--space-md);
@@ -33,11 +29,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   p {
     color: var(--secondary);
     margin-bottom: var(--space-lg);
-  }
-
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-md);
   }
 </style>

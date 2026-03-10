@@ -13,7 +13,7 @@ export default defineConfig({
     mdx(),
     react(),
     sitemap({
-      filter: (page) => !page.includes('/draft/') && !page.includes('/contact/thanks'),
+      filter: (page) => !page.includes('/draft/'),
     }),
   ],
   adapter: vercel({
