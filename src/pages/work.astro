@@ -10,19 +10,17 @@ import { projects } from '../data/projects';
 >
   <div class="work-page">
     <h1>Work</h1>
-    <div class="file-listing">
+    <div class="project-grid">
       {projects.map((p) => (
-        <a href={`/work/${p.slug}`} class="file-row">
-          <span class="file-name">{p.title}</span>
-          <span class="file-tech">{p.tech.join(' / ')}</span>
-          <span class="file-links">
-            {p.links.map((link, i) => (
-              <>
-                {i > 0 && <span class="sep"> / </span>}
-                <span>{link.label}</span>
-              </>
-            ))}
-          </span>
+        <a href={`/work/${p.slug}`} class="project-tile">
+          <div class="tile-icon">
+            <svg viewBox="0 0 48 56" width="48" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 0h28l16 16v36a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4Z" fill="var(--muted)" opacity="0.25" />
+              <path d="M32 0l16 16H36a4 4 0 0 1-4-4V0Z" fill="var(--muted)" opacity="0.4" />
+            </svg>
+          </div>
+          <span class="tile-title">{p.title}</span>
+          <span class="tile-tech">{p.tech.join(' / ')}</span>
         </a>
       ))}
     </div>
@@ -30,74 +28,83 @@ import { projects } from '../data/projects';
 </BaseLayout>
 
 <style>
-  .work-page { max-width: var(--content-max); }
+  .work-page {
+    max-width: var(--content-max);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    text-align: center;
   }
 
-  .file-listing {
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xl);
+    width: 100%;
+  }
+
+  .project-tile {
     display: flex;
     flex-direction: column;
-  }
-
-  .file-row {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-md);
-    padding: var(--space-md) var(--space-sm);
-    border-bottom: 1px solid var(--border);
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-md);
     text-decoration: none;
     color: inherit;
-    transition: background-color var(--duration-fast) ease;
+    border-radius: 8px;
+    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .file-row:first-child {
-    border-top: 1px solid var(--border);
-  }
-
-  .file-row:hover {
-    background-color: var(--surface);
+  .project-tile:hover {
+    transform: translateY(-4px) scale(1.03);
     text-decoration: none;
+    will-change: transform;
   }
 
-  .file-row:hover .file-name {
+  .project-tile:hover .tile-title {
     color: var(--accent);
   }
 
-  .file-name {
+  .tile-icon {
+    margin-bottom: var(--space-xs);
+  }
+
+  .tile-title {
     font-weight: 600;
+    font-size: var(--text-base);
     color: var(--foreground);
-    flex: 1;
+    text-align: center;
     transition: color var(--duration-fast) ease;
   }
 
-  .file-tech {
+  .tile-tech {
     font-size: var(--text-xs);
     color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .file-links {
-    font-size: var(--text-xs);
-    color: var(--accent);
-    white-space: nowrap;
-  }
-
-  .file-links .sep {
-    color: var(--muted);
+    text-align: center;
   }
 
   @media (max-width: 600px) {
-    .file-row {
-      flex-direction: column;
-      gap: var(--space-xs);
+    .project-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .file-row, .file-name { transition: none; }
+    .project-tile {
+      transition: none;
+    }
+    .project-tile:hover {
+      transform: none;
+    }
+    .tile-title {
+      transition: none;
+    }
   }
 </style>

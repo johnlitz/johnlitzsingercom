@@ -16,24 +16,34 @@ import GuestBook from '../components/react/GuestBook';
 </BaseLayout>
 
 <style>
-  .guestbook-page { max-width: var(--content-max); }
+  .guestbook-page {
+    max-width: var(--content-max);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
     margin-bottom: var(--space-sm);
+    text-align: center;
   }
 
   .guestbook-intro {
     color: var(--muted);
     margin-bottom: var(--space-xl);
+    text-align: center;
   }
 
   :global(.gb-form) {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--space-md);
     margin-bottom: var(--space-xl);
+    width: 100%;
+    max-width: 400px;
   }
 
   :global(.gb-input),
@@ -46,6 +56,8 @@ import GuestBook from '../components/react/GuestBook';
     border-bottom: 1px solid var(--border);
     padding: var(--space-sm) 0;
     outline: none;
+    width: 100%;
+    text-align: center;
     transition: border-color var(--duration-fast) ease;
   }
 
@@ -64,10 +76,10 @@ import GuestBook from '../components/react/GuestBook';
   :global(.gb-textarea) {
     resize: vertical;
     min-height: 4rem;
+    text-align: left;
   }
 
   :global(.gb-submit) {
-    align-self: flex-start;
     font-family: var(--font-brand);
     font-weight: 700;
     font-size: var(--text-sm);
@@ -91,27 +103,31 @@ import GuestBook from '../components/react/GuestBook';
   :global(.gb-error) {
     color: var(--accent);
     font-size: var(--text-sm);
+    text-align: center;
   }
 
   :global(.gb-entries) {
     display: flex;
     flex-direction: column;
+    gap: var(--space-xl);
+    width: 100%;
+    align-items: center;
   }
 
   :global(.gb-entry) {
-    padding: var(--space-md) 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  :global(.gb-entry:first-child) {
-    border-top: 1px solid var(--border);
+    padding: var(--space-lg);
+    background: var(--surface);
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
   }
 
   :global(.gb-entry-header) {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: var(--space-xs);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
   }
 
   :global(.gb-entry-name) {

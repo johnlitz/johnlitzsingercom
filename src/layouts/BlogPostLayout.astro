@@ -91,11 +91,16 @@ const wordCountFormatted = words >= 1000
   }
 
   .post-header {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .post-meta {
-    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
     color: var(--muted);
     margin-bottom: var(--space-sm);
   }
@@ -123,6 +128,7 @@ const wordCountFormatted = words >= 1000
   .tags {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: var(--space-sm);
   }
 
@@ -203,11 +209,10 @@ const wordCountFormatted = words >= 1000
   .post-nav {
     margin-top: var(--space-2xl);
     padding-top: var(--space-lg);
-    border-top: 1px solid var(--border);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: var(--space-md);
+    gap: var(--space-xl);
   }
 
   .post-nav-link {

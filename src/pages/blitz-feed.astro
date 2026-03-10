@@ -18,7 +18,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     ) : (
       <div class="post-listing">
         {posts.map((post) => (
-          <a href={`/blog/${post.id}`} class="post-row">
+          <a href={`/blog/${post.id}`} class="post-card">
+            <span class="accent-dot" aria-hidden="true"></span>
             <time datetime={post.data.pubDate.toISOString()}>
               {post.data.pubDate.toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -29,7 +30,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
             <h3>{post.data.title}</h3>
             <p>{post.data.description}</p>
             {post.data.tags.length > 0 && (
-              <span class="post-tags">tags: {post.data.tags.join(', ')}</span>
+              <span class="post-tags">{post.data.tags.join(' · ')}</span>
             )}
           </a>
         ))}
@@ -42,50 +43,72 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 </BaseLayout>
 
 <style>
-  .feed-page { max-width: var(--content-max); }
+  .feed-page {
+    max-width: var(--content-max);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    text-align: center;
   }
 
   .post-listing {
     display: flex;
     flex-direction: column;
+    gap: var(--space-xl);
+    width: 100%;
+    align-items: center;
   }
 
-  .post-row {
-    display: block;
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     text-decoration: none;
     color: inherit;
-    padding: var(--space-md) var(--space-sm);
-    border-bottom: 1px solid var(--border);
-    transition: background-color var(--duration-fast) ease;
+    padding: var(--space-lg) var(--space-md);
+    max-width: 480px;
+    width: 100%;
+    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .post-row:first-child {
-    border-top: 1px solid var(--border);
-  }
-
-  .post-row:hover {
-    background-color: var(--surface);
+  .post-card:hover {
+    transform: translateY(-2px);
     text-decoration: none;
   }
 
-  .post-row:hover h3 {
+  .post-card:hover h3 {
     color: var(--accent);
   }
 
-  .post-row time {
+  .accent-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--folder-feed);
+    margin-bottom: var(--space-md);
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .post-card:hover .accent-dot {
+    transform: scale(1.5);
+  }
+
+  .post-card time {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--muted);
     display: block;
-    margin-bottom: var(--space-xs);
+    margin-bottom: var(--space-sm);
   }
 
-  .post-row h3 {
+  .post-card h3 {
     font-size: var(--text-lg);
     font-weight: 600;
     color: var(--foreground);
@@ -93,7 +116,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     transition: color var(--duration-fast) ease;
   }
 
-  .post-row p {
+  .post-card p {
     font-size: var(--text-sm);
     color: var(--secondary);
     line-height: 1.5;
@@ -104,16 +127,19 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--muted);
-    margin-top: var(--space-xs);
+    margin-top: var(--space-sm);
   }
 
   .empty, .more-soon {
     color: var(--muted);
     font-size: var(--text-sm);
     margin-top: var(--space-lg);
+    text-align: center;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .post-row, .post-row h3 { transition: none; }
+    .post-card, .post-card h3, .accent-dot { transition: none; }
+    .post-card:hover { transform: none; }
+    .post-card:hover .accent-dot { transform: none; }
   }
 </style>
