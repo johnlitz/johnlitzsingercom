@@ -14,23 +14,38 @@ interface Props {
   breadcrumbs?: { label: string; href?: string }[];
 }
 
+import { currentStatus } from '../data/status';
+
 const { title, description, image, type, publishedDate, noindex, breadcrumbs } = Astro.props;
 const contentFade = fade({ duration: '0.15s' });
 const pathname = Astro.url.pathname;
 
-// Derive section color from first breadcrumb label
-const sectionColorMap: Record<string, string> = {
-  'Work': 'var(--folder-work)',
-  'Feed': 'var(--folder-feed)',
-  'Guest Book': 'var(--folder-guestbook)',
-  'About': 'var(--folder-about)',
+// Derive section color and background from first breadcrumb label
+const sectionColorMap: Record<string, { color: string; bg: string }> = {
+  'Now': { color: 'var(--now-500)', bg: 'var(--now-50)' },
+  'Work': { color: 'var(--work-500)', bg: 'var(--work-50)' },
+  'Guest Book': { color: 'var(--guestbook-500)', bg: 'var(--guestbook-50)' },
+  'About': { color: 'var(--about-500)', bg: 'var(--about-50)' },
 };
 const firstCrumb = breadcrumbs?.[0]?.label ?? '';
-const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
+const section = sectionColorMap[firstCrumb];
+const sectionColor = section?.color ?? 'var(--accent)';
+const sectionBg = section?.bg ?? 'var(--background)';
+
+// CSS filter to shift logo icon to match section color.
+// hue-rotate shifts the icon's hue; brightness corrects for the
+// luminance difference between dark red (#d80000) and each target color.
+const sectionFilterMap: Record<string, string> = {
+  'Now':        'hue-rotate(217deg) saturate(0.85) brightness(1.75)',
+  'Work':       'hue-rotate(142deg) saturate(0.75) brightness(1.95)',
+  'Guest Book': 'hue-rotate(38deg)  saturate(0.9)  brightness(1.65)',
+  'About':      'hue-rotate(262deg) saturate(0.85) brightness(1.25)',
+};
+const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
 ---
 
 <!doctype html>
-<html lang="en" transition:animate="none">
+<html lang="en" transition:animate="none" style={`--page-bg: ${sectionBg}; --section-color: ${sectionColor}; --icon-filter: ${iconFilter};`}>
   <head>
     <BaseHead
       title={title}
@@ -42,7 +57,7 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     />
     <ClientRouter />
   </head>
-  <body>
+  <body class="viewport-lock">
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
     <header class="top-bar">
@@ -67,7 +82,13 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     </header>
 
     {breadcrumbs && breadcrumbs.length > 0 && (
-      <nav class="breadcrumb" aria-label="Breadcrumb" style={`--section-color: ${sectionColor};`}>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="back-arrow" aria-label="Back to home">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5" />
+            <path d="m12 19-7-7 7-7" />
+          </svg>
+        </a>
         <svg class="crumb-folder-icon" viewBox="0 0 80 64" width="16" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--section-color)" />
           <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--section-color)" />
@@ -87,25 +108,47 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
       </nav>
     )}
 
-    <main id="main-content" transition:animate={contentFade}>
+    <main id="main-content" class="page-content" transition:animate={contentFade}>
       <slot />
     </main>
 
     <footer class="site-footer">
       <span>&copy; 2026 John Litzsinger</span>
+      <span class="footer-status">
+        <span class="footer-dot" aria-hidden="true"></span>
+        {currentStatus.url ? (
+          <a href={currentStatus.url}>{currentStatus.text}</a>
+        ) : (
+          currentStatus.text
+        )}
+      </span>
       <span>Built with Astro</span>
     </footer>
   </body>
 </html>
 
 <style>
+  html {
+    background-color: var(--page-bg, var(--background));
+    transition: background-color 0.3s ease;
+  }
+
+  .viewport-lock {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
   .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: var(--content-max);
     margin-inline: auto;
-    padding: var(--space-xl) var(--gutter) var(--space-lg);
+    width: 100%;
+    padding: var(--space-md) var(--gutter) var(--space-sm);
+    flex-shrink: 0;
   }
 
   .brand {
@@ -123,6 +166,30 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
 
   .brand-icon {
     border-radius: 4px;
+    filter: var(--icon-filter, none);
+    transition: filter 0.3s ease;
+  }
+
+  .brand-name {
+    position: relative;
+  }
+
+  .brand-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--section-color, var(--accent));
+    border-radius: 1px;
+    transition: left 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .brand:hover .brand-name::after {
+    left: 0;
+    right: 0;
   }
 
   .social-links {
@@ -143,7 +210,7 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
   }
 
   .social-links a:hover {
-    color: var(--foreground);
+    color: var(--section-color, var(--accent));
     text-decoration: none;
   }
 
@@ -154,9 +221,31 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     align-items: center;
     justify-content: center;
     gap: var(--space-sm);
-    padding: var(--space-sm) var(--gutter);
+    padding: var(--space-xs) var(--gutter);
     max-width: var(--content-max);
     margin-inline: auto;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .back-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    text-decoration: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    margin-right: var(--space-xs);
+    transition: color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+  }
+
+  .back-arrow:hover {
+    color: var(--section-color);
+    background: color-mix(in srgb, var(--section-color) 8%, transparent);
+    text-decoration: none;
   }
 
   .crumb-folder-icon {
@@ -193,20 +282,54 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
     align-items: center;
     max-width: var(--content-max);
     margin-inline: auto;
-    padding: var(--space-xl) var(--gutter) var(--space-lg);
+    width: 100%;
+    padding: var(--space-sm) var(--gutter);
     font-size: var(--text-xs);
     color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-mono);
+  }
+
+  .footer-status a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .footer-status a:hover {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  .footer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--status-green);
+    animation: status-pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
   main {
+    flex: 1;
+    min-height: 0;
     max-width: var(--content-max);
     margin-inline: auto;
-    padding: 0 var(--gutter) var(--space-2xl);
+    width: 100%;
+    padding: var(--space-md) var(--gutter) 0;
+    display: flex;
+    flex-direction: column;
   }
 
   @media (max-width: 768px) {
     .top-bar {
-      padding: var(--space-lg) var(--gutter) var(--space-md);
+      padding: var(--space-sm) var(--gutter) var(--space-xs);
     }
 
     .social-links {
@@ -226,9 +349,19 @@ const sectionColor = sectionColorMap[firstCrumb] ?? 'var(--muted)';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .social-links a,
-    .crumb {
+    html {
       transition: none;
+    }
+    .brand-icon,
+    .brand-name::after,
+    .social-links a,
+    .crumb,
+    .back-arrow,
+    .footer-status a {
+      transition: none;
+    }
+    .footer-dot {
+      animation: none;
     }
   }
 </style>

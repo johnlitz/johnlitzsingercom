@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import GuestBook from '../components/react/GuestBook';
+import GuestBookPage from '../components/react/GuestBookPage';
 ---
 
 <BaseLayout
@@ -10,139 +10,23 @@ import GuestBook from '../components/react/GuestBook';
 >
   <div class="guestbook-page">
     <h1>Guest Book</h1>
-    <p class="guestbook-intro">Leave a note. Say hi. Draw something.</p>
-    <GuestBook client:load />
+    <GuestBookPage client:load />
   </div>
 </BaseLayout>
 
 <style>
   .guestbook-page {
-    max-width: var(--content-max);
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: var(--space-md);
+    flex: 1;
   }
 
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-sm);
+    color: var(--guestbook-500);
     text-align: center;
-  }
-
-  .guestbook-intro {
-    color: var(--muted);
-    margin-bottom: var(--space-xl);
-    text-align: center;
-  }
-
-  :global(.gb-form) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-    width: 100%;
-    max-width: 400px;
-  }
-
-  :global(.gb-input),
-  :global(.gb-textarea) {
-    font-family: var(--font);
-    font-size: var(--text-base);
-    color: var(--foreground);
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    padding: var(--space-sm) 0;
-    outline: none;
-    width: 100%;
-    text-align: center;
-    transition: border-color var(--duration-fast) ease;
-  }
-
-  :global(.gb-input)::placeholder,
-  :global(.gb-textarea)::placeholder {
-    font-family: var(--font-mono);
-    color: var(--muted);
-    opacity: 0.6;
-  }
-
-  :global(.gb-input):focus,
-  :global(.gb-textarea):focus {
-    border-color: var(--accent);
-  }
-
-  :global(.gb-textarea) {
-    resize: vertical;
-    min-height: 4rem;
-    text-align: left;
-  }
-
-  :global(.gb-submit) {
-    font-family: var(--font-brand);
-    font-weight: 700;
-    font-size: var(--text-sm);
-    color: var(--background);
-    background: var(--accent);
-    border: none;
-    padding: var(--space-sm) var(--space-lg);
-    cursor: pointer;
-    transition: opacity var(--duration-fast) ease;
-  }
-
-  :global(.gb-submit):hover {
-    opacity: 0.85;
-  }
-
-  :global(.gb-submit):disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  :global(.gb-error) {
-    color: var(--accent);
-    font-size: var(--text-sm);
-    text-align: center;
-  }
-
-  :global(.gb-entries) {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-    width: 100%;
-    align-items: center;
-  }
-
-  :global(.gb-entry) {
-    padding: var(--space-lg);
-    background: var(--surface);
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-  }
-
-  :global(.gb-entry-header) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-xs);
-    margin-bottom: var(--space-sm);
-  }
-
-  :global(.gb-entry-name) {
-    font-weight: 600;
-    color: var(--foreground);
-  }
-
-  :global(.gb-entry-date) {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--muted);
-  }
-
-  :global(.gb-entry-message) {
-    color: var(--secondary);
-    line-height: 1.5;
   }
 </style>

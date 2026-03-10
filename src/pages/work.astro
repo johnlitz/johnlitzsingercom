@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCarousel from '../components/react/ProjectCarousel';
 import { projects } from '../data/projects';
 ---
 
@@ -10,100 +11,24 @@ import { projects } from '../data/projects';
 >
   <div class="work-page">
     <h1>Work</h1>
-    <div class="project-grid">
-      {projects.map((p) => (
-        <a href={`/work/${p.slug}`} class="project-tile">
-          <div class="tile-icon">
-            <svg viewBox="0 0 48 56" width="48" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 0h28l16 16v36a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4Z" fill="var(--muted)" opacity="0.25" />
-              <path d="M32 0l16 16H36a4 4 0 0 1-4-4V0Z" fill="var(--muted)" opacity="0.4" />
-            </svg>
-          </div>
-          <span class="tile-title">{p.title}</span>
-          <span class="tile-tech">{p.tech.join(' / ')}</span>
-        </a>
-      ))}
-    </div>
+    <ProjectCarousel client:load projects={projects} />
   </div>
 </BaseLayout>
 
 <style>
   .work-page {
-    max-width: var(--content-max);
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: var(--space-sm);
+    flex: 1;
+    justify-content: center;
   }
 
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-xl);
+    color: var(--work-500);
     text-align: center;
-  }
-
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-xl);
-    width: 100%;
-  }
-
-  .project-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-lg) var(--space-md);
-    text-decoration: none;
-    color: inherit;
-    border-radius: 8px;
-    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .project-tile:hover {
-    transform: translateY(-4px) scale(1.03);
-    text-decoration: none;
-  }
-
-  .project-tile:hover .tile-title {
-    color: var(--accent);
-  }
-
-  .tile-icon {
-    margin-bottom: var(--space-xs);
-  }
-
-  .tile-title {
-    font-weight: 600;
-    font-size: var(--text-base);
-    color: var(--foreground);
-    text-align: center;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .tile-tech {
-    font-size: var(--text-xs);
-    color: var(--muted);
-    text-align: center;
-  }
-
-  @media (max-width: 600px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-lg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .project-tile {
-      transition: none;
-    }
-    .project-tile:hover {
-      transform: none;
-    }
-    .tile-title {
-      transition: none;
-    }
   }
 </style>

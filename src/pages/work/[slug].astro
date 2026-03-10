@@ -3,13 +3,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { projects } from '../../data/projects';
 
 export function getStaticPaths() {
-  return projects.map((project) => ({
+  return projects.map((project, index) => ({
     params: { slug: project.slug },
-    props: { project },
+    props: {
+      project,
+      prev: projects[index - 1] ?? null,
+      next: projects[index + 1] ?? null,
+    },
   }));
 }
 
-const { project } = Astro.props;
+const { project, prev, next } = Astro.props;
 ---
 
 <BaseLayout
@@ -18,21 +22,43 @@ const { project } = Astro.props;
   breadcrumbs={[{ label: 'Work', href: '/work' }, { label: project.title }]}
 >
   <article class="project-detail">
-    <h1>{project.title}</h1>
+    <div class="hero">
+      <h1>{project.title}</h1>
+    </div>
+
+    <p class="description">{project.description}</p>
+
+    {project.links.length > 0 && (
+      <div class="project-links">
+        {project.links.map((link) => (
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="project-link-btn">
+            {link.label}
+          </a>
+        ))}
+      </div>
+    )}
+
     <div class="tech-list">
       {project.tech.map((t) => (
         <span class="tech-pill">{t}</span>
       ))}
     </div>
-    <p class="description">{project.description}</p>
-    {project.links.length > 0 && (
-      <div class="project-links">
-        {project.links.map((link) => (
-          <a href={link.url} target="_blank" rel="noopener noreferrer" class="project-link">
-            {link.label} &rarr;
+
+    {(prev || next) && (
+      <nav class="project-nav" aria-label="Project navigation">
+        {prev ? (
+          <a href={`/work/${prev.slug}`} class="nav-link nav-prev">
+            <span class="nav-direction">&larr; Previous</span>
+            <span class="nav-title">{prev.title}</span>
           </a>
-        ))}
-      </div>
+        ) : <div />}
+        {next ? (
+          <a href={`/work/${next.slug}`} class="nav-link nav-next">
+            <span class="nav-direction">Next &rarr;</span>
+            <span class="nav-title">{next.title}</span>
+          </a>
+        ) : <div />}
+      </nav>
     )}
   </article>
 </BaseLayout>
@@ -45,11 +71,56 @@ const { project } = Astro.props;
     align-items: center;
   }
 
+  .hero {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl) var(--space-md);
+    margin-bottom: var(--space-lg);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--work-500) 12%, #ffffff), color-mix(in srgb, var(--work-500) 4%, #ffffff));
+    border-radius: 12px;
+  }
+
   h1 {
     font-size: var(--text-2xl);
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-md);
     text-align: center;
+    color: var(--foreground);
+  }
+
+  .description {
+    font-size: var(--text-lg);
+    color: var(--secondary);
+    line-height: 1.65;
+    max-width: 50ch;
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .project-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .project-link-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-6);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--work-500);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity var(--duration-fast) ease;
+  }
+
+  .project-link-btn:hover {
+    opacity: 0.85;
+    text-decoration: none;
   }
 
   .tech-list {
@@ -57,7 +128,7 @@ const { project } = Astro.props;
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
   }
 
   .tech-pill {
@@ -69,37 +140,53 @@ const { project } = Astro.props;
     border-radius: 4px;
   }
 
-  .description {
-    font-size: var(--text-base);
-    color: var(--secondary);
-    line-height: 1.65;
-    max-width: 50ch;
-    text-align: center;
-    margin-bottom: var(--space-lg);
-  }
-
-  .project-links {
+  .project-nav {
     display: flex;
-    justify-content: center;
-    gap: var(--space-lg);
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--space-md);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border);
   }
 
-  .project-link {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--accent);
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
     text-decoration: none;
+    color: inherit;
     transition: color var(--duration-fast) ease;
   }
 
-  .project-link:hover {
-    color: var(--accent-hover);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .nav-link:hover {
+    text-decoration: none;
+  }
+
+  .nav-link:hover .nav-title {
+    color: var(--work-500);
+  }
+
+  .nav-next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .nav-direction {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .nav-title {
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--foreground);
+    transition: color var(--duration-fast) ease;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .project-link {
+    .project-link-btn,
+    .nav-title {
       transition: none;
     }
   }
