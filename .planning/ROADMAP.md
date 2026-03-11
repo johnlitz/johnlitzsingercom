@@ -43,7 +43,13 @@
 11. User touches carousel on mobile device and can navigate with arrows, dots visible and tappable
 12. User views footer and sees status text well-formatted with animated link hover in section color
 
-**Plans:** TBD (3-4 plans expected)
+**Plans:** 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Homepage hero layout (brand name as hero, tagline as subtitle, larger logo)
+- [ ] 01-02-PLAN.md — Inner pages polish (Now table-of-contents, About bio, 404 folder metaphor, blog prose, footer copy)
+- [ ] 01-03-PLAN.md — Chrome polish (transitions, section colors, Work + Guest Book spacing, design philosophy doc)
+- [ ] 01-04-PLAN.md — Mobile responsive (viewport-lock release, folder carousel, carousel touch, Guest Book mobile)
 
 ---
 
@@ -113,7 +119,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Design Polish | 0/3 | Not started | — |
+| 1. Design Polish | 0/4 | In progress | — |
 | 2. Performance Optimization & Code Quality | 0/2 | Not started | — |
 | 3. Guest Book Backend | 0/1 | Not started | — |
 | 4. Ship | 0/1 | Not started | — |
@@ -121,3 +127,4 @@
 ---
 
 *Roadmap created: 2026-03-11*
+*Phase 1 plans defined: 2026-03-11*
