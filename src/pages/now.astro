@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const entries = (await getCollection('blog', ({ data }) => !data.draft))
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const lastUpdated = entries[0]?.data.pubDate ?? new Date();
+const lastUpdated = posts[0]?.data.pubDate ?? new Date();
 ---
 
 <BaseLayout
@@ -15,7 +15,6 @@ const lastUpdated = entries[0]?.data.pubDate ?? new Date();
 >
   <div class="now-page">
     <header class="now-header">
-      <h1>Now</h1>
       <time class="last-updated" datetime={lastUpdated.toISOString()}>
         Last updated {lastUpdated.toLocaleDateString('en-US', {
           year: 'numeric',
@@ -25,48 +24,33 @@ const lastUpdated = entries[0]?.data.pubDate ?? new Date();
       </time>
     </header>
 
-    {entries.length === 0 ? (
-      <p class="empty">Nothing here yet. Check back soon.</p>
+    {posts.length === 0 ? (
+      <p class="empty">No entries yet.</p>
     ) : (
-      <div class="entry-feed">
-        {entries.map((entry) => {
-          const isUpdate = entry.data.type === 'update';
-          return isUpdate ? (
-            <div class="entry-card entry-update">
-              <p class="update-text">{entry.data.description}</p>
-              <time datetime={entry.data.pubDate.toISOString()}>
-                {entry.data.pubDate.toLocaleDateString('en-US', {
+      <ul class="entry-list">
+        {posts.map((post) => (
+          <li class="entry-row-item">
+            <a href={`/blog/${post.id}`} class="entry-row">
+              <span class="entry-title">{post.data.title}</span>
+              <time
+                datetime={post.data.pubDate.toISOString()}
+                class="entry-date"
+              >
+                {post.data.pubDate.toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
                 })}
               </time>
-            </div>
-          ) : (
-            <a href={`/blog/${entry.id}`} class="entry-card entry-post">
-              <span class="post-dot" aria-hidden="true"></span>
-              <time datetime={entry.data.pubDate.toISOString()}>
-                {entry.data.pubDate.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </time>
-              <h3>{entry.data.title}</h3>
-              <p>{entry.data.description}</p>
-              {entry.data.tags.length > 0 && (
-                <span class="post-tags">{entry.data.tags.join(' · ')}</span>
-              )}
             </a>
-          );
-        })}
-      </div>
+          </li>
+        ))}
+      </ul>
     )}
   </div>
 </BaseLayout>
 
 <style>
   .now-page {
-    max-width: var(--content-max);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -78,134 +62,66 @@ const lastUpdated = entries[0]?.data.pubDate ?? new Date();
     margin-bottom: var(--space-md);
   }
 
-  h1 {
-    font-size: var(--text-2xl);
-    letter-spacing: -0.02em;
-    color: var(--now-500);
-    margin-bottom: var(--space-xs);
-  }
-
   .last-updated {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--muted);
   }
 
-  .entry-feed {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  .entry-list {
+    list-style: none;
     width: 100%;
-    max-width: 540px;
+    max-width: 480px;
+    margin-top: var(--space-md);
+    padding: 0;
   }
 
-  .entry-card {
-    padding: var(--space-md) var(--space-6);
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow var(--duration-base) ease;
+  .entry-row-item:not(:last-child) .entry-row {
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  /* Status updates — compact with blue left border */
-  .entry-update {
-    border-left: 3px solid var(--now-500);
+  .entry-row {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  .entry-update .update-text {
-    color: var(--foreground);
-    line-height: 1.5;
-  }
-
-  .entry-update time {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--muted);
-  }
-
-  /* Blog posts — larger cards */
-  .entry-post {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-lg);
+    padding: var(--space-3) 0;
     text-decoration: none;
     color: inherit;
-  }
-
-  .entry-post:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    text-decoration: none;
-  }
-
-  .entry-post:hover h3 {
-    color: var(--now-500);
-  }
-
-  .post-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--now-500);
-    margin-bottom: var(--space-sm);
-    transition: transform var(--duration-fast) ease;
-  }
-
-  .entry-post:hover .post-dot {
-    transform: scale(1.5);
-  }
-
-  .entry-post time {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--muted);
-    display: block;
-    margin-bottom: var(--space-sm);
-  }
-
-  .entry-post h3 {
-    font-size: var(--text-lg);
-    font-weight: 600;
-    color: var(--foreground);
-    margin-bottom: var(--space-xs);
     transition: color var(--duration-fast) ease;
   }
 
-  .entry-post p {
-    font-size: var(--text-sm);
-    color: var(--secondary);
-    line-height: 1.5;
+  .entry-row:hover .entry-title {
+    color: var(--now-500);
   }
 
-  .post-tags {
-    display: block;
+  .entry-title {
+    flex: 1;
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--foreground);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .entry-date {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--muted);
-    margin-top: var(--space-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .empty {
     color: var(--muted);
     font-size: var(--text-sm);
     text-align: center;
+    margin-top: var(--space-md);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .entry-card,
-    .entry-post h3,
-    .post-dot {
+    .entry-row,
+    .entry-title {
       transition: none;
-    }
-    .entry-post:hover {
-      transform: none;
-    }
-    .entry-post:hover .post-dot {
-      transform: none;
     }
   }
 </style>
