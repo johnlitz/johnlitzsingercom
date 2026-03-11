@@ -2,6 +2,20 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
+status: executing
+last_updated: "2026-03-11T15:53:01.912Z"
+progress:
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 4
+  completed_plans: 3
+  percent: 75
+---
+
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
 status: Ready to begin
 last_updated: "2026-03-11T15:51:34.807Z"
 progress:
@@ -37,12 +51,12 @@ progress:
 ## Current Position
 
 **Phase:** 1 (Design Polish)
-**Plan:** 03 complete — checkpoint pending human verification (Task 3)
+**Plan:** 01 complete — checkpoint pending human verification (Task 3)
 **Status:** In progress
-**Progress:** [█████░░░░░] 50%
+**Progress:** [████████░░] 75% (3/4 plans committed)
 
 ```
-[██████░░░░] 50% overall (2/4 plans committed)
+[████████░░] 75% overall (3/4 plans committed)
 ```
 
 ---
@@ -73,6 +87,7 @@ progress:
 ---
 | Phase 01-design-polish P02 | 3 | 2 tasks | 6 files |
 | Phase 01-design-polish P03 | 15 | 2 tasks | 4 files |
+| Phase 01-design-polish P01 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -86,6 +101,9 @@ progress:
 - 404 page uses red accent for folder icon — error state stays red, not section-color (01-02)
 - Section transitions use 150ms ease-in-out; --duration-slow was undefined in global.css, fixed carousel to 300ms hardcoded (01-03)
 - hideNavName uses visibility:hidden not display:none — preserves layout width in top bar (01-03)
+- Homepage hero: flow-based flex column (justify-content:center) replaces absolute-positioned tagline; --chrome-above hack removed (01-01)
+- hero-name: Urbanist 700, clamp(2.5rem, 1.8rem+2.8vw, 4rem), letter-spacing:-0.03em (01-01)
+- jl logo increased to 36px globally in BaseLayout (01-01)
 
 ### Critical Learnings (from CLAUDE.md)
 - Never use `justify-content: center` for content in viewport-locked layouts when content varies — use flex-start with padding-top
@@ -124,7 +142,8 @@ None — ready to start Phase 1 (Design Polish)
 - Derived phases: 4 phases, 32 requirements mapped
 - Executed 01-02-PLAN: inner pages polish — Now TOC, About bio rewrite, 404 folder metaphor, blog prose, footer status
 - Executed 01-03-PLAN: chrome polish — 150ms transitions, hideNavName prop, tech pill section colors, GuestBook touch targets, design-philosophy.md
-- Stopped at: checkpoint pending human verification of 01-03 changes
+- Executed 01-01-PLAN: homepage hero layout — h1 name above folder grid, 36px logo, flow-based centered layout
+- Stopped at: checkpoint pending human verification of 01-01 changes (visual review of hero layout + colored shadows)
 
 **Files Created/Updated:**
 - `.planning/ROADMAP.md` — Full phase structure, success criteria, dependencies
@@ -136,6 +155,8 @@ None — ready to start Phase 1 (Design Polish)
 - `src/layouts/BlogPostLayout.astro` — Section-color-aware prose
 - `src/layouts/BaseLayout.astro` — Structured footer status
 - `src/data/status.ts` — Restructured status object
+- `src/pages/index.astro` — Hero layout with h1 name + tagline, flow-based centering
+- `src/layouts/BaseLayout.astro` — 36px logo size (also: hideNavName from 01-03)
 
 ---
 

@@ -43,7 +43,7 @@
 11. User touches carousel on mobile device and can navigate with arrows, dots visible and tappable
 12. User views footer and sees status text well-formatted with animated link hover in section color
 
-**Plans:** 2/4 plans executed
+**Plans:** 3/4 plans executed
 
 Plans:
 - [ ] 01-01-PLAN.md — Homepage hero layout (brand name as hero, tagline as subtitle, larger logo)
@@ -119,7 +119,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Design Polish | 2/4 | In Progress|  |
+| 1. Design Polish | 3/4 | In Progress|  |
 | 2. Performance Optimization & Code Quality | 0/2 | Not started | — |
 | 3. Guest Book Backend | 0/1 | Not started | — |
 | 4. Ship | 0/1 | Not started | — |
