@@ -86,13 +86,45 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| *(Populated during roadmap creation)* | | |
+| DESIGN-01 | Phase 1 | Pending |
+| DESIGN-02 | Phase 1 | Pending |
+| DESIGN-03 | Phase 1 | Pending |
+| DESIGN-04 | Phase 1 | Pending |
+| DESIGN-05 | Phase 1 | Pending |
+| DESIGN-06 | Phase 1 | Pending |
+| CHROME-01 | Phase 1 | Pending |
+| CHROME-02 | Phase 1 | Pending |
+| CHROME-03 | Phase 1 | Pending |
+| CHROME-04 | Phase 1 | Pending |
+| CHROME-05 | Phase 1 | Pending |
+| CHROME-06 | Phase 1 | Pending |
+| MOBILE-01 | Phase 1 | Pending |
+| MOBILE-02 | Phase 1 | Pending |
+| MOBILE-03 | Phase 1 | Pending |
+| MOBILE-04 | Phase 1 | Pending |
+| MOBILE-05 | Phase 1 | Pending |
+| PERF-01 | Phase 2 | Pending |
+| PERF-02 | Phase 2 | Pending |
+| PERF-03 | Phase 2 | Pending |
+| PERF-04 | Phase 2 | Pending |
+| CODE-01 | Phase 2 | Pending |
+| CODE-02 | Phase 2 | Pending |
+| CODE-03 | Phase 2 | Pending |
+| GBOOK-01 | Phase 3 | Pending |
+| GBOOK-02 | Phase 3 | Pending |
+| GBOOK-03 | Phase 3 | Pending |
+| GBOOK-04 | Phase 3 | Pending |
+| GBOOK-05 | Phase 3 | Pending |
+| SHIP-01 | Phase 4 | Pending |
+| SHIP-02 | Phase 4 | Pending |
+| SHIP-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 26 total
-- Mapped to phases: 0
-- Unmapped: 26
+- Mapped to phases: 26
+- Unmapped: 0
 
 ---
+
 *Requirements defined: 2026-03-11*
-*Last updated: 2026-03-11 after initial definition*
+*Last updated: 2026-03-11 with roadmap traceability*
