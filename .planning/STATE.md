@@ -1,3 +1,17 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: Ready to begin
+last_updated: "2026-03-11T15:51:34.807Z"
+progress:
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 4
+  completed_plans: 2
+  percent: 50
+---
+
 # STATE: johnlitzsinger.com Site Refresh
 
 **Project:** johnlitzsinger.com v3 redesign — site refresh, polish, and ship
@@ -23,12 +37,12 @@
 ## Current Position
 
 **Phase:** 1 (Design Polish)
-**Plan:** Not started
-**Status:** Ready to begin
-**Progress:** 0% (0/4 phases)
+**Plan:** 03 complete — checkpoint pending human verification (Task 3)
+**Status:** In progress
+**Progress:** [█████░░░░░] 50%
 
 ```
-[█░░░░░░░░░░░░░░░░░░░░░░░░░░] 0% overall
+[██████░░░░] 50% overall (2/4 plans committed)
 ```
 
 ---
@@ -57,6 +71,8 @@
 | Total v1 coverage | 32/32 requirements | 0/32 | In progress |
 
 ---
+| Phase 01-design-polish P02 | 3 | 2 tasks | 6 files |
+| Phase 01-design-polish P03 | 15 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -65,6 +81,11 @@
 - Guest Book Backend (Phase 3) runs in parallel with Phase 2 (they're independent)
 - Design must come before Performance (optimize what's visually correct, not arbitrary)
 - All 32 v1 requirements mapped to exactly one phase, no orphans
+- Now page omits status updates from TOC — only blog posts shown in table-of-contents (01-02)
+- status.ts restructured from {text,url} to {label,project,projectUrl,note} for composable footer rendering (01-02)
+- 404 page uses red accent for folder icon — error state stays red, not section-color (01-02)
+- Section transitions use 150ms ease-in-out; --duration-slow was undefined in global.css, fixed carousel to 300ms hardcoded (01-03)
+- hideNavName uses visibility:hidden not display:none — preserves layout width in top bar (01-03)
 
 ### Critical Learnings (from CLAUDE.md)
 - Never use `justify-content: center` for content in viewport-locked layouts when content varies — use flex-start with padding-top
@@ -101,12 +122,19 @@ None — ready to start Phase 1 (Design Polish)
 - Created roadmap and initial planning structure
 - Validated 100% requirement coverage
 - Derived phases: 4 phases, 32 requirements mapped
-- Ready to begin Phase 1 (Design Polish) planning
+- Executed 01-02-PLAN: inner pages polish — Now TOC, About bio rewrite, 404 folder metaphor, blog prose, footer status
+- Stopped at: checkpoint pending human verification of 01-02 changes
 
 **Files Created/Updated:**
 - `.planning/ROADMAP.md` — Full phase structure, success criteria, dependencies
 - `.planning/STATE.md` — Project memory, current position, context
 - `.planning/REQUIREMENTS.md` — Traceability section updated with phase mappings
+- `src/pages/now.astro` — Ultra-minimal TOC layout
+- `src/pages/about.astro` — Personality-first bio, GIF shadow, scrollable
+- `src/pages/404.astro` — Folder metaphor 404
+- `src/layouts/BlogPostLayout.astro` — Section-color-aware prose
+- `src/layouts/BaseLayout.astro` — Structured footer status
+- `src/data/status.ts` — Restructured status object
 
 ---
 

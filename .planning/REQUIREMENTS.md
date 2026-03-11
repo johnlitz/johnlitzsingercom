@@ -7,21 +7,21 @@
 
 ### Design — Inner Pages
 
-- [ ] **DESIGN-01**: Now page has polished layout, typography, spacing, and visual hierarchy
-- [ ] **DESIGN-02**: Work page has polished layout with carousel title/description properly positioned
-- [ ] **DESIGN-03**: About page has polished layout with bio and GIF properly composed
-- [ ] **DESIGN-04**: Guest Book page has polished sticky note layout with proper spacing and alignment
-- [ ] **DESIGN-05**: Blog post pages have polished prose styling, tag pills, and metadata display
-- [ ] **DESIGN-06**: 404 page has polished typography and clear navigation home
+- [x] **DESIGN-01**: Now page has polished layout, typography, spacing, and visual hierarchy
+- [x] **DESIGN-02**: Work page has polished layout with carousel title/description properly positioned
+- [x] **DESIGN-03**: About page has polished layout with bio and GIF properly composed
+- [x] **DESIGN-04**: Guest Book page has polished sticky note layout with proper spacing and alignment
+- [x] **DESIGN-05**: Blog post pages have polished prose styling, tag pills, and metadata display
+- [x] **DESIGN-06**: 404 page has polished typography and clear navigation home
 
 ### Design — Chrome
 
-- [ ] **CHROME-01**: Top bar (brand name + social icons) is properly spaced and responsive
-- [ ] **CHROME-02**: Breadcrumb navigation is visually consistent with monospace styling
-- [ ] **CHROME-03**: Back arrow stays left-aligned regardless of breadcrumb depth
-- [ ] **CHROME-04**: Footer status text is well-formatted with animated link hover
-- [ ] **CHROME-05**: Page transitions between sections are smooth with correct section color shifts
-- [ ] **CHROME-06**: Section color system is consistent (logo, hovers, backgrounds, underlines)
+- [x] **CHROME-01**: Top bar (brand name + social icons) is properly spaced and responsive
+- [x] **CHROME-02**: Breadcrumb navigation is visually consistent with monospace styling
+- [x] **CHROME-03**: Back arrow stays left-aligned regardless of breadcrumb depth
+- [x] **CHROME-04**: Footer status text is well-formatted with animated link hover
+- [x] **CHROME-05**: Page transitions between sections are smooth with correct section color shifts
+- [x] **CHROME-06**: Section color system is consistent (logo, hovers, backgrounds, underlines)
 
 ### Design — Mobile
 
@@ -86,18 +86,18 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DESIGN-01 | Phase 1 | Pending |
-| DESIGN-02 | Phase 1 | Pending |
-| DESIGN-03 | Phase 1 | Pending |
-| DESIGN-04 | Phase 1 | Pending |
-| DESIGN-05 | Phase 1 | Pending |
-| DESIGN-06 | Phase 1 | Pending |
-| CHROME-01 | Phase 1 | Pending |
-| CHROME-02 | Phase 1 | Pending |
-| CHROME-03 | Phase 1 | Pending |
-| CHROME-04 | Phase 1 | Pending |
-| CHROME-05 | Phase 1 | Pending |
-| CHROME-06 | Phase 1 | Pending |
+| DESIGN-01 | Phase 1 | Complete |
+| DESIGN-02 | Phase 1 | Complete |
+| DESIGN-03 | Phase 1 | Complete |
+| DESIGN-04 | Phase 1 | Complete |
+| DESIGN-05 | Phase 1 | Complete |
+| DESIGN-06 | Phase 1 | Complete |
+| CHROME-01 | Phase 1 | Complete |
+| CHROME-02 | Phase 1 | Complete |
+| CHROME-03 | Phase 1 | Complete |
+| CHROME-04 | Phase 1 | Complete |
+| CHROME-05 | Phase 1 | Complete |
+| CHROME-06 | Phase 1 | Complete |
 | MOBILE-01 | Phase 1 | Pending |
 | MOBILE-02 | Phase 1 | Pending |
 | MOBILE-03 | Phase 1 | Pending |
