@@ -11,12 +11,14 @@ interface Props {
   type?: 'website' | 'article';
   publishedDate?: Date;
   noindex?: boolean;
+  scrollable?: boolean;
+  hideNavName?: boolean;
   breadcrumbs?: { label: string; href?: string }[];
 }
 
 import { currentStatus } from '../data/status';
 
-const { title, description, image, type, publishedDate, noindex, breadcrumbs } = Astro.props;
+const { title, description, image, type, publishedDate, noindex, scrollable, hideNavName, breadcrumbs } = Astro.props;
 const contentFade = fade({ duration: '0.15s' });
 const pathname = Astro.url.pathname;
 
@@ -57,13 +59,13 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     />
     <ClientRouter />
   </head>
-  <body class="viewport-lock">
+  <body class:list={['viewport-lock', { 'allow-scroll': scrollable }]}>
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
     <header class="top-bar">
       <a href="/" class="brand">
         <img src="/icon.png" alt="" width="28" height="28" class="brand-icon" />
-        <span class="brand-name" style="font-family: var(--font-brand); font-weight: 700;">John Litzsinger</span>
+        <span class:list={['brand-name', { 'hidden-on-home': hideNavName }]} style="font-family: var(--font-brand); font-weight: 700;">John Litzsinger</span>
       </a>
       <nav class="social-links" aria-label="Social links">
         <a href="mailto:jlitzsin@purdue.edu" aria-label="Email">
@@ -82,30 +84,47 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     </header>
 
     {breadcrumbs && breadcrumbs.length > 0 && (
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/" class="back-arrow" aria-label="Back to home">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5" />
-            <path d="m12 19-7-7 7-7" />
+      breadcrumbs.length === 1 && !breadcrumbs[0].href ? (
+        <nav class="section-header" aria-label="Section">
+          <a href="/" class="section-back" aria-label="Back to home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </svg>
+          </a>
+          <svg class="section-folder" viewBox="0 0 80 64" width="28" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--section-color)" />
+            <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--section-color)" />
+            <rect x="0" y="10" width="80" height="4" fill="var(--section-color)" opacity="0.85" />
           </svg>
-        </a>
-        <svg class="crumb-folder-icon" viewBox="0 0 80 64" width="16" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--section-color)" />
-          <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--section-color)" />
-          <rect x="0" y="10" width="80" height="4" fill="var(--section-color)" opacity="0.85" />
-        </svg>
-        <a href="/" class="crumb">jl</a>
-        {breadcrumbs.map((crumb) => (
-          <>
-            <span class="crumb-sep" aria-hidden="true">›</span>
-            {crumb.href ? (
-              <a href={crumb.href} class="crumb">{crumb.label}</a>
-            ) : (
-              <span class="crumb crumb-current">{crumb.label}</span>
-            )}
-          </>
-        ))}
-      </nav>
+          <h1 class="section-title">{breadcrumbs[0].label}</h1>
+        </nav>
+      ) : (
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/" class="back-arrow" aria-label="Back to home">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </svg>
+          </a>
+          <svg class="crumb-folder-icon" viewBox="0 0 80 64" width="16" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--section-color)" />
+            <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--section-color)" />
+            <rect x="0" y="10" width="80" height="4" fill="var(--section-color)" opacity="0.85" />
+          </svg>
+          <a href="/" class="crumb">jl</a>
+          {breadcrumbs.map((crumb) => (
+            <>
+              <span class="crumb-sep" aria-hidden="true">›</span>
+              {crumb.href ? (
+                <a href={crumb.href} class="crumb">{crumb.label}</a>
+              ) : (
+                <span class="crumb crumb-current">{crumb.label}</span>
+              )}
+            </>
+          ))}
+        </nav>
+      )
     )}
 
     <main id="main-content" class="page-content" transition:animate={contentFade}>
@@ -116,13 +135,13 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
       <span>&copy; 2026 John Litzsinger</span>
       <span class="footer-status">
         <span class="footer-dot" aria-hidden="true"></span>
+        Currently {currentStatus.text.split(' ')[0]}:{' '}
         {currentStatus.url ? (
-          <a href={currentStatus.url}>{currentStatus.text}</a>
+          <a href={currentStatus.url} class="footer-status-link">{currentStatus.text.split(' ').slice(1).join(' ')}</a>
         ) : (
-          currentStatus.text
+          <span>{currentStatus.text.split(' ').slice(1).join(' ')}</span>
         )}
       </span>
-      <span>Built with Astro</span>
     </footer>
   </body>
 </html>
@@ -130,7 +149,7 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
 <style>
   html {
     background-color: var(--page-bg, var(--background));
-    transition: background-color 0.3s ease;
+    transition: background-color var(--duration-fast) ease-in-out;
   }
 
   .viewport-lock {
@@ -138,6 +157,12 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     flex-direction: column;
     height: 100dvh;
     overflow: hidden;
+  }
+
+  .viewport-lock.allow-scroll {
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
   }
 
   .top-bar {
@@ -167,11 +192,15 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
   .brand-icon {
     border-radius: 4px;
     filter: var(--icon-filter, none);
-    transition: filter 0.3s ease;
+    transition: filter var(--duration-fast) ease-in-out;
   }
 
   .brand-name {
     position: relative;
+  }
+
+  .brand-name.hidden-on-home {
+    visibility: hidden;
   }
 
   .brand-name::after {
@@ -226,9 +255,12 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     margin-inline: auto;
     width: 100%;
     flex-shrink: 0;
+    position: relative;
   }
 
   .back-arrow {
+    position: absolute;
+    left: var(--gutter);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,7 +269,6 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    margin-right: var(--space-xs);
     transition: color var(--duration-fast) ease,
                 background-color var(--duration-fast) ease;
   }
@@ -276,6 +307,54 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     opacity: 0.6;
   }
 
+  /* Section page header — breadcrumb as title */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--gutter);
+    max-width: var(--content-max);
+    margin-inline: auto;
+    width: 100%;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .section-back {
+    position: absolute;
+    left: var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    text-decoration: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    transition: color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+  }
+
+  .section-back:hover {
+    color: var(--section-color);
+    background: color-mix(in srgb, var(--section-color) 8%, transparent);
+    text-decoration: none;
+  }
+
+  .section-folder {
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 3px color-mix(in srgb, var(--section-color) 30%, transparent));
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+    color: var(--section-color);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
   .site-footer {
     display: flex;
     justify-content: space-between;
@@ -292,19 +371,36 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
   .footer-status {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
+    gap: var(--space-xs);
     font-family: var(--font-mono);
   }
 
-  .footer-status a {
-    color: var(--muted);
+  .footer-status-link {
+    color: var(--foreground);
+    font-weight: 500;
     text-decoration: none;
+    position: relative;
     transition: color var(--duration-fast) ease;
   }
 
-  .footer-status a:hover {
-    color: var(--foreground);
+  .footer-status-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 100%;
+    height: 1px;
+    background: var(--section-color, var(--accent));
+    transition: right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .footer-status-link:hover {
+    color: var(--section-color, var(--accent));
     text-decoration: none;
+  }
+
+  .footer-status-link:hover::after {
+    right: 0;
   }
 
   .footer-dot {
@@ -357,6 +453,7 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     .social-links a,
     .crumb,
     .back-arrow,
+    .section-back,
     .footer-status a {
       transition: none;
     }
