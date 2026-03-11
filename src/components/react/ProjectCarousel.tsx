@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, type TouchEvent } from 'react';
 
 interface Project {
   slug: string;
@@ -38,6 +38,22 @@ export default function ProjectCarousel({ projects }: Props) {
     goTo(i, 'left');
   };
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
+    if (touchStart === null) return;
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) next();
+      else prev();
+    }
+    setTouchStart(null);
+  };
+
   const prevIndex = current === 0 ? projects.length - 1 : current - 1;
   const nextIndex = current === projects.length - 1 ? 0 : current + 1;
 
@@ -51,7 +67,11 @@ export default function ProjectCarousel({ projects }: Props) {
         <p className="carousel-desc">{p.description}</p>
       </div>
 
-      <div className="carousel-track">
+      <div
+        className="carousel-track"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Left arrow */}
         <button
           className="carousel-arrow carousel-arrow-left"
@@ -158,8 +178,10 @@ export default function ProjectCarousel({ projects }: Props) {
 
         .carousel-arrow {
           flex-shrink: 0;
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
+          min-width: 44px;
+          min-height: 44px;
           border-radius: 50%;
           border: 1px solid var(--border);
           background: var(--background);
@@ -303,34 +325,49 @@ export default function ProjectCarousel({ projects }: Props) {
         }
 
         .carousel-dot {
+          width: 44px;
+          height: 44px;
+          min-width: 44px;
+          min-height: 44px;
+          border-radius: 50%;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .carousel-dot::after {
+          content: '';
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          border: none;
           background: oklch(0.10 0.00 0 / 0.15);
-          cursor: pointer;
           transition: background var(--duration-base) ease,
                       transform var(--duration-base) ease;
-          padding: 0;
+          display: block;
         }
 
-        .carousel-dot.active {
+        .carousel-dot.active::after {
           background: var(--work-500);
           transform: scale(1.25);
         }
 
-        .carousel-dot:hover:not(.active) {
+        .carousel-dot:hover:not(.active)::after {
           background: oklch(0.10 0.00 0 / 0.30);
         }
 
         .carousel-dot:focus-visible {
           outline: 2px solid var(--work-500);
           outline-offset: 2px;
+          border-radius: 4px;
         }
 
         @media (prefers-reduced-motion: reduce) {
           .carousel-arrow,
-          .carousel-dot,
+          .carousel-dot::after,
           .carousel-card-peek {
             transition: none;
           }

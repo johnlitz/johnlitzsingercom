@@ -802,6 +802,29 @@ export default function GuestBookPage() {
           }
         }
 
+        @media (max-width: 480px) {
+          .gb-form-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .gb-submit {
+            width: 100%;
+            align-self: stretch;
+          }
+
+          .gb-image-btn {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+          }
+
+          .color-choosers {
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .gb-page-arrow,
           .gb-input,
