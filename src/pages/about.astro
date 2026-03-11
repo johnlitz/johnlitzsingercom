@@ -6,14 +6,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="About — John Litzsinger"
   description="Finance @ Purdue. Building startups, tools, and this website."
   breadcrumbs={[{ label: 'About' }]}
+  scrollable={true}
 >
   <div class="about-page">
-    <h1>About</h1>
     <div class="about-body">
       <p class="bio">
-        I'm John — a finance student at Purdue interested in startups, markets, and building things.
-        I co-founded Launch Consulting Club and spend my free time writing code and breaking spreadsheets.
+        I'm John — I care about markets, startups, and what happens when technology meets money.
+        Currently a finance student at Purdue, co-founder of Launch Consulting Club, and always building something.
       </p>
+
+      <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
+        </svg>
+        Resume
+      </a>
 
       <div class="about-visual">
         <img
@@ -39,15 +50,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-md);
     padding-top: var(--space-md);
-  }
-
-  h1 {
-    font-size: var(--text-2xl);
-    letter-spacing: -0.02em;
-    color: var(--about-500);
-    text-align: center;
   }
 
   .bio {
@@ -56,6 +60,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--foreground);
     max-width: 46ch;
     text-align: center;
+  }
+
+  .resume-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .resume-link:hover {
+    color: var(--about-500);
+    text-decoration: none;
   }
 
   .about-visual {
@@ -70,8 +90,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     width: 100%;
     height: auto;
     border-radius: 12px;
-    outline: 1px solid oklch(0.50 0.00 0 / 0.08);
+    outline: 1px solid var(--border-subtle);
     outline-offset: -1px;
+    box-shadow: var(--shadow-sm);
   }
 
   .about-caption {
@@ -79,5 +100,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: var(--text-xs);
     color: var(--muted);
     font-style: italic;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .resume-link {
+      transition: none;
+    }
   }
 </style>

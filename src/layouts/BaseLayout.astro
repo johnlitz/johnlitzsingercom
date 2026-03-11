@@ -135,11 +135,14 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
       <span>&copy; 2026 John Litzsinger</span>
       <span class="footer-status">
         <span class="footer-dot" aria-hidden="true"></span>
-        Currently {currentStatus.text.split(' ')[0]}:{' '}
-        {currentStatus.url ? (
-          <a href={currentStatus.url} class="footer-status-link">{currentStatus.text.split(' ').slice(1).join(' ')}</a>
+        Currently {currentStatus.label}:{' '}
+        {currentStatus.projectUrl ? (
+          <a href={currentStatus.projectUrl} class="footer-status-link">{currentStatus.project}</a>
         ) : (
-          <span>{currentStatus.text.split(' ').slice(1).join(' ')}</span>
+          <span>{currentStatus.project}</span>
+        )}
+        {currentStatus.note && (
+          <span class="footer-note"> · {currentStatus.note}</span>
         )}
       </span>
     </footer>
@@ -401,6 +404,11 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
 
   .footer-status-link:hover::after {
     right: 0;
+  }
+
+  .footer-note {
+    color: var(--muted);
+    font-family: var(--font-mono);
   }
 
   .footer-dot {

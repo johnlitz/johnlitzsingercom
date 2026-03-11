@@ -1,4 +1,6 @@
 export const currentStatus = {
-  text: 'building this website',
-  url: '/work/personal-website',
+  label: 'building',
+  project: 'johnlitzsinger.com',
+  projectUrl: '/work/personal-website',
+  note: 'open to startup opportunities',
 };

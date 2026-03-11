@@ -42,7 +42,7 @@ const wordCountFormatted = words >= 1000
   image={heroImage}
   type="article"
   publishedDate={pubDate}
-  breadcrumbs={[{ label: 'Feed', href: '/blitz-feed' }, { label: title }]}
+  breadcrumbs={[{ label: 'Now', href: '/now' }, { label: title }]}
 >
   <article class="blog-post">
     <header class="post-header">
@@ -123,25 +123,31 @@ const wordCountFormatted = words >= 1000
     font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: var(--space-sm);
+    color: var(--foreground);
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
   }
 
   .tag {
-    font-size: var(--text-sm);
-    color: var(--secondary);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 2px;
-    transition: color var(--duration-fast) ease;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--muted);
+    background: color-mix(in srgb, var(--section-color, var(--accent)) 8%, transparent);
+    padding: 2px var(--space-sm);
+    border-radius: 4px;
+    transition: color var(--duration-fast) ease,
+                background var(--duration-fast) ease;
   }
 
   .tag:hover {
-    color: var(--foreground);
+    color: var(--section-color, var(--accent));
+    background: color-mix(in srgb, var(--section-color, var(--accent)) 15%, transparent);
   }
 
   /* Prose styles for MDX content */
@@ -174,7 +180,7 @@ const wordCountFormatted = words >= 1000
   }
 
   .prose :global(blockquote) {
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--section-color, var(--accent));
     padding-left: var(--space-md);
     margin: var(--space-md) 0;
     color: var(--secondary);
@@ -224,12 +230,12 @@ const wordCountFormatted = words >= 1000
   }
 
   .post-nav-link:hover {
-    color: var(--accent);
+    color: var(--section-color, var(--accent));
     text-decoration: none;
   }
 
   .post-nav-arrow {
-    color: var(--accent);
+    color: var(--section-color, var(--accent));
   }
 
   .post-nav-next {
