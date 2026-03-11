@@ -64,7 +64,7 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
 
     <header class="top-bar">
       <a href="/" class="brand">
-        <img src="/icon.png" alt="" width="28" height="28" class="brand-icon" />
+        <img src="/icon.png" alt="" width="36" height="36" class="brand-icon" />
         <span class:list={['brand-name', { 'hidden-on-home': hideNavName }]} style="font-family: var(--font-brand); font-weight: 700;">John Litzsinger</span>
       </a>
       <nav class="social-links" aria-label="Social links">
@@ -193,7 +193,9 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
   }
 
   .brand-icon {
-    border-radius: 4px;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
     filter: var(--icon-filter, none);
     transition: filter var(--duration-fast) ease-in-out;
   }

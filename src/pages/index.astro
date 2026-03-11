@@ -1,14 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { currentStatus } from '../data/status';
 ---
 
 <BaseLayout
   title="John Litzsinger"
   description="Finance, markets, and technology."
+  hideNavName={true}
 >
   <div class="home">
-    <p class="tagline">Finance @ Purdue interested in startups.</p>
+    <div class="hero">
+      <h1 class="hero-name">John Litzsinger</h1>
+      <p class="hero-tagline">Finance @ Purdue, interested in startups.</p>
+    </div>
 
     <nav class="folder-grid" aria-label="Browse">
       <a href="/now" class="folder" style="--folder-color: var(--now-500);">
@@ -72,17 +75,6 @@ import { currentStatus } from '../data/status';
       </a>
     </nav>
 
-    <div class="status-line">
-      <span class="status-dot" aria-hidden="true"></span>
-      <span class="status-text">
-        Currently{' '}
-        {currentStatus.url ? (
-          <a href={currentStatus.url}>{currentStatus.text}</a>
-        ) : (
-          currentStatus.text
-        )}
-      </span>
-    </div>
   </div>
 </BaseLayout>
 
@@ -91,19 +83,32 @@ import { currentStatus } from '../data/status';
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     flex: 1;
+    gap: var(--space-xl);
   }
 
-  .tagline {
-    font-size: var(--text-2xl);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    color: var(--foreground);
-    max-width: 20ch;
+  .hero {
     text-align: center;
-    margin-top: auto;
-    margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+  }
+
+  .hero-name {
+    font-family: var(--font-brand);
+    font-size: clamp(2.5rem, 1.8rem + 2.8vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--foreground);
+    line-height: 1.0;
+    margin: 0;
+  }
+
+  .hero-tagline {
+    font-family: var(--font);
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--muted);
+    margin: var(--space-sm) 0 0;
+    line-height: 1.4;
   }
 
   .folder-grid {
@@ -111,41 +116,6 @@ import { currentStatus } from '../data/status';
     justify-content: center;
     gap: var(--space-xl);
     flex-wrap: wrap;
-  }
-
-  .status-line {
-    margin-top: clamp(1.5rem, 3vh, 2.5rem);
-    margin-bottom: auto;
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: var(--text-sm);
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--status-green);
-    animation: status-pulse 2s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-
-  .status-text {
-    font-family: var(--font-mono);
-    color: var(--muted);
-  }
-
-  .status-text a {
-    color: var(--muted);
-    text-decoration: underline;
-    text-decoration-color: var(--border);
-    text-underline-offset: 3px;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .status-text a:hover {
-    color: var(--foreground);
   }
 
   .folder {
@@ -159,6 +129,7 @@ import { currentStatus } from '../data/status';
   }
 
   .folder-icon {
+    filter: drop-shadow(0 0 0 transparent);
     transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
                 filter var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -185,6 +156,12 @@ import { currentStatus } from '../data/status';
 
   .folder:hover .folder-label {
     color: var(--folder-color);
+  }
+
+  @media (max-width: 768px) {
+    .home {
+      gap: var(--space-lg);
+    }
   }
 
   @media (max-width: 600px) {
