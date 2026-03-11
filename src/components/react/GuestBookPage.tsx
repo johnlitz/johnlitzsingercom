@@ -36,7 +36,6 @@ const PLACEHOLDER_ENTRIES: Entry[] = [
   { name: 'Riley', message: 'Go Boilers!', date: '2026-02-10', noteColor: NOTE_COLORS[1].value, pinColor: PIN_COLORS[0].value },
 ];
 
-const ENTRIES_PER_PAGE = 20;
 const MAX_IMAGE_WIDTH = 400;
 const MAX_IMAGE_SIZE_KB = 200;
 
@@ -125,13 +124,18 @@ function SignatureCanvas({ onSignatureChange }: { onSignatureChange: (data: stri
   const getPos = (e: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
     if ('touches' in e) {
       return {
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
+        x: (e.touches[0].clientX - rect.left) * scaleX,
+        y: (e.touches[0].clientY - rect.top) * scaleY,
       };
     }
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
   };
 
   const startDraw = (e: React.MouseEvent | React.TouchEvent) => {
@@ -150,7 +154,7 @@ function SignatureCanvas({ onSignatureChange }: { onSignatureChange: (data: stri
     const pos = getPos(e);
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#1a1a1a';
+    ctx.strokeStyle = '#1a1a1a'; /* matches --foreground; Canvas 2D API can't use CSS vars */
     ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
   };
@@ -176,8 +180,8 @@ function SignatureCanvas({ onSignatureChange }: { onSignatureChange: (data: stri
       </div>
       <canvas
         ref={canvasRef}
-        width={280}
-        height={60}
+        width={540}
+        height={100}
         className="sig-canvas"
         onMouseDown={startDraw}
         onMouseMove={draw}
@@ -192,22 +196,17 @@ function SignatureCanvas({ onSignatureChange }: { onSignatureChange: (data: stri
 }
 
 export default function GuestBookPage() {
-  const [page, setPage] = useState(0);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [signature, setSignature] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [entries] = useState<Entry[]>(PLACEHOLDER_ENTRIES);
-  const [noteColorIdx, setNoteColorIdx] = useState(() => Math.floor(Math.random() * NOTE_COLORS.length));
-  const [pinColorIdx, setPinColorIdx] = useState(() => Math.floor(Math.random() * PIN_COLORS.length));
+  const [noteColorIdx, setNoteColorIdx] = useState(0);
+  const [pinColorIdx, setPinColorIdx] = useState(0);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const totalPages = Math.ceil(entries.length / ENTRIES_PER_PAGE);
-  const pageEntries = entries.slice(
-    page * ENTRIES_PER_PAGE,
-    (page + 1) * ENTRIES_PER_PAGE,
-  );
+  const previewEntries = entries.slice(0, 3);
 
   const handleImageChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -320,10 +319,10 @@ export default function GuestBookPage() {
         </form>
       </div>
 
-      {/* Bottom: Sticky note entries */}
+      {/* Preview: Sticky note entries */}
       <div className="gb-entries-section">
         <div className="gb-notes-board">
-          {pageEntries.map((entry, i) => {
+          {previewEntries.map((entry, i) => {
             const hash = entry.name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
             const rotation = ((hash % 7) - 3);
             const noteColor = entry.noteColor || NOTE_COLORS[hash % NOTE_COLORS.length].value;
@@ -331,7 +330,7 @@ export default function GuestBookPage() {
 
             return (
               <div
-                key={`${page}-${i}`}
+                key={i}
                 className="sticky-note"
                 style={{
                   '--note-bg': noteColor,
@@ -348,42 +347,59 @@ export default function GuestBookPage() {
             );
           })}
         </div>
-
-        {totalPages > 1 && (
-          <div className="gb-pagination">
-            <button
-              type="button"
-              className="gb-page-arrow"
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              disabled={page === 0}
-              aria-label="Previous page"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <span className="gb-page-num">{page + 1} / {totalPages}</span>
-            <button
-              type="button"
-              className="gb-page-arrow"
-              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-              disabled={page === totalPages - 1}
-              aria-label="Next page"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </div>
+        {entries.length > 3 && (
+          <button
+            type="button"
+            className="gb-see-more"
+            onClick={() => document.getElementById('gb-all-entries')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            See all entries
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
         )}
       </div>
+
+      {/* All entries — scrollable section below viewport */}
+      {entries.length > 0 && (
+        <div id="gb-all-entries" className="gb-all-section">
+          <h2 className="gb-all-title">All Entries</h2>
+          <div className="gb-all-grid">
+            {entries.map((entry, i) => {
+              const hash = entry.name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+              const rotation = ((hash % 7) - 3) * 0.5;
+              const noteColor = entry.noteColor || NOTE_COLORS[hash % NOTE_COLORS.length].value;
+              const pinColor = entry.pinColor || PIN_COLORS[hash % PIN_COLORS.length].value;
+
+              return (
+                <div
+                  key={i}
+                  className="sticky-note"
+                  style={{
+                    '--note-bg': noteColor,
+                    '--note-rotation': `${rotation}deg`,
+                  } as React.CSSProperties}
+                >
+                  <Thumbtack color={pinColor} />
+                  <p className="note-message">{entry.message}</p>
+                  <span className="note-author">&mdash; {entry.name}</span>
+                  {entry.image && (
+                    <img src={entry.image} alt={`Photo by ${entry.name}`} className="note-image" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <style>{`
         .gb-layout {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 1rem;
+          gap: var(--space-md);
           width: 100%;
           flex: 1;
           min-height: 0;
@@ -399,7 +415,7 @@ export default function GuestBookPage() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.5rem;
+          gap: var(--space-sm);
           flex: 1;
           min-height: 0;
         }
@@ -408,33 +424,36 @@ export default function GuestBookPage() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 0.5rem;
+          gap: var(--space-sm);
         }
 
         .gb-form {
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: var(--space-sm);
           position: relative;
         }
 
         .gb-input,
         .gb-textarea {
-          font-family: 'Rethink Sans', system-ui, sans-serif;
-          font-size: 0.875rem;
-          color: #1a1a1a;
-          background: #ffffff;
-          border: 1px solid rgba(10, 10, 10, 0.12);
+          font-family: var(--font);
+          font-size: var(--text-sm);
+          color: var(--foreground);
+          background: var(--background);
+          border: 1px solid var(--border);
           border-radius: 8px;
-          padding: 0.5rem 0.75rem;
+          padding: var(--space-sm) var(--space-3);
           outline: none;
           width: 100%;
-          transition: border-color 150ms ease;
+          min-height: 44px;
+          transition: border-color var(--duration-fast) ease;
         }
 
-        .gb-input:focus,
-        .gb-textarea:focus {
+        .gb-input:focus-visible,
+        .gb-textarea:focus-visible {
           border-color: var(--guestbook-500);
+          outline: 2px solid color-mix(in srgb, var(--guestbook-500) 45%, transparent);
+          outline-offset: -1px;
         }
 
         .gb-input:disabled,
@@ -445,14 +464,14 @@ export default function GuestBookPage() {
 
         .gb-textarea {
           resize: none;
-          min-height: 3rem;
+          min-height: 100px;
         }
 
         /* Image upload */
         .gb-image-upload {
           display: flex;
           flex-direction: column;
-          gap: 0.375rem;
+          gap: var(--space-xs);
         }
 
         .gb-file-input {
@@ -471,14 +490,15 @@ export default function GuestBookPage() {
         .gb-image-btn {
           display: inline-flex;
           align-items: center;
-          gap: 0.375rem;
-          font-family: 'Rethink Sans', system-ui, sans-serif;
+          gap: var(--space-xs);
+          font-family: var(--font);
           font-size: 0.75rem;
-          color: #666666;
-          padding: 0.25rem 0.5rem;
-          border: 1px dashed rgba(10, 10, 10, 0.15);
+          color: var(--muted);
+          padding: var(--space-xs) var(--space-sm);
+          border: 1px dashed oklch(0.10 0.00 0 / 0.15);
           border-radius: 6px;
-          transition: color 150ms ease, border-color 150ms ease;
+          transition: color var(--duration-fast) ease,
+                      border-color var(--duration-fast) ease;
         }
 
         .gb-image-label:not(:has(.gb-file-input:disabled)):hover .gb-image-btn {
@@ -506,8 +526,8 @@ export default function GuestBookPage() {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: #1a1a1a;
-          color: #ffffff;
+          background: var(--foreground);
+          color: var(--background);
           border: none;
           font-size: 14px;
           line-height: 1;
@@ -518,16 +538,17 @@ export default function GuestBookPage() {
         }
 
         .gb-submit {
-          font-family: 'Rethink Sans', system-ui, sans-serif;
+          font-family: var(--font);
           font-weight: 600;
-          font-size: 0.8125rem;
-          color: #ffffff;
+          font-size: var(--text-xs);
+          color: var(--background);
           background: var(--guestbook-500);
           border: none;
-          padding: 0.375rem 1.5rem;
+          padding: var(--space-xs) var(--space-6);
           border-radius: 8px;
           cursor: pointer;
           align-self: flex-start;
+          min-height: 44px;
         }
 
         .gb-submit:disabled {
@@ -537,7 +558,7 @@ export default function GuestBookPage() {
 
         .gb-note {
           font-size: 0.75rem;
-          color: #666666;
+          color: var(--muted);
           font-style: italic;
         }
 
@@ -545,7 +566,7 @@ export default function GuestBookPage() {
         .sig-wrapper {
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+          gap: var(--space-xs);
         }
 
         .sig-label {
@@ -553,12 +574,12 @@ export default function GuestBookPage() {
           justify-content: space-between;
           align-items: center;
           font-size: 0.75rem;
-          color: #666666;
+          color: var(--muted);
         }
 
         .sig-clear {
           font-size: 0.6875rem;
-          color: #666666;
+          color: var(--muted);
           background: none;
           border: none;
           cursor: pointer;
@@ -567,35 +588,35 @@ export default function GuestBookPage() {
         }
 
         .sig-canvas {
-          border: 1px dashed rgba(10, 10, 10, 0.15);
+          border: 1px dashed oklch(0.10 0.00 0 / 0.15);
           border-radius: 6px;
-          background: #ffffff;
+          background: var(--background);
           cursor: crosshair;
           touch-action: none;
           width: 100%;
-          height: 60px;
+          height: 100px;
         }
 
         /* Color chooser */
         .color-choosers {
           display: flex;
-          gap: 1.5rem;
+          gap: var(--space-6);
         }
 
         .color-chooser {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: var(--space-sm);
         }
 
         .color-chooser-label {
           font-size: 0.75rem;
-          color: #666666;
+          color: var(--muted);
         }
 
         .color-chooser-row {
           display: flex;
-          gap: 0.375rem;
+          gap: var(--space-xs);
         }
 
         .color-swatch {
@@ -605,7 +626,8 @@ export default function GuestBookPage() {
           border: 2px solid transparent;
           background: var(--swatch-color);
           cursor: pointer;
-          transition: transform 150ms ease, border-color 150ms ease;
+          transition: transform var(--duration-fast) ease,
+                      border-color var(--duration-fast) ease;
           padding: 0;
         }
 
@@ -621,25 +643,25 @@ export default function GuestBookPage() {
         /* Notes board */
         .gb-notes-board {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
-          gap: 1.5rem;
+          grid-template-columns: repeat(3, 1fr);
+          gap: var(--space-lg);
           justify-content: center;
           width: 100%;
-          max-width: 620px;
-          padding: 0.5rem;
+          max-width: 720px;
+          padding: var(--space-sm);
         }
 
         .sticky-note {
           position: relative;
           background: var(--note-bg, oklch(0.93 0.04 95));
           border-radius: 2px;
-          padding: 1.75rem 1rem 1rem;
+          padding: var(--space-lg) var(--space-md) var(--space-md);
           transform: rotate(var(--note-rotation, 0deg));
           box-shadow:
             0 1px 3px oklch(0.50 0.00 0 / 0.06),
             0 4px 12px oklch(0.50 0.00 0 / 0.04);
-          transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
-                      box-shadow 200ms ease;
+          transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
+                      box-shadow var(--duration-base) ease;
         }
 
         .sticky-note:hover {
@@ -658,10 +680,10 @@ export default function GuestBookPage() {
         }
 
         .note-message {
-          font-size: 0.8125rem;
+          font-size: var(--text-xs);
           color: oklch(0.25 0.00 0);
           line-height: 1.55;
-          margin-bottom: 0.5rem;
+          margin-bottom: var(--space-sm);
         }
 
         .note-author {
@@ -672,11 +694,60 @@ export default function GuestBookPage() {
         }
 
         .note-image {
-          margin-top: 0.5rem;
+          margin-top: var(--space-sm);
           max-width: 100%;
           max-height: 100px;
           border-radius: 4px;
           object-fit: cover;
+        }
+
+        /* See more */
+        .gb-see-more {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--space-sm);
+          font-family: var(--font);
+          font-size: var(--text-sm);
+          font-weight: 500;
+          color: var(--guestbook-500);
+          background: none;
+          border: 1px solid color-mix(in srgb, var(--guestbook-500) 30%, transparent);
+          border-radius: 8px;
+          padding: var(--space-sm) var(--space-md);
+          cursor: pointer;
+          transition: background var(--duration-fast) ease,
+                      border-color var(--duration-fast) ease;
+        }
+
+        .gb-see-more:hover {
+          background: color-mix(in srgb, var(--guestbook-500) 8%, transparent);
+          border-color: var(--guestbook-500);
+        }
+
+        /* All entries section */
+        .gb-all-section {
+          width: 100%;
+          padding: 3rem 0 var(--space-lg);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-6);
+        }
+
+        .gb-all-title {
+          font-size: var(--text-lg);
+          font-weight: 600;
+          color: var(--guestbook-500);
+          letter-spacing: -0.01em;
+        }
+
+        .gb-all-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: var(--space-lg);
+          width: 100%;
+          max-width: 720px;
+          padding: 0 var(--space-sm) var(--space-lg);
         }
 
         /* Pagination */
@@ -684,22 +755,23 @@ export default function GuestBookPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.75rem;
-          padding-top: 0.25rem;
+          gap: var(--space-3);
+          padding-top: var(--space-xs);
         }
 
         .gb-page-arrow {
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          border: 1px solid rgba(10, 10, 10, 0.12);
-          background: #ffffff;
-          color: #666666;
+          border: 1px solid var(--border);
+          background: var(--background);
+          color: var(--muted);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: all 150ms ease;
+          transition: color var(--duration-fast) ease,
+                      border-color var(--duration-fast) ease;
           padding: 0;
         }
 
@@ -714,15 +786,19 @@ export default function GuestBookPage() {
         }
 
         .gb-page-num {
-          font-family: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, monospace;
+          font-family: var(--font-mono);
           font-size: 0.75rem;
-          color: #666666;
+          color: var(--muted);
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
           .gb-notes-board {
             grid-template-columns: 1fr;
-            max-width: 260px;
+            max-width: 280px;
+          }
+          .gb-all-grid {
+            grid-template-columns: 1fr;
+            max-width: 280px;
           }
         }
 

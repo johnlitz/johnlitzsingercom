@@ -291,8 +291,8 @@ export default function ProjectCarousel({ projects }: Props) {
         .tech-pill {
           font-family: var(--font-mono);
           font-size: 0.75rem;
-          color: var(--muted);
-          background: var(--surface);
+          color: var(--work-500);
+          background: color-mix(in srgb, var(--work-500) 8%, transparent);
           padding: 2px var(--space-sm);
           border-radius: 4px;
         }
