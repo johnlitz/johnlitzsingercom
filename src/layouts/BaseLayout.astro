@@ -16,7 +16,6 @@ interface Props {
   breadcrumbs?: { label: string; href?: string }[];
 }
 
-import { currentStatus } from '../data/status';
 
 const { title, description, image, type, publishedDate, noindex, scrollable, hideNavName, breadcrumbs } = Astro.props;
 const contentFade = fade({ duration: '0.15s' });
@@ -133,18 +132,6 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
 
     <footer class="site-footer">
       <span>&copy; 2026 John Litzsinger</span>
-      <span class="footer-status">
-        <span class="footer-dot" aria-hidden="true"></span>
-        Currently {currentStatus.label}:{' '}
-        {currentStatus.projectUrl ? (
-          <a href={currentStatus.projectUrl} class="footer-status-link">{currentStatus.project}</a>
-        ) : (
-          <span>{currentStatus.project}</span>
-        )}
-        {currentStatus.note && (
-          <span class="footer-note"> · {currentStatus.note}</span>
-        )}
-      </span>
     </footer>
   </body>
 </html>
@@ -375,55 +362,6 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     gap: var(--space-md);
   }
 
-  .footer-status {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    font-family: var(--font-mono);
-  }
-
-  .footer-status-link {
-    color: var(--foreground);
-    font-weight: 500;
-    text-decoration: none;
-    position: relative;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .footer-status-link::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 100%;
-    height: 1px;
-    background: var(--section-color, var(--accent));
-    transition: right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .footer-status-link:hover {
-    color: var(--section-color, var(--accent));
-    text-decoration: none;
-  }
-
-  .footer-status-link:hover::after {
-    right: 0;
-  }
-
-  .footer-note {
-    color: var(--muted);
-    font-family: var(--font-mono);
-  }
-
-  .footer-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--status-green);
-    animation: status-pulse 2s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-
   main {
     flex: 1;
     min-height: 0;
@@ -452,16 +390,6 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
       overflow-y: auto;
     }
 
-    .site-footer {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-xs);
-      white-space: normal;
-    }
-
-    .footer-status {
-      flex-wrap: wrap;
-    }
   }
 
   @media (max-width: 480px) {
@@ -485,11 +413,5 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     .crumb,
     .back-arrow,
     .section-back,
-    .footer-status a {
-      transition: none;
-    }
-    .footer-dot {
-      animation: none;
-    }
   }
 </style>
