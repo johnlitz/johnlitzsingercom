@@ -495,7 +495,7 @@ export default function GuestBookPage() {
           font-size: 0.75rem;
           color: var(--muted);
           padding: var(--space-xs) var(--space-sm);
-          border: 1px dashed oklch(0.10 0.00 0 / 0.15);
+          border: 1px dashed var(--border-subtle);
           border-radius: 6px;
           transition: color var(--duration-fast) ease,
                       border-color var(--duration-fast) ease;
@@ -588,7 +588,7 @@ export default function GuestBookPage() {
         }
 
         .sig-canvas {
-          border: 1px dashed oklch(0.10 0.00 0 / 0.15);
+          border: 1px dashed var(--border-subtle);
           border-radius: 6px;
           background: var(--background);
           cursor: crosshair;
@@ -636,7 +636,7 @@ export default function GuestBookPage() {
         }
 
         .color-swatch-selected {
-          border-color: oklch(0.40 0.00 0);
+          border-color: var(--foreground);
           transform: scale(1.1);
         }
 
@@ -658,8 +658,8 @@ export default function GuestBookPage() {
           padding: var(--space-lg) var(--space-md) var(--space-md);
           transform: rotate(var(--note-rotation, 0deg));
           box-shadow:
-            0 1px 3px oklch(0.50 0.00 0 / 0.06),
-            0 4px 12px oklch(0.50 0.00 0 / 0.04);
+            0 1px 3px oklch(0.00 0.00 0 / 0.06),
+            0 4px 12px oklch(0.00 0.00 0 / 0.04);
           transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
                       box-shadow var(--duration-base) ease;
         }
@@ -667,8 +667,8 @@ export default function GuestBookPage() {
         .sticky-note:hover {
           transform: rotate(var(--note-rotation, 0deg)) translateY(-4px) scale(1.02);
           box-shadow:
-            0 4px 8px oklch(0.50 0.00 0 / 0.08),
-            0 12px 32px oklch(0.50 0.00 0 / 0.06);
+            0 4px 8px oklch(0.00 0.00 0 / 0.08),
+            0 12px 32px oklch(0.00 0.00 0 / 0.06);
         }
 
         .note-pin {

@@ -90,7 +90,7 @@ export default function ProjectCarousel({ projects }: Props) {
           <div className="carousel-card carousel-card-peek carousel-card-left" onClick={prev}>
             <div
               className="card-visual"
-              style={{ background: `linear-gradient(135deg, color-mix(in srgb, var(--work-500) 12%, transparent), color-mix(in srgb, var(--work-500) 4%, transparent))` }}
+              style={{ background: `linear-gradient(135deg, color-mix(in oklch, var(--work-500) 12%, transparent), color-mix(in oklch, var(--work-500) 4%, transparent))` }}
             >
               <span className="card-visual-title">{projects[prevIndex].title}</span>
             </div>
@@ -104,7 +104,7 @@ export default function ProjectCarousel({ projects }: Props) {
           >
             <div
               className="card-visual"
-              style={{ background: `linear-gradient(135deg, color-mix(in srgb, var(--work-500) 15%, transparent), color-mix(in srgb, var(--work-500) 5%, transparent))` }}
+              style={{ background: `linear-gradient(135deg, color-mix(in oklch, var(--work-500) 15%, transparent), color-mix(in oklch, var(--work-500) 5%, transparent))` }}
             >
               <svg viewBox="0 0 48 56" width="48" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 0h28l16 16v36a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4Z" fill="var(--work-500)" opacity="0.3" />
@@ -117,7 +117,7 @@ export default function ProjectCarousel({ projects }: Props) {
           <div className="carousel-card carousel-card-peek carousel-card-right" onClick={next}>
             <div
               className="card-visual"
-              style={{ background: `linear-gradient(135deg, color-mix(in srgb, var(--work-500) 12%, transparent), color-mix(in srgb, var(--work-500) 4%, transparent))` }}
+              style={{ background: `linear-gradient(135deg, color-mix(in oklch, var(--work-500) 12%, transparent), color-mix(in oklch, var(--work-500) 4%, transparent))` }}
             >
               <span className="card-visual-title">{projects[nextIndex].title}</span>
             </div>
