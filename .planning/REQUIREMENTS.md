@@ -25,24 +25,24 @@
 
 ### Design — Mobile
 
-- [ ] **MOBILE-01**: All pages render correctly on phone-width viewports (320px-480px)
-- [ ] **MOBILE-02**: Navigation chrome adapts properly (brand name hide, icon adjustments)
-- [ ] **MOBILE-03**: Folder grid on homepage adjusts to smaller viewport
-- [ ] **MOBILE-04**: Carousel is usable on touch devices
-- [ ] **MOBILE-05**: Guest Book form and sticky notes adapt to narrow widths
+- [x] **MOBILE-01**: All pages render correctly on phone-width viewports (320px-480px)
+- [x] **MOBILE-02**: Navigation chrome adapts properly (brand name hide, icon adjustments)
+- [x] **MOBILE-03**: Folder grid on homepage adjusts to smaller viewport
+- [x] **MOBILE-04**: Carousel is usable on touch devices
+- [x] **MOBILE-05**: Guest Book form and sticky notes adapt to narrow widths
 
 ### Performance
 
-- [ ] **PERF-01**: ProjectCarousel hydration lag is eliminated or imperceptible
-- [ ] **PERF-02**: Font loading causes no visible flash or layout shift
-- [ ] **PERF-03**: Client hydration directives are optimized (load vs visible vs idle per component)
-- [ ] **PERF-04**: Initial page load feels instant (no perceptible delay before interactive)
+- [x] **PERF-01**: ProjectCarousel hydration lag is eliminated or imperceptible
+- [x] **PERF-02**: Font loading causes no visible flash or layout shift
+- [x] **PERF-03**: Client hydration directives are optimized (load vs visible vs idle per component)
+- [x] **PERF-04**: Initial page load feels instant (no perceptible delay before interactive)
 
 ### Code Quality
 
-- [ ] **CODE-01**: Dead code removed (unused files like zones.ts, old styles, unreferenced components)
-- [ ] **CODE-02**: All hardcoded hex/rgba color values consolidated into CSS custom properties
-- [ ] **CODE-03**: React components use design system tokens consistently (no inline colors/sizes)
+- [x] **CODE-01**: Dead code removed (unused files like zones.ts, old styles, unreferenced components)
+- [x] **CODE-02**: All hardcoded hex/rgba color values consolidated into CSS custom properties
+- [x] **CODE-03**: React components use design system tokens consistently (no inline colors/sizes)
 
 ### Guest Book Backend
 
@@ -98,18 +98,18 @@
 | CHROME-04 | Phase 1 | Complete |
 | CHROME-05 | Phase 1 | Complete |
 | CHROME-06 | Phase 1 | Complete |
-| MOBILE-01 | Phase 1 | Pending |
-| MOBILE-02 | Phase 1 | Pending |
-| MOBILE-03 | Phase 1 | Pending |
-| MOBILE-04 | Phase 1 | Pending |
-| MOBILE-05 | Phase 1 | Pending |
-| PERF-01 | Phase 2 | Pending |
-| PERF-02 | Phase 2 | Pending |
-| PERF-03 | Phase 2 | Pending |
-| PERF-04 | Phase 2 | Pending |
-| CODE-01 | Phase 2 | Pending |
-| CODE-02 | Phase 2 | Pending |
-| CODE-03 | Phase 2 | Pending |
+| MOBILE-01 | Phase 1 | Complete |
+| MOBILE-02 | Phase 1 | Complete |
+| MOBILE-03 | Phase 1 | Complete |
+| MOBILE-04 | Phase 1 | Complete |
+| MOBILE-05 | Phase 1 | Complete |
+| PERF-01 | Phase 2 | Complete |
+| PERF-02 | Phase 2 | Complete |
+| PERF-03 | Phase 2 | Complete |
+| PERF-04 | Phase 2 | Complete |
+| CODE-01 | Phase 2 | Complete |
+| CODE-02 | Phase 2 | Complete |
+| CODE-03 | Phase 2 | Complete |
 | GBOOK-01 | Phase 3 | Pending |
 | GBOOK-02 | Phase 3 | Pending |
 | GBOOK-03 | Phase 3 | Pending |

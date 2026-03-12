@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Design Polish** — All visual and layout refinements (pages, chrome, mobile responsive)
+- [x] **Phase 1: Design Polish** — All visual and layout refinements (pages, chrome, mobile responsive) ✓
 - [ ] **Phase 2: Performance Optimization & Code Quality** — Carousel lag, font loading, hydration, code cleanup
 - [ ] **Phase 3: Guest Book Backend** — Supabase integration for storing, moderating, and displaying entries
 - [ ] **Phase 4: Ship** — Commit changes, merge to master, deploy to production
@@ -43,13 +43,13 @@
 11. User touches carousel on mobile device and can navigate with arrows, dots visible and tappable
 12. User views footer and sees status text well-formatted with animated link hover in section color
 
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans executed ✓
 
 Plans:
-- [ ] 01-01-PLAN.md — Homepage hero layout (brand name as hero, tagline as subtitle, larger logo)
-- [ ] 01-02-PLAN.md — Inner pages polish (Now table-of-contents, About bio, 404 folder metaphor, blog prose, footer copy)
-- [ ] 01-03-PLAN.md — Chrome polish (transitions, section colors, Work + Guest Book spacing, design philosophy doc)
-- [ ] 01-04-PLAN.md — Mobile responsive (viewport-lock release, folder carousel, carousel touch, Guest Book mobile)
+- [x] 01-01-PLAN.md — Homepage hero layout
+- [x] 01-02-PLAN.md — Inner pages polish
+- [x] 01-03-PLAN.md — Chrome polish
+- [x] 01-04-PLAN.md — Mobile responsive + design audit fixes
 
 ---
 
@@ -71,7 +71,10 @@ Plans:
 5. Developer inspects CSS and finds all colors defined as custom properties in global.css, no hardcoded hex/rgba values in Astro or React components
 6. Developer inspects React components and sees consistent use of design system tokens for sizes, spacing, and colors (no inline values)
 
-**Plans:** TBD (2-3 plans expected)
+**Plans:** 1/1 plans executed ✓
+
+Plans:
+- [x] 02-01: Dead code removal, hardcoded colors → tokens, hydration optimization
 
 ---
 
@@ -119,8 +122,8 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Design Polish | 3/4 | In Progress|  |
-| 2. Performance Optimization & Code Quality | 0/2 | Not started | — |
+| 1. Design Polish | 4/4 | Complete | 2026-03-11 |
+| 2. Performance & Code Quality | 1/1 | Complete | 2026-03-11 |
 | 3. Guest Book Backend | 0/1 | Not started | — |
 | 4. Ship | 0/1 | Not started | — |
 
