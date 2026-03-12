@@ -1,4 +1,7 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+
+const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
 const NOTE_COLORS = [
   { name: 'Lemon', value: 'oklch(0.93 0.04 95)' },
@@ -19,21 +22,23 @@ const PIN_COLORS = [
 ] as const;
 
 interface Entry {
+  id?: number;
   name: string;
   message: string;
-  date: string;
+  created_at: string;
   signature?: string;
   image?: string;
-  noteColor?: string;
-  pinColor?: string;
+  note_color?: string;
+  pin_color?: string;
+  approved?: boolean;
 }
 
 const PLACEHOLDER_ENTRIES: Entry[] = [
-  { name: 'Alex', message: 'Cool site! Love the folder design.', date: '2026-02-28', noteColor: NOTE_COLORS[2].value, pinColor: PIN_COLORS[1].value },
-  { name: 'Jordan', message: 'Found you through Launch Club. Keep building!', date: '2026-02-25', noteColor: NOTE_COLORS[0].value, pinColor: PIN_COLORS[3].value },
-  { name: 'Sam', message: 'Clean design. Astro is the way.', date: '2026-02-20', noteColor: NOTE_COLORS[3].value, pinColor: PIN_COLORS[2].value },
-  { name: 'Taylor', message: 'The pharmacy analyzer sounds interesting.', date: '2026-02-15', noteColor: NOTE_COLORS[4].value, pinColor: PIN_COLORS[4].value },
-  { name: 'Riley', message: 'Go Boilers!', date: '2026-02-10', noteColor: NOTE_COLORS[1].value, pinColor: PIN_COLORS[0].value },
+  { name: 'Alex', message: 'Cool site! Love the folder design.', created_at: '2026-02-28', note_color: NOTE_COLORS[2].value, pin_color: PIN_COLORS[1].value },
+  { name: 'Jordan', message: 'Found you through Launch Club. Keep building!', created_at: '2026-02-25', note_color: NOTE_COLORS[0].value, pin_color: PIN_COLORS[3].value },
+  { name: 'Sam', message: 'Clean design. Astro is the way.', created_at: '2026-02-20', note_color: NOTE_COLORS[3].value, pin_color: PIN_COLORS[2].value },
+  { name: 'Taylor', message: 'The pharmacy analyzer sounds interesting.', created_at: '2026-02-15', note_color: NOTE_COLORS[4].value, pin_color: PIN_COLORS[4].value },
+  { name: 'Riley', message: 'Go Boilers!', created_at: '2026-02-10', note_color: NOTE_COLORS[1].value, pin_color: PIN_COLORS[0].value },
 ];
 
 const MAX_IMAGE_WIDTH = 400;
@@ -200,11 +205,43 @@ export default function GuestBookPage() {
   const [message, setMessage] = useState('');
   const [signature, setSignature] = useState('');
   const [imagePreview, setImagePreview] = useState('');
-  const [entries] = useState<Entry[]>(PLACEHOLDER_ENTRIES);
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
   const [noteColorIdx, setNoteColorIdx] = useState(0);
   const [pinColorIdx, setPinColorIdx] = useState(0);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isConfigured = Boolean(SUPABASE_URL);
+
+  useEffect(() => {
+    if (!isConfigured) {
+      setEntries(PLACEHOLDER_ENTRIES);
+      setLoading(false);
+      return;
+    }
+    fetchEntries();
+  }, [isConfigured]);
+
+  async function fetchEntries() {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,message,created_at,signature,image,note_color,pin_color&approved=eq.true&order=created_at.desc&limit=50`,
+        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setEntries(data.length > 0 ? data : PLACEHOLDER_ENTRIES);
+      }
+    } catch {
+      setEntries(PLACEHOLDER_ENTRIES);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const previewEntries = entries.slice(0, 3);
 
@@ -227,10 +264,50 @@ export default function GuestBookPage() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypotRef.current?.value) return;
-    // Supabase integration -- coming soon
+    if (!name.trim() || !message.trim()) return;
+    if (!isConfigured) return;
+
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook`, {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=representation',
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          message: message.trim(),
+          signature: signature || null,
+          image: imagePreview || null,
+          note_color: NOTE_COLORS[noteColorIdx].value,
+          pin_color: PIN_COLORS[pinColorIdx].value,
+          approved: false,
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        setName('');
+        setMessage('');
+        setSignature('');
+        setImagePreview('');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      } else {
+        setError('Failed to sign. Try again.');
+      }
+    } catch {
+      setError('Failed to sign. Try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -253,7 +330,8 @@ export default function GuestBookPage() {
             placeholder="Your name"
             maxLength={100}
             className="gb-input"
-            disabled
+            required
+            disabled={!isConfigured || submitting}
           />
           <textarea
             value={message}
@@ -262,7 +340,8 @@ export default function GuestBookPage() {
             maxLength={500}
             rows={2}
             className="gb-textarea"
-            disabled
+            required
+            disabled={!isConfigured || submitting}
           />
 
           <SignatureCanvas onSignatureChange={setSignature} />
@@ -291,7 +370,7 @@ export default function GuestBookPage() {
                   accept="image/*"
                   onChange={handleImageChange}
                   className="gb-file-input"
-                  disabled
+                  disabled={!isConfigured || submitting}
                 />
                 <span className="gb-image-btn">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -311,11 +390,13 @@ export default function GuestBookPage() {
                 </div>
               )}
             </div>
-            <button type="submit" disabled className="gb-submit">
-              Sign
+            <button type="submit" disabled={!isConfigured || submitting} className="gb-submit">
+              {submitting ? 'Signing...' : 'Sign'}
             </button>
           </div>
-          <p className="gb-note">Coming soon</p>
+          {error && <p className="gb-error">{error}</p>}
+          {submitted && <p className="gb-success">Signed! Your entry will appear after approval.</p>}
+          {!isConfigured && <p className="gb-note">Coming soon</p>}
         </form>
       </div>
 
@@ -325,8 +406,8 @@ export default function GuestBookPage() {
           {previewEntries.map((entry, i) => {
             const hash = entry.name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
             const rotation = ((hash % 7) - 3);
-            const noteColor = entry.noteColor || NOTE_COLORS[hash % NOTE_COLORS.length].value;
-            const pinColor = entry.pinColor || PIN_COLORS[hash % PIN_COLORS.length].value;
+            const noteColor = entry.note_color || NOTE_COLORS[hash % NOTE_COLORS.length].value;
+            const pinColor = entry.pin_color || PIN_COLORS[hash % PIN_COLORS.length].value;
 
             return (
               <div
@@ -560,6 +641,16 @@ export default function GuestBookPage() {
           font-size: 0.75rem;
           color: var(--muted);
           font-style: italic;
+        }
+
+        .gb-error {
+          font-size: 0.75rem;
+          color: var(--accent);
+        }
+
+        .gb-success {
+          font-size: 0.75rem;
+          color: var(--work-500);
         }
 
         /* Signature */
