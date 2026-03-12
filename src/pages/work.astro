@@ -10,8 +10,7 @@ import { projects } from '../data/projects';
   breadcrumbs={[{ label: 'Work' }]}
 >
   <div class="work-page">
-    <h1>Work</h1>
-    <ProjectCarousel client:load projects={projects} />
+    <ProjectCarousel client:visible projects={projects} />
   </div>
 </BaseLayout>
 
@@ -20,15 +19,7 @@ import { projects } from '../data/projects';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-md);
     flex: 1;
-    justify-content: center;
-  }
-
-  h1 {
-    font-size: var(--text-2xl);
-    letter-spacing: -0.02em;
-    color: var(--work-500);
-    text-align: center;
   }
 </style>

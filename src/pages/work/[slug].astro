@@ -78,7 +78,7 @@ const { project, prev, next } = Astro.props;
     justify-content: center;
     padding: var(--space-xl) var(--space-md);
     margin-bottom: var(--space-lg);
-    background: linear-gradient(135deg, color-mix(in srgb, var(--work-500) 12%, #ffffff), color-mix(in srgb, var(--work-500) 4%, #ffffff));
+    background: linear-gradient(135deg, color-mix(in oklch, var(--work-500) 12%, var(--background)), color-mix(in oklch, var(--work-500) 4%, var(--background)));
     border-radius: 12px;
   }
 
@@ -111,7 +111,7 @@ const { project, prev, next } = Astro.props;
     padding: var(--space-sm) var(--space-6);
     font-size: var(--text-sm);
     font-weight: 600;
-    color: #ffffff;
+    color: var(--background);
     background: var(--work-500);
     border-radius: 8px;
     text-decoration: none;

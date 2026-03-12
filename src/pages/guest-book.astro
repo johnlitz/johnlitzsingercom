@@ -7,10 +7,10 @@ import GuestBookPage from '../components/react/GuestBookPage';
   title="Guest Book — John Litzsinger"
   description="Leave a note. Say hi."
   breadcrumbs={[{ label: 'Guest Book' }]}
+  scrollable
 >
   <div class="guestbook-page">
-    <h1>Guest Book</h1>
-    <GuestBookPage client:load />
+    <GuestBookPage client:idle />
   </div>
 </BaseLayout>
 
@@ -23,10 +23,4 @@ import GuestBookPage from '../components/react/GuestBookPage';
     flex: 1;
   }
 
-  h1 {
-    font-size: var(--text-2xl);
-    letter-spacing: -0.02em;
-    color: var(--guestbook-500);
-    text-align: center;
-  }
 </style>
