@@ -46,11 +46,11 @@
 
 ### Guest Book Backend
 
-- [ ] **GBOOK-01**: Supabase table created with schema for entries (name, message, signature, image, approved status)
-- [ ] **GBOOK-02**: Environment variables configured (PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
-- [ ] **GBOOK-03**: Frontend submits entries to Supabase (name, message, signature drawing, optional image)
-- [ ] **GBOOK-04**: Only owner-approved entries display publicly (approval-gated moderation)
-- [ ] **GBOOK-05**: Entries load and display from Supabase with correct sticky note styling
+- [x] **GBOOK-01**: Supabase table created with schema for entries (name, message, signature, image, approved status)
+- [x] **GBOOK-02**: Environment variables configured (PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
+- [x] **GBOOK-03**: Frontend submits entries to Supabase (name, message, signature drawing, optional image)
+- [x] **GBOOK-04**: Only owner-approved entries display publicly (approval-gated moderation)
+- [x] **GBOOK-05**: Entries load and display from Supabase with correct sticky note styling
 
 ### Ship
 
@@ -110,11 +110,11 @@
 | CODE-01 | Phase 2 | Complete |
 | CODE-02 | Phase 2 | Complete |
 | CODE-03 | Phase 2 | Complete |
-| GBOOK-01 | Phase 3 | Pending |
-| GBOOK-02 | Phase 3 | Pending |
-| GBOOK-03 | Phase 3 | Pending |
-| GBOOK-04 | Phase 3 | Pending |
-| GBOOK-05 | Phase 3 | Pending |
+| GBOOK-01 | Phase 3 | Complete |
+| GBOOK-02 | Phase 3 | Complete |
+| GBOOK-03 | Phase 3 | Complete |
+| GBOOK-04 | Phase 3 | Complete |
+| GBOOK-05 | Phase 3 | Complete |
 | SHIP-01 | Phase 4 | Pending |
 | SHIP-02 | Phase 4 | Pending |
 | SHIP-03 | Phase 4 | Pending |
