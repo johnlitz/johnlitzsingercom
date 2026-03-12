@@ -450,8 +450,8 @@ export default function GuestBookPage() {
             {entries.map((entry, i) => {
               const hash = entry.name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
               const rotation = ((hash % 7) - 3) * 0.5;
-              const noteColor = entry.noteColor || NOTE_COLORS[hash % NOTE_COLORS.length].value;
-              const pinColor = entry.pinColor || PIN_COLORS[hash % PIN_COLORS.length].value;
+              const noteColor = entry.note_color || NOTE_COLORS[hash % NOTE_COLORS.length].value;
+              const pinColor = entry.pin_color || PIN_COLORS[hash % PIN_COLORS.length].value;
 
               return (
                 <div

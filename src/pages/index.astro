@@ -279,21 +279,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     // Sync dots on scroll (handles both native swipe and programmatic scroll)
+    let scrollTick = false;
     carousel.addEventListener('scroll', () => {
-      const folders = carousel.querySelectorAll<HTMLElement>('.folder');
-      if (folders.length === 0) return;
-      const containerCenter = carousel.scrollLeft + carousel.offsetWidth / 2;
-      let closest = 0;
-      let closestDist = Infinity;
-      folders.forEach((folder, i) => {
-        const folderCenter = folder.offsetLeft + folder.offsetWidth / 2;
-        const dist = Math.abs(containerCenter - folderCenter);
-        if (dist < closestDist) {
-          closestDist = dist;
-          closest = i;
+      if (scrollTick) return;
+      scrollTick = true;
+      requestAnimationFrame(() => {
+        const folders = carousel.querySelectorAll<HTMLElement>('.folder');
+        if (folders.length > 0) {
+          const containerCenter = carousel.scrollLeft + carousel.offsetWidth / 2;
+          let closest = 0;
+          let closestDist = Infinity;
+          folders.forEach((folder, i) => {
+            const folderCenter = folder.offsetLeft + folder.offsetWidth / 2;
+            const dist = Math.abs(containerCenter - folderCenter);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closest = i;
+            }
+          });
+          updateDots(closest);
         }
+        scrollTick = false;
       });
-      updateDots(closest);
     }, { passive: true });
 
     // Touch swipe support
