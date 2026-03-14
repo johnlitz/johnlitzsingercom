@@ -1,16 +1,15 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import GuestBookPage from '../components/react/GuestBookPage';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GuestBookForm from '../../components/react/GuestBookForm';
 ---
 
 <BaseLayout
   title="Guest Book — John Litzsinger"
   description="Leave a note. Say hi."
   breadcrumbs={[{ label: 'Guest Book' }]}
-  scrollable
 >
   <div class="guestbook-page">
-    <GuestBookPage client:idle />
+    <GuestBookForm client:idle />
   </div>
 </BaseLayout>
 
@@ -22,5 +21,4 @@ import GuestBookPage from '../components/react/GuestBookPage';
     gap: var(--space-md);
     flex: 1;
   }
-
 </style>
