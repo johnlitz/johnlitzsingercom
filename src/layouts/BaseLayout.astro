@@ -103,7 +103,7 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
         </nav>
       ) : (
         <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="/" class="back-arrow" aria-label="Back to home">
+          <a href={breadcrumbs[0]?.href || '/'} class="back-arrow" aria-label={breadcrumbs[0]?.href ? `Back to ${breadcrumbs[0].label}` : 'Back to home'}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5" />
               <path d="m12 19-7-7 7-7" />
@@ -376,17 +376,26 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     flex-direction: column;
   }
 
-  body:not(.allow-scroll):has(.section-header) .section-header {
+  /* Center nav (section-header or breadcrumb) in the space above main */
+  body:not(.allow-scroll) .section-header,
+  body:not(.allow-scroll) .breadcrumb {
+    flex: 0.4;
+  }
+
+  body:not(.allow-scroll) main {
+    justify-content: center;
     flex: 1;
   }
 
-  body:not(.allow-scroll):has(.section-header) main {
-    justify-content: flex-start;
-    flex: 2;
+  body:not(.allow-scroll) main > :global(*) {
+    flex: initial;
   }
 
-  body:not(.allow-scroll):has(.section-header) main > :global(*) {
-    flex: initial;
+  /* Scrollable pages: same visual structure, but allow overflow */
+  .allow-scroll .section-header,
+  .allow-scroll .breadcrumb {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
   }
 
   @media (max-width: 768px) {
