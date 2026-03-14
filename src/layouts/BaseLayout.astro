@@ -376,9 +376,13 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     flex-direction: column;
   }
 
+  body:not(.allow-scroll):has(.section-header) .section-header {
+    flex: 1;
+  }
+
   body:not(.allow-scroll):has(.section-header) main {
-    justify-content: center;
-    padding-bottom: 15vh;
+    justify-content: flex-start;
+    flex: 2;
   }
 
   body:not(.allow-scroll):has(.section-header) main > :global(*) {

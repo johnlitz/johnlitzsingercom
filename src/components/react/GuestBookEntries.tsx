@@ -78,6 +78,7 @@ export default function GuestBookEntries() {
           font-weight: 600;
           color: var(--guestbook-500);
           letter-spacing: -0.01em;
+          margin-bottom: var(--space-md);
         }
 
         .gb-all-grid {
