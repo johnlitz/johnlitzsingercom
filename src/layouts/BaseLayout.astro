@@ -381,6 +381,10 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     padding-bottom: 15vh;
   }
 
+  body:not(.allow-scroll):has(.section-header) main > :global(*) {
+    flex: initial;
+  }
+
   @media (max-width: 768px) {
     .top-bar {
       padding: var(--space-sm) var(--gutter) var(--space-xs);
