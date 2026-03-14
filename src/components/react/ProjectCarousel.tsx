@@ -281,6 +281,10 @@ export default function ProjectCarousel({ projects }: Props) {
           color: var(--muted);
           text-align: center;
           padding: 0 var(--space-sm);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
         }
 
 

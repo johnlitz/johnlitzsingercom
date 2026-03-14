@@ -403,6 +403,14 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     }
   }
 
+  @media (orientation: landscape) and (max-height: 500px) {
+    .viewport-lock {
+      height: auto;
+      min-height: 100dvh;
+      overflow-y: auto;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       transition: none;
@@ -412,6 +420,8 @@ const iconFilter = sectionFilterMap[firstCrumb] ?? 'none';
     .social-links a,
     .crumb,
     .back-arrow,
-    .section-back,
+    .section-back {
+      transition: none;
+    }
   }
 </style>
