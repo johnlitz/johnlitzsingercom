@@ -1,87 +1,6 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { type Entry, NOTE_COLORS, PIN_COLORS } from './guestbook/types';
+import { useState, useRef, useEffect } from 'react';
+import { type Entry } from './guestbook/types';
 import { isConfigured, fetchEntries, submitEntry } from './guestbook/data';
-
-const MAX_IMAGE_WIDTH = 400;
-const MAX_IMAGE_SIZE_KB = 200;
-
-function compressImage(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let { width, height } = img;
-
-        if (width > MAX_IMAGE_WIDTH) {
-          height = (height * MAX_IMAGE_WIDTH) / width;
-          width = MAX_IMAGE_WIDTH;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d')!;
-        ctx.drawImage(img, 0, 0, width, height);
-
-        let quality = 0.8;
-        let result = canvas.toDataURL('image/jpeg', quality);
-
-        while (result.length > MAX_IMAGE_SIZE_KB * 1024 * 1.37 && quality > 0.2) {
-          quality -= 0.1;
-          result = canvas.toDataURL('image/jpeg', quality);
-        }
-
-        resolve(result);
-      };
-      img.onerror = reject;
-      img.src = reader.result as string;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function Thumbtack({ color }: { color: string }) {
-  return (
-    <svg width="16" height="20" viewBox="0 0 16 20" className="note-pin" aria-hidden="true">
-      <circle cx="8" cy="6" r="5" fill={color} />
-      <rect x="7" y="10" width="2" height="9" rx="1" fill="oklch(0.45 0.02 80)" />
-      <circle cx="8" cy="6" r="2.5" fill="oklch(0.85 0.02 80)" opacity="0.5" />
-    </svg>
-  );
-}
-
-function ColorChooser({
-  label,
-  colors,
-  selected,
-  onSelect,
-}: {
-  label: string;
-  colors: readonly { name: string; value: string }[];
-  selected: number;
-  onSelect: (i: number) => void;
-}) {
-  return (
-    <div className="color-chooser">
-      <span className="color-chooser-label">{label}</span>
-      <div className="color-chooser-row">
-        {colors.map((c, i) => (
-          <button
-            key={c.name}
-            type="button"
-            className={`color-swatch ${i === selected ? 'color-swatch-selected' : ''}`}
-            style={{ '--swatch-color': c.value } as React.CSSProperties}
-            onClick={() => onSelect(i)}
-            aria-label={c.name}
-            title={c.name}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function SignatureCanvas({ onSignatureChange }: { onSignatureChange: (data: string) => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -165,16 +84,12 @@ export default function GuestBookForm() {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [signature, setSignature] = useState('');
-  const [imagePreview, setImagePreview] = useState('');
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const [noteColorIdx, setNoteColorIdx] = useState(0);
-  const [pinColorIdx, setPinColorIdx] = useState(0);
   const honeypotRef = useRef<HTMLInputElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchEntries().then((data) => {
@@ -184,25 +99,6 @@ export default function GuestBookForm() {
   }, []);
 
   const previewEntries = entries.slice(0, 3);
-
-  const handleImageChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) return;
-
-    try {
-      const compressed = await compressImage(file);
-      setImagePreview(compressed);
-    } catch {
-      // silently fail
-    }
-  }, []);
-
-  const removeImage = useCallback(() => {
-    setImagePreview('');
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -217,9 +113,9 @@ export default function GuestBookForm() {
       name: name.trim(),
       message: message.trim(),
       signature: signature || '',
-      image: imagePreview || '',
-      note_color: NOTE_COLORS[noteColorIdx].value,
-      pin_color: PIN_COLORS[pinColorIdx].value,
+      image: '',
+      note_color: '',
+      pin_color: '',
     });
 
     if (ok) {
@@ -227,8 +123,6 @@ export default function GuestBookForm() {
       setName('');
       setMessage('');
       setSignature('');
-      setImagePreview('');
-      if (fileInputRef.current) fileInputRef.current.value = '';
     } else {
       setError('Failed to sign. Try again.');
     }
@@ -238,7 +132,6 @@ export default function GuestBookForm() {
 
   return (
     <div className="gb-layout">
-      {/* Top: Form */}
       <div className="gb-form-section">
         <form onSubmit={handleSubmit} className="gb-form">
           <input
@@ -272,97 +165,33 @@ export default function GuestBookForm() {
 
           <SignatureCanvas onSignatureChange={setSignature} />
 
-          <div className="color-choosers">
-            <ColorChooser
-              label="Note"
-              colors={NOTE_COLORS}
-              selected={noteColorIdx}
-              onSelect={setNoteColorIdx}
-            />
-            <ColorChooser
-              label="Pin"
-              colors={PIN_COLORS}
-              selected={pinColorIdx}
-              onSelect={setPinColorIdx}
-            />
-          </div>
-
-          <div className="gb-form-bottom">
-            <div className="gb-image-upload">
-              <label className="gb-image-label">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="gb-file-input"
-                  disabled={!isConfigured || submitting}
-                />
-                <span className="gb-image-btn">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="m21 15-5-5L5 21" />
-                  </svg>
-                  Photo
-                </span>
-              </label>
-              {imagePreview && (
-                <div className="gb-image-preview">
-                  <img src={imagePreview} alt="Upload preview" />
-                  <button type="button" className="gb-image-remove" onClick={removeImage}>
-                    &times;
-                  </button>
-                </div>
-              )}
-            </div>
-            <button type="submit" disabled={!isConfigured || submitting} className="gb-submit">
-              {submitting ? 'Signing...' : 'Sign'}
-            </button>
-          </div>
+          <button type="submit" disabled={!isConfigured || submitting} className="gb-submit">
+            {submitting ? 'Signing...' : 'Sign'}
+          </button>
           {error && <p className="gb-error">{error}</p>}
           {submitted && <p className="gb-success">Signed! Your entry will appear after approval.</p>}
           {!isConfigured && <p className="gb-note">Coming soon</p>}
         </form>
       </div>
 
-      {/* Preview: Sticky note entries */}
-      <div className="gb-entries-section">
-        <div className="gb-notes-board">
-          {previewEntries.map((entry, i) => {
-            const hash = entry.name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-            const rotation = ((hash % 7) - 3);
-            const noteColor = entry.note_color || NOTE_COLORS[hash % NOTE_COLORS.length].value;
-            const pinColor = entry.pin_color || PIN_COLORS[hash % PIN_COLORS.length].value;
-
-            return (
-              <div
-                key={i}
-                className="sticky-note"
-                style={{
-                  '--note-bg': noteColor,
-                  '--note-rotation': `${rotation}deg`,
-                } as React.CSSProperties}
-              >
-                <Thumbtack color={pinColor} />
-                <p className="note-message">{entry.message}</p>
-                <span className="note-author">&mdash; {entry.name}</span>
-                {entry.image && (
-                  <img src={entry.image} alt={`Photo by ${entry.name}`} className="note-image" />
-                )}
-              </div>
-            );
-          })}
+      {/* Recent entries preview */}
+      {!loading && previewEntries.length > 0 && (
+        <div className="gb-preview">
+          <ul className="gb-preview-list">
+            {previewEntries.map((entry, i) => (
+              <li key={entry.id ?? i} className="gb-preview-item">
+                <p className="gb-preview-message">{entry.message}</p>
+                <span className="gb-preview-author">&mdash; {entry.name}</span>
+              </li>
+            ))}
+          </ul>
+          {entries.length > 3 && (
+            <a href="/guest-book/entries" className="gb-see-more">
+              See all entries
+            </a>
+          )}
         </div>
-        {entries.length > 3 && (
-          <a href="/guest-book/entries" className="gb-see-more">
-            See all entries
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </a>
-        )}
-      </div>
+      )}
 
       <style>{`
         .gb-layout {
@@ -378,23 +207,6 @@ export default function GuestBookForm() {
         .gb-form-section {
           width: 100%;
           max-width: 540px;
-        }
-
-        .gb-entries-section {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: var(--space-sm);
-          flex: 1;
-          min-height: 0;
-        }
-
-        .gb-form-bottom {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: var(--space-sm);
         }
 
         .gb-form {
@@ -434,77 +246,7 @@ export default function GuestBookForm() {
 
         .gb-textarea {
           resize: none;
-          min-height: 100px;
-        }
-
-        /* Image upload */
-        .gb-image-upload {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-xs);
-        }
-
-        .gb-file-input {
-          display: none;
-        }
-
-        .gb-image-label {
-          cursor: pointer;
-        }
-
-        .gb-image-label:has(.gb-file-input:disabled) {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .gb-image-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-xs);
-          font-family: var(--font);
-          font-size: 0.75rem;
-          color: var(--muted);
-          padding: var(--space-xs) var(--space-sm);
-          border: 1px dashed var(--border-subtle);
-          border-radius: 6px;
-          transition: color var(--duration-fast) ease,
-                      border-color var(--duration-fast) ease;
-        }
-
-        .gb-image-label:not(:has(.gb-file-input:disabled)):hover .gb-image-btn {
-          color: var(--guestbook-500);
-          border-color: var(--guestbook-500);
-        }
-
-        .gb-image-preview {
-          position: relative;
-          display: inline-block;
-          max-width: 120px;
-        }
-
-        .gb-image-preview img {
-          width: 100%;
-          height: auto;
-          border-radius: 6px;
-          display: block;
-        }
-
-        .gb-image-remove {
-          position: absolute;
-          top: -6px;
-          right: -6px;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: var(--foreground);
-          color: var(--background);
-          border: none;
-          font-size: 14px;
-          line-height: 1;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          min-height: 80px;
         }
 
         .gb-submit {
@@ -577,174 +319,63 @@ export default function GuestBookForm() {
           height: 100px;
         }
 
-        /* Color chooser */
-        .color-choosers {
+        /* Recent entries preview */
+        .gb-preview {
+          width: 100%;
+          max-width: 540px;
           display: flex;
-          gap: var(--space-6);
-        }
-
-        .color-chooser {
-          display: flex;
+          flex-direction: column;
           align-items: center;
           gap: var(--space-sm);
         }
 
-        .color-chooser-label {
-          font-size: 0.75rem;
+        .gb-preview-list {
+          list-style: none;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+        }
+
+        .gb-preview-item {
+          padding: var(--space-sm) 0;
+          border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .gb-preview-message {
+          font-size: var(--text-sm);
+          color: var(--foreground);
+          line-height: 1.5;
+          margin-bottom: 2px;
+        }
+
+        .gb-preview-author {
+          font-size: var(--text-xs);
           color: var(--muted);
         }
 
-        .color-chooser-row {
-          display: flex;
-          gap: var(--space-xs);
-        }
-
-        .color-swatch {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          border: 2px solid transparent;
-          background: var(--swatch-color);
-          cursor: pointer;
-          transition: transform var(--duration-fast) ease,
-                      border-color var(--duration-fast) ease;
-          padding: 0;
-        }
-
-        .color-swatch:hover {
-          transform: scale(1.15);
-        }
-
-        .color-swatch-selected {
-          border-color: var(--foreground);
-          transform: scale(1.1);
-        }
-
-        /* Notes board */
-        .gb-notes-board {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: var(--space-lg);
-          justify-content: center;
-          width: 100%;
-          max-width: 720px;
-          padding: var(--space-sm);
-        }
-
-        .sticky-note {
-          position: relative;
-          background: var(--note-bg, oklch(0.93 0.04 95));
-          border-radius: 2px;
-          padding: var(--space-lg) var(--space-md) var(--space-md);
-          transform: rotate(var(--note-rotation, 0deg));
-          box-shadow:
-            0 1px 3px oklch(0.00 0.00 0 / 0.06),
-            0 4px 12px oklch(0.00 0.00 0 / 0.04);
-          transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
-                      box-shadow var(--duration-base) ease;
-        }
-
-        .sticky-note:hover {
-          transform: rotate(var(--note-rotation, 0deg)) translateY(-4px) scale(1.02);
-          box-shadow:
-            0 4px 8px oklch(0.00 0.00 0 / 0.08),
-            0 12px 32px oklch(0.00 0.00 0 / 0.06);
-        }
-
-        .note-pin {
-          position: absolute;
-          top: -8px;
-          left: 50%;
-          transform: translateX(-50%);
-          filter: drop-shadow(0 1px 2px oklch(0.30 0.00 0 / 0.25));
-        }
-
-        .note-message {
-          font-size: var(--text-xs);
-          color: oklch(0.25 0.00 0);
-          line-height: 1.55;
-          margin-bottom: var(--space-sm);
-        }
-
-        .note-author {
-          display: block;
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: oklch(0.40 0.00 0);
-        }
-
-        .note-image {
-          margin-top: var(--space-sm);
-          max-width: 100%;
-          max-height: 100px;
-          border-radius: 4px;
-          object-fit: cover;
-        }
-
-        /* See more */
         .gb-see-more {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-sm);
-          font-family: var(--font);
-          font-size: var(--text-sm);
-          font-weight: 500;
+          font-family: var(--font-mono);
+          font-size: var(--text-xs);
           color: var(--guestbook-500);
-          background: none;
-          border: 1px solid color-mix(in srgb, var(--guestbook-500) 30%, transparent);
-          border-radius: 8px;
-          padding: var(--space-sm) var(--space-md);
-          cursor: pointer;
           text-decoration: none;
-          transition: background var(--duration-fast) ease,
-                      border-color var(--duration-fast) ease;
+          transition: opacity var(--duration-fast) ease;
         }
 
         .gb-see-more:hover {
-          background: color-mix(in srgb, var(--guestbook-500) 8%, transparent);
-          border-color: var(--guestbook-500);
-          text-decoration: none;
-        }
-
-        @media (max-width: 600px) {
-          .gb-notes-board {
-            grid-template-columns: 1fr;
-            max-width: 280px;
-          }
+          text-decoration: underline;
         }
 
         @media (max-width: 480px) {
-          .gb-form-bottom {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-
           .gb-submit {
             width: 100%;
             align-self: stretch;
-          }
-
-          .gb-image-btn {
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-          }
-
-          .color-choosers {
-            flex-wrap: wrap;
-            gap: var(--space-sm);
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .gb-input,
-          .gb-textarea,
-          .sticky-note,
-          .color-swatch {
+          .gb-textarea {
             transition: none;
-          }
-          .sticky-note:hover {
-            transform: rotate(var(--note-rotation, 0deg));
           }
         }
       `}</style>
