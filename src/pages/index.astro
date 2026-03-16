@@ -4,329 +4,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="John Litzsinger"
-  description="Finance, markets, and technology."
-  hideNavName={true}
+  description="Finance @ Purdue. Markets, startups, and technology."
 >
-  <div class="home">
-    <div class="hero">
-      <h1 class="hero-name">John Litzsinger</h1>
-      <p class="hero-tagline">Finance @ Purdue, interested in startups.</p>
-    </div>
-
-    <nav class="folder-grid" id="folder-carousel" aria-label="Browse">
-      <a href="/now" class="folder" style="--folder-color: var(--now-500);">
-        <div class="folder-icon">
-          <svg viewBox="0 0 80 64" width="84" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="folder-body">
-              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
-            </g>
-            <g class="folder-tab">
-              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
-            </g>
-            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
-          </svg>
-        </div>
-        <span class="folder-label">Now</span>
-      </a>
-
-      <a href="/work" class="folder" style="--folder-color: var(--work-500);">
-        <div class="folder-icon">
-          <svg viewBox="0 0 80 64" width="84" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="folder-body">
-              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
-            </g>
-            <g class="folder-tab">
-              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
-            </g>
-            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
-          </svg>
-        </div>
-        <span class="folder-label">Work</span>
-      </a>
-
-      <a href="/guest-book" class="folder" style="--folder-color: var(--guestbook-500);">
-        <div class="folder-icon">
-          <svg viewBox="0 0 80 64" width="84" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="folder-body">
-              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
-            </g>
-            <g class="folder-tab">
-              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
-            </g>
-            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
-          </svg>
-        </div>
-        <span class="folder-label">Guest Book</span>
-      </a>
-
-      <a href="/about" class="folder" style="--folder-color: var(--about-500);">
-        <div class="folder-icon">
-          <svg viewBox="0 0 80 64" width="84" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="folder-body">
-              <rect x="0" y="14" width="80" height="50" rx="4" fill="var(--folder-color)" />
-            </g>
-            <g class="folder-tab">
-              <path d="M0 6a4 4 0 0 1 4-4h22a4 4 0 0 1 3.2 1.6L34 10H0V6Z" fill="var(--folder-color)" />
-            </g>
-            <rect x="0" y="10" width="80" height="4" fill="var(--folder-color)" opacity="0.85" />
-          </svg>
-        </div>
-        <span class="folder-label">About</span>
-      </a>
+  <div class="title-page">
+    <h1 class="name">John Litzsinger</h1>
+    <p class="tagline">Finance @ Purdue. Markets, startups, and technology.</p>
+    <nav class="home-nav" aria-label="Main navigation">
+      <a href="/about">About</a>
+      <a href="/work">Work</a>
+      <a href="/resume">Resume</a>
     </nav>
-
-    <div class="carousel-dots" aria-hidden="true">
-      <button class="dot active" data-index="0" aria-label="Go to Now"></button>
-      <button class="dot" data-index="1" aria-label="Go to Work"></button>
-      <button class="dot" data-index="2" aria-label="Go to Guest Book"></button>
-      <button class="dot" data-index="3" aria-label="Go to About"></button>
-    </div>
-
   </div>
 </BaseLayout>
 
 <style>
-  .home {
+  .title-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex: 1;
-    gap: var(--space-xl);
+    gap: var(--space-lg);
   }
 
-  .hero {
-    text-align: center;
-  }
-
-  .hero-name {
-    font-family: var(--font-brand);
-    font-size: clamp(2.5rem, 1.8rem + 2.8vw, 4rem);
+  .name {
+    font-size: var(--text-4xl);
     font-weight: 700;
     letter-spacing: -0.03em;
-    color: var(--foreground);
-    line-height: 1.0;
-    margin: 0;
   }
 
-  .hero-tagline {
-    font-family: var(--font);
+  .tagline {
     font-size: var(--text-lg);
-    font-weight: 400;
     color: var(--muted);
-    margin: var(--space-sm) 0 0;
-    line-height: 1.4;
+    max-width: 28em;
   }
 
-  .folder-grid {
+  .home-nav {
     display: flex;
-    justify-content: center;
     gap: var(--space-xl);
-    flex-wrap: wrap;
+    margin-top: var(--space-sm);
   }
 
-  .folder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-sm);
+  .home-nav a {
+    color: var(--muted);
+    font-size: var(--text-base);
     text-decoration: none;
-    color: var(--foreground);
-    cursor: pointer;
+    transition: color var(--transition);
   }
 
-  .folder-icon {
-    filter: drop-shadow(0 0 0 transparent);
-    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1),
-                filter var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .folder:hover .folder-icon {
-    transform: translateY(-8px) scale(1.08);
-    filter: drop-shadow(0 8px 16px color-mix(in srgb, var(--folder-color) 40%, transparent));
-  }
-
-  .folder:hover .folder-tab {
-    transform-origin: 0 10px;
-    transform: rotate(-12deg);
-  }
-
-  .folder-tab {
-    transition: transform var(--duration-base) cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .folder-label {
-    font-size: var(--text-sm);
-    font-weight: 500;
-    transition: color var(--duration-base) ease;
-  }
-
-  .folder:hover .folder-label {
-    color: var(--folder-color);
-  }
-
-  /* Mobile carousel dots — hidden on desktop */
-  .carousel-dots {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    .home {
-      gap: var(--space-lg);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .home {
-      justify-content: flex-start;
-      padding-top: var(--space-xl);
-    }
-
-    /* Turn folder-grid into a horizontal scroll-snap carousel */
-    .folder-grid {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE/Edge */
-      justify-content: flex-start;
-      flex-wrap: nowrap;
-      gap: 0;
-      padding: var(--space-md) 0;
-      width: 100%;
-    }
-
-    .folder-grid::-webkit-scrollbar {
-      display: none;
-    }
-
-    .folder-grid .folder {
-      flex: 0 0 100%;
-      scroll-snap-align: center;
-      min-width: 100%;
-    }
-
-    /* Show dots on mobile */
-    .carousel-dots {
-      display: flex;
-      gap: var(--space-xs);
-      align-items: center;
-    }
-
-    .dot {
-      width: 44px;
-      height: 44px;
-      border: none;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-
-    .dot::after {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: oklch(0.10 0.00 0 / 0.20);
-      transition: background 150ms ease;
-    }
-
-    .dot.active::after {
-      background: var(--accent);
-    }
-  }
-
-  @media (min-width: 641px) {
-    .carousel-dots {
-      display: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .folder-icon,
-    .folder-tab,
-    .folder-label {
-      transition: none;
-    }
-    .folder:hover .folder-icon {
-      transform: none;
-      filter: none;
-    }
-    .folder:hover .folder-tab {
-      transform: none;
-    }
-    .dot::after {
-      transition: none;
-    }
+  .home-nav a:hover {
+    color: var(--text);
   }
 </style>
-
-<script>
-  // Mobile folder carousel: swipe support + dot indicator sync
-  const carousel = document.getElementById('folder-carousel') as HTMLElement | null;
-  const dots = document.querySelectorAll<HTMLButtonElement>('.dot');
-
-  if (carousel && dots.length > 0) {
-    let touchStartX = 0;
-    let current = 0;
-
-    function updateDots(index: number) {
-      current = index;
-      dots.forEach((d, i) => d.classList.toggle('active', i === index));
-    }
-
-    // Sync dots on scroll (handles both native swipe and programmatic scroll)
-    let scrollTick = false;
-    carousel.addEventListener('scroll', () => {
-      if (scrollTick) return;
-      scrollTick = true;
-      requestAnimationFrame(() => {
-        const folders = carousel.querySelectorAll<HTMLElement>('.folder');
-        if (folders.length > 0) {
-          const containerCenter = carousel.scrollLeft + carousel.offsetWidth / 2;
-          let closest = 0;
-          let closestDist = Infinity;
-          folders.forEach((folder, i) => {
-            const folderCenter = folder.offsetLeft + folder.offsetWidth / 2;
-            const dist = Math.abs(containerCenter - folderCenter);
-            if (dist < closestDist) {
-              closestDist = dist;
-              closest = i;
-            }
-          });
-          updateDots(closest);
-        }
-        scrollTick = false;
-      });
-    }, { passive: true });
-
-    // Touch swipe support
-    carousel.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    carousel.addEventListener('touchend', (e) => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) {
-        const folders = carousel.querySelectorAll<HTMLElement>('.folder');
-        if (folders.length === 0) return;
-        const next = Math.max(0, Math.min(folders.length - 1, current + (diff > 0 ? 1 : -1)));
-        folders[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-    }, { passive: true });
-
-    // Dot click navigation
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        const folders = carousel.querySelectorAll<HTMLElement>('.folder');
-        if (folders[i]) {
-          folders[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
-      });
-    });
-  }
-</script>

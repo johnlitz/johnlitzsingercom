@@ -3,191 +3,73 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { projects } from '../../data/projects';
 
 export function getStaticPaths() {
-  return projects.map((project, index) => ({
+  return projects.map((project) => ({
     params: { slug: project.slug },
-    props: {
-      project,
-      prev: projects[index - 1] ?? null,
-      next: projects[index + 1] ?? null,
-    },
+    props: { project },
   }));
 }
 
-const { project, prev, next } = Astro.props;
+const { project } = Astro.props;
 ---
 
 <BaseLayout
   title={`${project.title} — John Litzsinger`}
   description={project.description}
-  breadcrumbs={[{ label: 'Work', href: '/work' }, { label: project.title }]}
 >
-  <article class="project-detail">
-    <div class="hero">
-      <h1>{project.title}</h1>
-    </div>
-
+  <div class="detail">
+    <a href="/work" class="back">&larr; Work</a>
+    <h1>{project.title}</h1>
+    <p class="tech">{project.tech.join(', ')}</p>
     <p class="description">{project.description}</p>
-
     {project.links.length > 0 && (
-      <div class="project-links">
+      <div class="links">
         {project.links.map((link) => (
-          <a href={link.url} target="_blank" rel="noopener noreferrer" class="project-link-btn">
-            {link.label}
+          <a href={link.url} target="_blank" rel="noopener noreferrer">
+            {link.label} &rarr;
           </a>
         ))}
       </div>
     )}
-
-    <div class="tech-list">
-      {project.tech.map((t) => (
-        <span class="tech-pill">{t}</span>
-      ))}
-    </div>
-
-    {(prev || next) && (
-      <nav class="project-nav" aria-label="Project navigation">
-        {prev ? (
-          <a href={`/work/${prev.slug}`} class="nav-link nav-prev">
-            <span class="nav-direction">&larr; Previous</span>
-            <span class="nav-title">{prev.title}</span>
-          </a>
-        ) : <div />}
-        {next ? (
-          <a href={`/work/${next.slug}`} class="nav-link nav-next">
-            <span class="nav-direction">Next &rarr;</span>
-            <span class="nav-title">{next.title}</span>
-          </a>
-        ) : <div />}
-      </nav>
-    )}
-  </article>
+  </div>
 </BaseLayout>
 
 <style>
-  .project-detail {
-    max-width: var(--content-max);
+  .detail {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: var(--space-md);
   }
 
-  .hero {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-xl) var(--space-md);
-    margin-bottom: var(--space-lg);
-    background: linear-gradient(135deg, color-mix(in oklch, var(--work-500) 12%, var(--background)), color-mix(in oklch, var(--work-500) 4%, var(--background)));
-    border-radius: 12px;
+  .back {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .back:hover {
+    color: var(--text);
   }
 
   h1 {
     font-size: var(--text-2xl);
-    letter-spacing: -0.02em;
-    text-align: center;
-    color: var(--foreground);
+    margin-top: var(--space-sm);
+  }
+
+  .tech {
+    font-size: var(--text-sm);
+    color: var(--muted);
   }
 
   .description {
-    font-size: var(--text-lg);
-    color: var(--secondary);
-    line-height: 1.65;
-    max-width: 50ch;
-    text-align: center;
-    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+    max-width: 36em;
   }
 
-  .project-links {
+  .links {
     display: flex;
-    justify-content: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-  }
-
-  .project-link-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-6);
+    gap: var(--space-lg);
+    margin-top: var(--space-sm);
     font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--background);
-    background: var(--work-500);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: opacity var(--duration-fast) ease;
-  }
-
-  .project-link-btn:hover {
-    opacity: 0.85;
-    text-decoration: none;
-  }
-
-  .tech-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-xl);
-  }
-
-  .tech-pill {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--muted);
-    background: var(--surface);
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
-
-  .project-nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    gap: var(--space-md);
-    padding-top: var(--space-xl);
-    border-top: 1px solid var(--border);
-  }
-
-  .nav-link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    text-decoration: none;
-    color: inherit;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .nav-link:hover {
-    text-decoration: none;
-  }
-
-  .nav-link:hover .nav-title {
-    color: var(--work-500);
-  }
-
-  .nav-next {
-    text-align: right;
-    margin-left: auto;
-  }
-
-  .nav-direction {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--muted);
-  }
-
-  .nav-title {
-    font-weight: 600;
-    font-size: var(--text-sm);
-    color: var(--foreground);
-    transition: color var(--duration-fast) ease;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .project-link-btn,
-    .nav-title {
-      transition: none;
-    }
   }
 </style>

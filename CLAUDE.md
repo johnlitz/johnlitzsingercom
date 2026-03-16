@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Personal website for John Litzsinger at johnlitzsinger.com. Portfolio + blog + guest book built with Astro 5, MDX, React, deployed on Vercel.
+Personal website for John Litzsinger at johnlitzsinger.com. Portfolio site built with Astro 5, deployed on Vercel. "The Document" aesthetic — minimal, viewport-locked, warm cream + single red accent.
 
 ## Commands
 
@@ -19,60 +19,30 @@ npm run preview   # Preview production build locally
 ## Architecture
 
 - **Framework:** Astro 5 (static output) with `@astrojs/mdx`, `@astrojs/react`, `@astrojs/sitemap`, `@astrojs/vercel`
-- **Content:** Blog posts are MDX files in `src/content/blog/`. Content Collections with Zod schema defined in `src/content.config.ts`
-- **Interactive islands:** React components in `src/components/react/` (e.g., GuestBook) hydrated with `client:load`, `client:visible`, or `client:idle`
-- **Styling:** Scoped Astro `<style>` tags per component + CSS custom properties in `src/styles/global.css`. No CSS framework. Light-only warm cream palette
-- **Layout:** Viewport-locked (100dvh, overflow hidden, no scrolling). Single centered column (max-width 720px). Top bar, breadcrumb nav on inner pages, footer. Titles in upper portion, not vertically centered. Section-aware colors: logo icon, social link hovers, and brand underline all match the current section's folder color
-- **Fonts:** Rethink Sans (variable 400-800) for body text, Urbanist (variable 100-900) for brand name only, system monospace for breadcrumbs/metadata. All self-hosted as WOFF2
+- **Content:** Blog posts (future) are MDX files in `src/content/blog/`. Content Collections with Zod schema defined in `src/content.config.ts`
+- **Styling:** Scoped Astro `<style>` tags per component + CSS custom properties in `src/styles/global.css`. No CSS framework. Light-only warm cream palette. System font stack only — no web fonts.
+- **Layout:** Viewport-locked (`100dvh`, `overflow: hidden`, no scrolling). Single centered column (`max-width: 40rem`). Homepage: full viewport centering, no chrome. Inner pages: minimal top bar (`jl` mark left, page links right).
 
 ### Key files
 
 - `astro.config.mjs` — Astro configuration (site URL, integrations, Vercel adapter)
 - `src/content.config.ts` — Blog collection schema (title, description, pubDate, tags, draft, heroImage)
-- `src/layouts/BaseLayout.astro` — HTML shell: top bar (Urbanist brand + social icons), breadcrumb nav, centered main content, footer, BaseHead SEO, ClientRouter view transitions
-- `src/layouts/BlogPostLayout.astro` — Blog post wrapper with prose styling, prev/next navigation, breadcrumb
-- `src/pages/index.astro` — Homepage with tagline + 4 macOS-style colored folder icons (Now, Work, Guest Book, About) vertically centered as a group via `justify-content: center`
-- `src/pages/work.astro` — Project carousel with title/description above cards, arrows, tech pills, dots
-- `src/pages/work/[slug].astro` — Individual project detail pages with breadcrumb
-- `src/pages/now.astro` — Now page: blog feed with entry cards (posts + status updates), replaces old blitz-feed
-- `src/pages/about.astro` — About page with bio, Calvin and Hobbes GIF, caption
-- `src/pages/guest-book.astro` — Guest book page with signature canvas, image upload, paginated entries (Supabase backend, not yet configured)
-- `src/pages/blog/[...slug].astro` — Dynamic blog post route with prev/next navigation
-- `src/pages/blog/index.astro` — Redirects to `/now`
-- `src/pages/404.astro` — Error page with breadcrumb and link home
+- `src/layouts/BaseLayout.astro` — HTML shell with two modes: homepage (no nav, centered) and inner pages (top bar with `jl` + nav links). Viewport-locked frame.
+- `src/pages/index.astro` — Homepage: "John Litzsinger" large centered, tagline, 3 nav links (About, Work, Resume)
+- `src/pages/about.astro` — Bio text, Calvin & Hobbes GIF, social links (Email, GitHub, LinkedIn)
+- `src/pages/work.astro` — Row-based project index (title left, tech + arrow right)
+- `src/pages/work/[slug].astro` — Project detail: back link, title, tech, description, external links
+- `src/pages/resume.astro` — Embedded PDF viewer (iframe, wider max-width: 60rem)
+- `src/pages/404.astro` — "Page not found. Go home →"
 - `src/data/projects.ts` — Project data (slug, title, description, tech, links)
-- `src/styles/global.css` — Design tokens (colors, type scale, spacing, folder colors), @font-face declarations, reset, global element styles
-- `src/components/react/GuestBookPage.tsx` — React island: guest book form with signature canvas, image upload/compression, paginated entries
-- `src/components/react/ProjectCarousel.tsx` — React island: project carousel with peek cards, arrows, title/description above cards
-
-### Key components
-
-- `src/components/BaseHead.astro` — SEO meta tags, OG/Twitter cards, font preloading (Rethink Sans + Urbanist)
+- `src/styles/global.css` — Design tokens (5 colors, 6 type sizes, 4 spacing levels), reset, base element styles
+- `src/components/BaseHead.astro` — SEO meta tags, OG/Twitter cards, favicon
 
 ### Navigation
 
-- **Top bar (all pages):** jl logo + "John Litzsinger" (Urbanist font) left, social icon links (Email, X, LinkedIn, GitHub) right
-- **Breadcrumb (inner pages):** Monospace `jl / Section / Page` path navigation below top bar
-- **Folder nav (homepage only):** 4 large macOS-style colored folder icons (Work, Feed, Guest Book, About) with hover animations
-- **Footer (all pages):** Copyright + "Built with Astro"
-- **No sidebar.** No hamburger menu
-- Mobile: brand name hides below 480px, X/LinkedIn icons hide on small screens (Email + GitHub remain)
-
-### Adding a blog post
-
-Create a new `.mdx` file in `src/content/blog/` with this frontmatter:
-
-```yaml
----
-title: 'Post Title'
-description: 'Brief description for SEO and card preview'
-pubDate: 2026-02-14
-tags: ['finance', 'technology']
-draft: false
----
-```
-
-Posts with `draft: true` are excluded from production builds. To use a React component in a post, import it and add a `client:` directive (e.g., `<Chart client:visible />`).
+- **Homepage:** No nav bar. Name + tagline + 3 text links (About, Work, Resume) centered in viewport.
+- **Inner pages:** Minimal top bar — `jl` (red, links home) left, `About Work Resume` right. Current page bold.
+- **Mobile (≤480px):** Nav link text shrinks, gap tightens. No hamburger menu, no sidebar.
 
 ### Adding a project
 
@@ -88,7 +58,7 @@ Add an entry to `src/data/projects.ts`:
 }
 ```
 
-This automatically creates a `/work/project-slug` detail page and adds the project to the `/work` file listing.
+This automatically creates a `/work/project-slug` detail page and adds the project to the `/work` listing.
 
 ## Design Context
 
@@ -99,45 +69,34 @@ Primarily for personal creative satisfaction. Secondary audiences: recruiters/hi
 Bold, Minimal, Direct. No fluff, no apologies — the work speaks for itself.
 
 ### Aesthetic Direction
-- **Visual tone:** macOS file-browser aesthetic with colored folder icons as homepage centerpiece. Warm, inviting, alive — not sterile
-- **Typeface:** Rethink Sans (variable, 400-800) for body, Urbanist (variable, 100-900) for brand name, system monospace for breadcrumbs/metadata
-- **Color:** Warm cream background (`#faf8f5`) + red accent from jl logo + 4 section folder colors (blue, green, amber, purple). Light-only — no dark mode. Each section tints its background subtly
-- **Section-aware chrome:** Logo icon shifts to section color via CSS hue-rotate filter. Social link hovers and brand underline animation match section color. Homepage defaults to red accent
-- **Personality elements:** macOS-style colored folder icons with hover animations (lift, scale, tab open, color glow). Brand underline animates from center outward on hover. Smooth background color transitions between sections
-- **References:** vladsavruk.com (centered column), pucek.capital (bold one-liner), walzr.com (name up top, single font), janina.works (folder icons)
-- **Anti-references:** Cluttered portfolios, excessive decoration, gradients/shadows, too many words, laggy animations
+- **Visual tone:** "The Document" — like a beautifully typeset letter on warm paper. Confidence through absence.
+- **Typography:** System font stack only (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, ...`). One font family, weight variation creates hierarchy.
+- **Color:** Warm cream background (`#faf8f5`) + single red accent (`#d80000`). No section colors. Light-only — no dark mode.
+- **Personality:** Calvin & Hobbes GIF on about page. Generous whitespace. The space between things is the design.
+- **References:** openauth.js.org (border-structured hierarchy), minimal.so/minimark (warm cream + system fonts), anoma.ly (confidence through absence)
+- **Anti-references:** Cluttered portfolios, excessive decoration, gradients/shadows, too many fonts, section-colored chrome
 
 ### Color Tokens
 
 | Token | Value |
 |-------|-------|
 | Background | `#faf8f5` (warm cream) |
-| Surface | `#f0ede8` |
-| Foreground | `#1a1a1a` |
+| Text | `#1a1a1a` |
 | Muted | `#666666` |
-| Accent | `#d80000` (red, logo color) |
-
-### Folder / Section Colors
-
-| Folder | Color | Section BG |
-|--------|-------|------------|
-| Now | `#3B82F6` (blue) | `#f0f4fa` |
-| Work | `#22C55E` (green) | `#f0f7f2` |
-| Guest Book | `#F59E0B` (amber) | `#faf5ed` |
-| About | `#8B5CF6` (purple) | `#f4f0fa` |
+| Accent | `#d80000` (red) |
+| Border | `rgba(0, 0, 0, 0.1)` |
 
 ### Design Principles
-1. **Viewport-locked, no scrolling** — everything fits within a single desktop viewport (`100dvh`, `overflow: hidden`)
+1. **Viewport-locked, no scrolling** — every page is a composed, complete frame (`100dvh`, `overflow: hidden`)
 2. **Content first** — no chrome, no decoration, content speaks
-3. **Folders are the personality** — macOS-style colored folder icons are the distinctive element
-4. **Section-aware** — the site adapts its chrome (logo, hovers, backgrounds) to the current section's color
-5. **Alive but fast** — subtle animations and micro-interactions that never cause lag. CSS transitions only, no JS animation loops
-6. **Titles in upper portion (inner pages)** — inner page titles sit in the upper ~20% of the viewport, not dead-center. Content flows from there. Exception: the homepage centers tagline + folders as a group using `justify-content: center` on `.home`
+3. **Earned simplicity** — every element justifies its existence. If removing it loses nothing, remove it.
+4. **System fonts only** — zero web fonts. Fastest possible load. The absence of font choice IS the choice.
+5. **One accent color** — red (`#d80000`) for links, the `jl` mark, and hover states. Everything else is black, gray, or cream.
+6. **Homepage centers as a group** — name + tagline + nav links center vertically via `justify-content: center` on `.main`
 
 ## Notes
 
 - `public/icon.png` is force-added to git despite `*.png` in `.gitignore`
-- Font files in `public/fonts/` — `RethinkSans-Variable.woff2`, `RethinkSans-Italic-Variable.woff2`, `Urbanist-Variable.woff2`
-- Social link URL for X is placeholder platform root — update with actual profile URL when available
-- Guest Book requires `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` env vars. Without them, shows "coming soon" fallback
-- **Homepage centering gotcha:** Don't use `margin-top: auto` on `.folder-grid` — it centers folders in remaining space *below* the tagline, not in the viewport. Use `justify-content: center` on `.home` so tagline+folders center as a group
+- Guest Book is planned as a follow-up feature (not in current v1)
+- Blog/Now pages are out of v1 scope but content schema (`src/content.config.ts`) is preserved for future use
+- Resume PDF viewer uses `:global(.main:has(.resume))` to override max-width from 40rem to 60rem

@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Resume — John Litzsinger"
+  description="John Litzsinger's resume."
+>
+  <div class="resume">
+    <iframe
+      src="/John_Litzsinger_Resume.pdf"
+      title="John Litzsinger's Resume"
+      class="pdf-viewer"
+    ></iframe>
+  </div>
+</BaseLayout>
+
+<style>
+  .resume {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .pdf-viewer {
+    flex: 1;
+    width: 100%;
+    border: 1px solid var(--border);
+  }
+
+  /* Break out of 40rem content-max — PDF needs width */
+  :global(.main:has(.resume)) {
+    max-width: 60rem;
+  }
+</style>
