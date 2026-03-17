@@ -43,7 +43,7 @@ function isActive(href: string): boolean {
     <div class="frame">
       {!isHome && (
         <header class="top-bar">
-          <a href="/" class="mark">jl</a>
+          <a href="/" class="mark"><img src="/icon.png" alt="jl" class="logo" /></a>
           <nav class="nav" aria-label="Main navigation">
             {navItems.map((item) => (
               <a
@@ -75,7 +75,6 @@ function isActive(href: string): boolean {
     margin: var(--space-lg) auto;
     display: flex;
     flex-direction: column;
-    flex: 1;
     min-height: 0;
     overflow: hidden;
   }
@@ -92,16 +91,13 @@ function isActive(href: string): boolean {
   }
 
   .mark {
-    font-weight: 700;
-    font-size: var(--text-lg);
-    color: var(--accent);
+    display: flex;
     text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
-  .mark:hover {
-    color: var(--accent-hover);
+  .logo {
+    height: 28px;
+    width: auto;
   }
 
   .nav {
@@ -141,22 +137,13 @@ function isActive(href: string): boolean {
     min-height: 0;
   }
 
-  /* ── Homepage: content-sized frame, centered in viewport ── */
-
-  body.home {
-    justify-content: center;
-    align-items: center;
-  }
-
-  body.home .frame {
-    flex: none;
-    margin: var(--space-md) auto;
-  }
+  /* ── Homepage ── */
 
   body.home .main {
     align-items: center;
     text-align: center;
     padding: var(--frame-pad);
+    padding-bottom: 0;
   }
 
   /* ── Mobile ── */
