@@ -7,6 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Finance @ Purdue. Building startups, tools, and this website."
 >
   <div class="about">
+    <h1>About</h1>
     <p class="bio">
       I'm John — I care about markets, startups, and what happens when
       technology meets money. Currently a finance student at Purdue, co-founder
@@ -35,6 +36,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+  }
+
+  .about h1 {
+    font-size: var(--text-2xl);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding-bottom: var(--space-md);
+    border-bottom: var(--frame-border);
   }
 
   .bio {
