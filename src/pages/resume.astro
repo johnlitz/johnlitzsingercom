@@ -29,8 +29,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border: 1px solid var(--border);
   }
 
-  /* Break out of 40rem content-max — PDF needs width */
+  /* Resume frame fills viewport — PDF needs space */
   :global(.frame:has(.resume)) {
     max-width: 60rem;
+    flex: 1;
   }
 </style>

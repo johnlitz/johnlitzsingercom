@@ -63,7 +63,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .links {
     display: flex;
     border-top: var(--frame-border);
-    margin-top: var(--space-sm);
+    margin-left: calc(-1 * var(--frame-pad));
+    margin-right: calc(-1 * var(--frame-pad));
+    margin-bottom: calc(-1 * var(--frame-pad-y));
+    width: calc(100% + 2 * var(--frame-pad));
   }
 
   .links a {
