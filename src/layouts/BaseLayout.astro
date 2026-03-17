@@ -141,13 +141,22 @@ function isActive(href: string): boolean {
     min-height: 0;
   }
 
-  /* ── Homepage: center content in full viewport ── */
+  /* ── Homepage: content-sized frame, centered in viewport ── */
+
+  body.home {
+    justify-content: center;
+    align-items: center;
+  }
+
+  body.home .frame {
+    flex: none;
+    margin: var(--space-md) auto;
+  }
 
   body.home .main {
     align-items: center;
     text-align: center;
     padding: var(--frame-pad);
-    padding-bottom: 0;
   }
 
   /* ── Mobile ── */
