@@ -7,8 +7,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Finance @ Purdue. Markets, startups, and technology."
 >
   <div class="title-page">
-    <h1 class="name">John Litzsinger</h1>
-    <p class="tagline">Finance @ Purdue. Markets, startups, and technology.</p>
+    <div class="hero">
+      <h1 class="name">John Litzsinger</h1>
+      <p class="tagline">Finance @ Purdue. Markets, startups, and technology.</p>
+    </div>
     <nav class="home-nav" aria-label="Main navigation">
       <a href="/about">About</a>
       <a href="/work">Work</a>
@@ -22,11 +24,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-lg);
-    border: var(--frame-border);
-    padding: var(--frame-pad);
-    max-width: var(--content-max);
     width: 100%;
+    flex: 1;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex: 1;
   }
 
   .name {
@@ -46,8 +54,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .home-nav {
     display: flex;
     border-top: var(--frame-border);
-    margin-top: var(--space-sm);
-    width: 100%;
+    margin-left: calc(-1 * var(--frame-pad));
+    margin-right: calc(-1 * var(--frame-pad));
+    width: calc(100% + 2 * var(--frame-pad));
+    flex-shrink: 0;
   }
 
   .home-nav a {

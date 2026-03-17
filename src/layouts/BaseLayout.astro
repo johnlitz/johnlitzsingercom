@@ -40,37 +40,53 @@ function isActive(href: string): boolean {
   <body class:list={[{ home: isHome }]}>
     <a href="#main-content" class="skip-nav">Skip to content</a>
 
-    {!isHome && (
-      <header class="top-bar">
-        <a href="/" class="mark">jl</a>
-        <nav class="nav" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <a
-              href={item.href}
-              class:list={['nav-link', { active: isActive(item.href) }]}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-      </header>
-    )}
+    <div class="frame">
+      {!isHome && (
+        <header class="top-bar">
+          <a href="/" class="mark">jl</a>
+          <nav class="nav" aria-label="Main navigation">
+            {navItems.map((item) => (
+              <a
+                href={item.href}
+                class:list={['nav-link', { active: isActive(item.href) }]}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </header>
+      )}
 
-    <main id="main-content" class="main">
-      <slot />
-    </main>
+      <main id="main-content" class="main">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>
 
 <style>
+  /* ── Frame — bordered document wrapper ── */
+
+  .frame {
+    border: var(--frame-border);
+    max-width: var(--content-max);
+    width: 100%;
+    margin: var(--space-lg) auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   /* ── Top bar (inner pages only) ── */
 
   .top-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--space-md) var(--content-pad);
+    padding: var(--space-md) var(--frame-pad);
     flex-shrink: 0;
     border-bottom: var(--frame-border);
   }
@@ -120,26 +136,27 @@ function isActive(href: string): boolean {
     flex: 1;
     display: flex;
     flex-direction: column;
-    max-width: var(--content-max);
-    width: 100%;
-    margin: 0 auto;
-    padding: var(--frame-pad-y) var(--frame-pad) var(--frame-pad-y);
+    padding: var(--frame-pad-y) var(--frame-pad);
     overflow: hidden;
+    min-height: 0;
   }
 
   /* ── Homepage: center content in full viewport ── */
 
   body.home .main {
-    justify-content: center;
     align-items: center;
     text-align: center;
-    padding-top: 0;
-    max-width: none;
+    padding: var(--frame-pad);
+    padding-bottom: 0;
   }
 
   /* ── Mobile ── */
 
   @media (max-width: 480px) {
+    .frame {
+      margin: var(--space-md) auto;
+    }
+
     .nav {
       gap: var(--space-md);
     }
