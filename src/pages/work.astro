@@ -34,6 +34,10 @@ import { projects } from '../data/projects';
 
   .work h1 {
     font-size: var(--text-2xl);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding-bottom: var(--space-md);
+    border-bottom: var(--frame-border);
   }
 
   .project-list {
@@ -45,14 +49,14 @@ import { projects } from '../data/projects';
     justify-content: space-between;
     align-items: baseline;
     padding: var(--space-md) 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-strong);
     color: var(--text);
     text-decoration: none;
     transition: color var(--transition);
   }
 
   .project-list li:first-child .project-row {
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border-strong);
   }
 
   .project-row:hover {
@@ -60,7 +64,10 @@ import { projects } from '../data/projects';
   }
 
   .project-title {
-    font-weight: 500;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-size: var(--text-sm);
   }
 
   .project-meta {

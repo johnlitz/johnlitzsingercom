@@ -62,16 +62,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .links {
     display: flex;
-    gap: var(--space-lg);
-    font-size: var(--text-sm);
+    border-top: var(--frame-border);
+    margin-top: var(--space-sm);
   }
 
   .links a {
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: var(--text-sm);
+    padding: var(--space-md) var(--space-sm);
     color: var(--muted);
     transition: color var(--transition);
   }
 
+  .links a + a {
+    border-left: var(--frame-border);
+  }
+
   .links a:hover {
-    color: var(--text);
+    color: var(--accent);
   }
 </style>

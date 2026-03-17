@@ -72,7 +72,7 @@ function isActive(href: string): boolean {
     justify-content: space-between;
     padding: var(--space-md) var(--content-pad);
     flex-shrink: 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: var(--frame-border);
   }
 
   .mark {
@@ -80,7 +80,8 @@ function isActive(href: string): boolean {
     font-size: var(--text-lg);
     color: var(--accent);
     text-decoration: none;
-    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .mark:hover {
@@ -96,7 +97,11 @@ function isActive(href: string): boolean {
     color: var(--muted);
     text-decoration: none;
     font-size: var(--text-sm);
-    transition: color var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition), border-color var(--transition);
   }
 
   .nav-link:hover {
@@ -106,6 +111,7 @@ function isActive(href: string): boolean {
   .nav-link.active {
     color: var(--text);
     font-weight: 500;
+    border-bottom-color: var(--accent);
   }
 
   /* ── Main content ── */
@@ -117,7 +123,7 @@ function isActive(href: string): boolean {
     max-width: var(--content-max);
     width: 100%;
     margin: 0 auto;
-    padding: var(--space-xl) var(--content-pad) 0;
+    padding: var(--frame-pad-y) var(--frame-pad) var(--frame-pad-y);
     overflow: hidden;
   }
 

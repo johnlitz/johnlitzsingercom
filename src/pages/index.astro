@@ -23,12 +23,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex-direction: column;
     align-items: center;
     gap: var(--space-lg);
+    border: var(--frame-border);
+    padding: var(--frame-pad);
+    max-width: var(--content-max);
+    width: 100%;
   }
 
   .name {
     font-size: var(--text-4xl);
     font-weight: 700;
     letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 1.15;
   }
 
   .tagline {
@@ -39,18 +45,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .home-nav {
     display: flex;
-    gap: var(--space-xl);
+    border-top: var(--frame-border);
     margin-top: var(--space-sm);
+    width: 100%;
   }
 
   .home-nav a {
-    color: var(--muted);
-    font-size: var(--text-base);
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: var(--text-sm);
+    letter-spacing: 0.05em;
+    padding: var(--space-md) var(--space-sm);
+    color: var(--text);
     text-decoration: none;
-    transition: color var(--transition);
+    transition: color var(--transition), background-color var(--transition);
+  }
+
+  .home-nav a + a {
+    border-left: var(--frame-border);
   }
 
   .home-nav a:hover {
-    color: var(--text);
+    color: var(--accent);
+    background-color: rgba(216, 0, 0, 0.04);
   }
 </style>
